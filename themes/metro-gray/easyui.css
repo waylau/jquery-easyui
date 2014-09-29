@@ -2480,3 +2480,12 @@
 .s-btn-active {
   color: #404040;
 }
+
+/**
+* 自己定义的top 标题栏样式
+* waylau.com
+*/
+.top-layout {
+    background: #CCC;
+    background:radial-gradient(at 35px 35px,#FFF,#CCC,#FFF);
+}

@@ -2483,3 +2483,13 @@
 .window {
   background-color: #de8033;
 }
+
+
+/**
+* 自己定义的top 标题栏样式
+* waylau.com
+*/
+.top-layout {
+    background: #FFD306;
+    background:radial-gradient(at 35px 35px,#D9B300, #FFD306, #FFBB77);
+}
