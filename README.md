@@ -8,10 +8,17 @@ It inclides metro-style themes.
 
 # How to get lib 如何获取库
 
-bower search for `jquery-easyui-bower` 搜索`jquery-easyui-bower`关键字
+##bower search for `jquery-easyui-bower` or `jquery.easyui` 搜索`jquery-easyui-bower` 或者`jquery.easyui`关键字
 
 	$bower search jquery-easyui-bower
 
-install 直接下载安装
+![jquery-easyui](http://i1288.photobucket.com/albums/b484/waylau/waylau%20blog/easyui_zps899e00b7.jpg)
+
+##install 直接下载安装
+
+	$bower install jquery.easyui --save
+
+或者
 
 	$bower install jquery-easyui-bower --save
+
