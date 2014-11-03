@@ -2522,3 +2522,12 @@
 .tooltip-bottom .tooltip-arrow {
   border-bottom-color: #ffffff;
 }
+
+
+/**
+* 自己定义的top 标题栏样式
+* waylau.com
+*/
+.top-layout {
+    background: #6CAEF5;
+}
