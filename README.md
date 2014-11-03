@@ -4,7 +4,9 @@ jquery-easyui
 jquery-easyui lib , update form [jeasyui.com](http://www.jeasyui.com/), useful for git and bower.
 It inclides metro-style themes.
 
-提供给 git 和 [bower](http://bower.io) 使用的 lib,与 [easyui](http://www.jeasyui.com/) 官网保持同步
+提供给 git 和 [bower](http://bower.io) 使用的 lib,与 [easyui](http://www.jeasyui.com/) 官网保持同步,包含了 metro 样式主题。
+
+截止目前为止（2014-11-3），easyui 的 最新版本为 1.4
 
 # How to get lib 如何获取库
 
