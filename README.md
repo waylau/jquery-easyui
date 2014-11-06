@@ -8,15 +8,15 @@ It inclides metro-style themes.
 
 截止目前为止（2014-11-6），easyui 的 最新版本为 1.4.1
 
-# How to get lib 如何获取库
+## How to use 如何使用
 
-##bower search for `jquery-easyui-bower` or `jquery.easyui` 搜索`jquery-easyui-bower` 或者`jquery.easyui`关键字
+###bower search for `jquery-easyui-bower` or `jquery.easyui` 搜索`jquery-easyui-bower` 或者`jquery.easyui`关键字
 
 	$bower search jquery-easyui-bower
 
 ![jquery-easyui](http://i1288.photobucket.com/albums/b484/waylau/waylau%20blog/easyui_zps899e00b7.jpg)
 
-##install 直接下载安装
+###install 直接下载安装
 
 	$bower install jquery.easyui --save
 
@@ -24,3 +24,10 @@ It inclides metro-style themes.
 
 	$bower install jquery-easyui-bower --save
 
+##Who’s Using jquery-easyui?
+
+* [easyui-scaffold easyui脚手架](https://github.com/waylau/easyui-scaffold)
+
+##Release History
+
+* v1.4.1  2014-11-6 增加了版本说明
