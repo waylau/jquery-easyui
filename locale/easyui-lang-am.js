@@ -13,24 +13,19 @@ if ($.messager){
 	$.messager.defaults.ok = 'Այո';
 	$.messager.defaults.cancel = 'Փակել';
 }
+$.map(['validatebox','textbox','filebox','searchbox',
+		'combo','combobox','combogrid','combotree',
+		'datebox','datetimebox','numberbox',
+		'spinner','numberspinner','timespinner','datetimespinner'], function(plugin){
+	if ($.fn[plugin]){
+		$.fn[plugin].defaults.missingMessage = 'Այս դաշտը պարտադիր է.';
+	}
+});
 if ($.fn.validatebox){
-	$.fn.validatebox.defaults.missingMessage = 'Այս դաշտը պարտադիր է.';
 	$.fn.validatebox.defaults.rules.email.message = 'Խնդրում ենք մուտքագրել գործող e-mail հասցե.';
 	$.fn.validatebox.defaults.rules.url.message = 'Խնդրում ենք մուտքագրել գործող URL.';
 	$.fn.validatebox.defaults.rules.length.message = 'Խնդրում ենք մուտքագրել արժեք {0}  {1}.';
 	$.fn.validatebox.defaults.rules.remote.message = 'Խնդրում ենք ուղղել այս դաշտը.';
-}
-if ($.fn.numberbox){
-	$.fn.numberbox.defaults.missingMessage = 'Այս դաշտը պարտադիր է.';
-}
-if ($.fn.combobox){
-	$.fn.combobox.defaults.missingMessage = 'Այս դաշտը պարտադիր է.';
-}
-if ($.fn.combotree){
-	$.fn.combotree.defaults.missingMessage = 'Այս դաշտը պարտադիր է.';
-}
-if ($.fn.combogrid){
-	$.fn.combogrid.defaults.missingMessage = 'Այս դաշտը պարտադիր է.';
 }
 if ($.fn.calendar){
 	$.fn.calendar.defaults.firstDay = 1;
@@ -41,13 +36,11 @@ if ($.fn.datebox){
 	$.fn.datebox.defaults.currentText = 'Այսօր';
 	$.fn.datebox.defaults.closeText = 'Փակել';
 	$.fn.datebox.defaults.okText = 'Այո';
-	$.fn.datebox.defaults.missingMessage = 'Այս դաշտը պարտադիր է.';
 }
 if ($.fn.datetimebox && $.fn.datebox){
 	$.extend($.fn.datetimebox.defaults,{
 		currentText: $.fn.datebox.defaults.currentText,
 		closeText: $.fn.datebox.defaults.closeText,
-		okText: $.fn.datebox.defaults.okText,
-		missingMessage: $.fn.datebox.defaults.missingMessage
+		okText: $.fn.datebox.defaults.okText
 	});
 }

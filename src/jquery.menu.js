@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *

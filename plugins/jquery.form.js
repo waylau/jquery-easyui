@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -15,6 +15,7 @@ var _5=$.extend({},_4.queryParams);
 if(_4.onSubmit.call(_2,_5)==false){
 return;
 }
+$(_2).find(".textbox-text:focus").blur();
 var _6="easyui_frame_"+(new Date().getTime());
 var _7=$("<iframe id="+_6+" name="+_6+"></iframe>").appendTo("body");
 _7.attr("src",window.ActiveXObject?"javascript:false":"about:blank");
@@ -178,6 +179,7 @@ this.value="";
 }else{
 if(t=="file"){
 var _27=$(this);
+if(!_27.hasClass("textbox-value")){
 var _28=_27.clone().val("");
 _28.insertAfter(_27);
 if(_27.data("validatebox")){
@@ -185,6 +187,7 @@ _27.validatebox("destroy");
 _28.validatebox();
 }else{
 _27.remove();
+}
 }
 }else{
 if(t=="checkbox"||t=="radio"){

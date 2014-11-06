@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -18,15 +18,32 @@
 			$.extend(opts, param);
 		}
 		if (opts.width || opts.height || opts.fit){
-			var spacer = $('<div style="display:none"></div>').insertBefore(target);
 			var btn = $(target);
 			var parent = btn.parent();
-			btn.appendTo('body');
+			var isVisible = btn.is(':visible');
+			if (!isVisible){
+				var spacer = $('<div style="display:none"></div>').insertBefore(target);
+				var style = {
+					position: btn.css('position'),
+					display: btn.css('display'),
+					left: btn.css('left')
+				};
+				btn.appendTo('body');
+				btn.css({
+					position: 'absolute',
+					display: 'inline-block',
+					left: -20000
+				});
+			}
 			btn._size(opts, parent);
 			var left = btn.find('.l-btn-left');
+			left.css('margin-top', 0);
 			left.css('margin-top', parseInt((btn.height()-left.height())/2)+'px');
-			btn.insertAfter(spacer);
-			spacer.remove();
+			if (!isVisible){
+				btn.insertAfter(spacer);
+				btn.css(style);
+				spacer.remove();
+			}
 		}
 	}
 	

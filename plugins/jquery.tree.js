@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -758,7 +758,7 @@ return _b5;
 function _4c(_b7,_b8){
 var _b9=[];
 var n=_c(_b7,_b8);
-var _ba=n?n.children:$.data(_b7,"tree").data;
+var _ba=n?(n.children||[]):$.data(_b7,"tree").data;
 _5a(_ba,function(_bb){
 _b9.push(_b6(_bb));
 });

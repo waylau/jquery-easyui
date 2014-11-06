@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -337,7 +337,6 @@
 		}));
 		
 		var opts = pp.panel('options');
-		
 		var tabs = $(container).children('div.tabs-header').find('ul.tabs');
 		
 		opts.tab = $('<li></li>').appendTo(tabs);	// set the tab object in panel options
@@ -348,15 +347,18 @@
 				'</a>'
 		);
 		
+		// only update the tab header
 		$(container).tabs('update', {
 			tab: pp,
-			options: opts
+			options: opts,
+			type: 'header'
 		});
 	}
 	
 	function addTab(container, options) {
-		var opts = $.data(container, 'tabs').options;
-		var tabs = $.data(container, 'tabs').tabs;
+		var state = $.data(container, 'tabs');
+		var opts = state.options;
+		var tabs = state.tabs;
 		if (options.selected == undefined) options.selected = true;
 		
 		var pp = $('<div></div>').appendTo($(container).children('div.tabs-panels'));
@@ -365,7 +367,6 @@
 		
 		opts.onAdd.call(container, options.title, tabs.length-1);
 		
-//		setScrollers(container);
 		setSize(container);
 		if (options.selected){
 			selectTab(container, tabs.length-1);	// select the added tab panel
@@ -376,74 +377,78 @@
 	 * update tab panel, param has following properties:
 	 * tab: the tab panel to be updated
 	 * options: the tab panel options
+	 * type: the update type, possible values are: 'header','body','all'
 	 */
 	function updateTab(container, param){
+		param.type = param.type || 'all';
 		var selectHis = $.data(container, 'tabs').selectHis;
 		var pp = param.tab;	// the tab panel
-		var oldTitle = pp.panel('options').title; 
-		pp.panel($.extend({}, param.options, {
-			iconCls: (param.options.icon ? param.options.icon : undefined)
-		}));
+		var oldTitle = pp.panel('options').title;
 		
-		var opts = pp.panel('options');	// get the tab panel options
-		var tab = opts.tab;
-		
-		var s_title = tab.find('span.tabs-title');
-		var s_icon = tab.find('span.tabs-icon');
-		s_title.html(opts.title);
-		s_icon.attr('class', 'tabs-icon');
-		
-		tab.find('a.tabs-close').remove();
-		if (opts.closable){
-			s_title.addClass('tabs-closable');
-			$('<a href="javascript:void(0)" class="tabs-close"></a>').appendTo(tab);
-		} else{
-			s_title.removeClass('tabs-closable');
+		if (param.type == 'all' || param == 'body'){
+			pp.panel($.extend({}, param.options, {
+				iconCls: (param.options.icon ? param.options.icon : undefined)
+			}));
 		}
-		if (opts.iconCls){
-			s_title.addClass('tabs-with-icon');
-			s_icon.addClass(opts.iconCls);
-		} else {
-			s_title.removeClass('tabs-with-icon');
-		}
-		
-		if (oldTitle != opts.title){
-			for(var i=0; i<selectHis.length; i++){
-				if (selectHis[i] == oldTitle){
-					selectHis[i] = opts.title;
-				}
+		if (param.type == 'all' || param.type == 'header'){
+			var opts = pp.panel('options');	// get the tab panel options
+			var tab = opts.tab;
+			
+			var s_title = tab.find('span.tabs-title');
+			var s_icon = tab.find('span.tabs-icon');
+			s_title.html(opts.title);
+			s_icon.attr('class', 'tabs-icon');
+			
+			tab.find('a.tabs-close').remove();
+			if (opts.closable){
+				s_title.addClass('tabs-closable');
+				$('<a href="javascript:void(0)" class="tabs-close"></a>').appendTo(tab);
+			} else{
+				s_title.removeClass('tabs-closable');
 			}
-		}
-		
-		tab.find('span.tabs-p-tool').remove();
-		if (opts.tools){
-			var p_tool = $('<span class="tabs-p-tool"></span>').insertAfter(tab.find('a.tabs-inner'));
-			if ($.isArray(opts.tools)){
-				for(var i=0; i<opts.tools.length; i++){
-					var t = $('<a href="javascript:void(0)"></a>').appendTo(p_tool);
-					t.addClass(opts.tools[i].iconCls);
-					if (opts.tools[i].handler){
-						t.bind('click', {handler:opts.tools[i].handler}, function(e){
-							if ($(this).parents('li').hasClass('tabs-disabled')){return;}
-							e.data.handler.call(this);
-						});
+			if (opts.iconCls){
+				s_title.addClass('tabs-with-icon');
+				s_icon.addClass(opts.iconCls);
+			} else {
+				s_title.removeClass('tabs-with-icon');
+			}
+			
+			if (oldTitle != opts.title){
+				for(var i=0; i<selectHis.length; i++){
+					if (selectHis[i] == oldTitle){
+						selectHis[i] = opts.title;
 					}
 				}
-			} else {
-				$(opts.tools).children().appendTo(p_tool);
 			}
-			var pr = p_tool.children().length * 12;
-			if (opts.closable) {
-				pr += 8;
-			} else {
-				pr -= 3;
-				p_tool.css('right','5px');
+			
+			tab.find('span.tabs-p-tool').remove();
+			if (opts.tools){
+				var p_tool = $('<span class="tabs-p-tool"></span>').insertAfter(tab.find('a.tabs-inner'));
+				if ($.isArray(opts.tools)){
+					for(var i=0; i<opts.tools.length; i++){
+						var t = $('<a href="javascript:void(0)"></a>').appendTo(p_tool);
+						t.addClass(opts.tools[i].iconCls);
+						if (opts.tools[i].handler){
+							t.bind('click', {handler:opts.tools[i].handler}, function(e){
+								if ($(this).parents('li').hasClass('tabs-disabled')){return;}
+								e.data.handler.call(this);
+							});
+						}
+					}
+				} else {
+					$(opts.tools).children().appendTo(p_tool);
+				}
+				var pr = p_tool.children().length * 12;
+				if (opts.closable) {
+					pr += 8;
+				} else {
+					pr -= 3;
+					p_tool.css('right','5px');
+				}
+				s_title.css('padding-right', pr+'px');
 			}
-			s_title.css('padding-right', pr+'px');
 		}
 		
-//		setProperties(container);
-//		setScrollers(container);
 		setSize(container);
 		
 		$.data(container, 'tabs').options.onUpdate.call(container, opts.title, getTabIndex(container, pp));

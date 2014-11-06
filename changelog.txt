@@ -1,3 +1,20 @@
+Version 1.4.1
+-------------
+* Bug
+ * combogrid: The combogrid has different height than other combo components. fixed.
+ * datagrid: The row element loses some class style value after calling 'updateRow' method. fixed.
+ * menubutton: Calling 'enable' method on a disabled button can not work well. fixed.
+ * form: The filebox components in the form do not work correctly after calling 'clear' method. fixed.
+* Improvement
+ * tabs: The 'update' method accepts 'type' option that allows the user to update the header,body,or both.
+ * panel: Add 'openAnimation','openDuration','closeAnimation' and 'closeDuration' properties to set the animation for opening or closing a panel.
+ * panel: Add 'footer' property that allows the user to add a footer bar to the bottom of panel.
+ * datagrid: Calling 'endEdit' method will accept the editing value correctly.
+ * datagrid: Add 'onBeforeSelect','onBeforeCheck','onBeforeUnselect','onBeforeUncheck' events.
+ * propertygrid: The user can edit a row by calling 'beginEdit' method.
+ * datebox: Add 'cloneFrom' method to create the datebox component quickly.
+ * datetimebox: Add 'cloneFrom' method to create the datetimebox component quickly.
+
 Version 1.4
 -------------
 * Bug

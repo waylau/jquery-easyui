@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -130,6 +130,11 @@ _e.call(this,e);
 },blur:function(e){
 var t=$(e.data.target);
 t.timespinner("setValue",t.timespinner("getText"));
+},keydown:function(e){
+if(e.keyCode==13){
+var t=$(e.data.target);
+t.timespinner("setValue",t.timespinner("getText"));
+}
 }}),formatter:function(_2c){
 if(!_2c){
 return "";

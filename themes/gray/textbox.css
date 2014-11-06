@@ -17,6 +17,7 @@
   border: 0;
   margin: 0;
   padding: 4px;
+  white-space: normal;
   vertical-align: top;
   outline-style: none;
   resize: none;
@@ -61,6 +62,7 @@
   opacity: 0.6;
   filter: alpha(opacity=60);
   text-decoration: none;
+  outline-style: none;
 }
 .textbox-icon-disabled,
 .textbox-icon-readonly {

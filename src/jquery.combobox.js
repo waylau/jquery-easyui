@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -127,6 +127,7 @@
 		var opts = $.data(target, 'combobox').options;
 		var panel = $(target).combo('panel');
 		
+		if (!$.isArray(values)){values = values.split(opts.separator)}
 		panel.find('div.combobox-item-selected').removeClass('combobox-item-selected');
 		var vv = [], ss = [];
 		for(var i=0; i<values.length; i++){

@@ -36,6 +36,7 @@
   height: 10px;
   width: 100%;
   height: 50%;
+  outline-style: none;
 }
 .spinner-arrow-hover {
   background-color: #eaf2ff;
@@ -53,6 +54,7 @@
   opacity: 0.6;
   filter: alpha(opacity=60);
   background-color: #E0ECFF;
+  cursor: default;
 }
 .spinner .textbox-icon-disabled {
   opacity: 0.6;

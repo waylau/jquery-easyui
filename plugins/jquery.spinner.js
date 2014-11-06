@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -17,8 +17,8 @@ _6(e);
 }});
 $(_2).addClass("spinner-f").textbox($.extend({},_4,{icons:_5}));
 var _7=$(_2).textbox("getIcon",_5.length-1);
-_7.append("<a href=\"javascript:void(0)\" class=\"spinner-arrow-up\"></a>");
-_7.append("<a href=\"javascript:void(0)\" class=\"spinner-arrow-down\"></a>");
+_7.append("<a href=\"javascript:void(0)\" class=\"spinner-arrow-up\" tabindex=\"-1\"></a>");
+_7.append("<a href=\"javascript:void(0)\" class=\"spinner-arrow-down\" tabindex=\"-1\"></a>");
 $(_2).attr("spinnerName",$(_2).attr("textboxName"));
 _3.spinner=$(_2).next();
 _3.spinner.addClass("spinner");

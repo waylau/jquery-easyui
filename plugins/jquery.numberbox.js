@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -81,16 +81,25 @@ return _15.filter.call(_14,e);
 },blur:function(e){
 var _16=e.data.target;
 $(_16).numberbox("setValue",$(_16).numberbox("getText"));
+},keydown:function(e){
+if(e.keyCode==13){
+var _17=e.data.target;
+$(_17).numberbox("setValue",$(_17).numberbox("getText"));
+}
 }},min:null,max:null,precision:0,decimalSeparator:".",groupSeparator:"",prefix:"",suffix:"",filter:function(e){
-var _17=$(this).numberbox("options");
+var _18=$(this).numberbox("options");
+var s=$(this).numberbox("getText");
+if(e.which==13){
+return true;
+}
 if(e.which==45){
-return ($(this).val().indexOf("-")==-1?true:false);
+return (s.indexOf("-")==-1?true:false);
 }
 var c=String.fromCharCode(e.which);
-if(c==_17.decimalSeparator){
-return ($(this).val().indexOf(c)==-1?true:false);
+if(c==_18.decimalSeparator){
+return (s.indexOf(c)==-1?true:false);
 }else{
-if(c==_17.groupSeparator){
+if(c==_18.groupSeparator){
 return true;
 }else{
 if((e.which>=48&&e.which<=57&&e.ctrlKey==false&&e.shiftKey==false)||e.which==0||e.which==8){
@@ -104,56 +113,56 @@ return false;
 }
 }
 }
-},formatter:function(_18){
-if(!_18){
-return _18;
+},formatter:function(_19){
+if(!_19){
+return _19;
 }
-_18=_18+"";
-var _19=$(this).numberbox("options");
-var s1=_18,s2="";
-var _1a=_18.indexOf(".");
-if(_1a>=0){
-s1=_18.substring(0,_1a);
-s2=_18.substring(_1a+1,_18.length);
+_19=_19+"";
+var _1a=$(this).numberbox("options");
+var s1=_19,s2="";
+var _1b=_19.indexOf(".");
+if(_1b>=0){
+s1=_19.substring(0,_1b);
+s2=_19.substring(_1b+1,_19.length);
 }
-if(_19.groupSeparator){
+if(_1a.groupSeparator){
 var p=/(\d+)(\d{3})/;
 while(p.test(s1)){
-s1=s1.replace(p,"$1"+_19.groupSeparator+"$2");
+s1=s1.replace(p,"$1"+_1a.groupSeparator+"$2");
 }
 }
 if(s2){
-return _19.prefix+s1+_19.decimalSeparator+s2+_19.suffix;
+return _1a.prefix+s1+_1a.decimalSeparator+s2+_1a.suffix;
 }else{
-return _19.prefix+s1+_19.suffix;
+return _1a.prefix+s1+_1a.suffix;
 }
 },parser:function(s){
 s=s+"";
-var _1b=$(this).numberbox("options");
+var _1c=$(this).numberbox("options");
 if(parseFloat(s)!=s){
-if(_1b.prefix){
-s=$.trim(s.replace(new RegExp("\\"+$.trim(_1b.prefix),"g"),""));
+if(_1c.prefix){
+s=$.trim(s.replace(new RegExp("\\"+$.trim(_1c.prefix),"g"),""));
 }
-if(_1b.suffix){
-s=$.trim(s.replace(new RegExp("\\"+$.trim(_1b.suffix),"g"),""));
+if(_1c.suffix){
+s=$.trim(s.replace(new RegExp("\\"+$.trim(_1c.suffix),"g"),""));
 }
-if(_1b.groupSeparator){
-s=$.trim(s.replace(new RegExp("\\"+_1b.groupSeparator,"g"),""));
+if(_1c.groupSeparator){
+s=$.trim(s.replace(new RegExp("\\"+_1c.groupSeparator,"g"),""));
 }
-if(_1b.decimalSeparator){
-s=$.trim(s.replace(new RegExp("\\"+_1b.decimalSeparator,"g"),"."));
+if(_1c.decimalSeparator){
+s=$.trim(s.replace(new RegExp("\\"+_1c.decimalSeparator,"g"),"."));
 }
 s=s.replace(/\s/g,"");
 }
-var val=parseFloat(s).toFixed(_1b.precision);
+var val=parseFloat(s).toFixed(_1c.precision);
 if(isNaN(val)){
 val="";
 }else{
-if(typeof (_1b.min)=="number"&&val<_1b.min){
-val=_1b.min.toFixed(_1b.precision);
+if(typeof (_1c.min)=="number"&&val<_1c.min){
+val=_1c.min.toFixed(_1c.precision);
 }else{
-if(typeof (_1b.max)=="number"&&val>_1b.max){
-val=_1b.max.toFixed(_1b.precision);
+if(typeof (_1c.max)=="number"&&val>_1c.max){
+val=_1c.max.toFixed(_1c.precision);
 }
 }
 }

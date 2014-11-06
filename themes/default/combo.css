@@ -51,6 +51,9 @@
 .combo-arrow:hover {
   background-color: #eaf2ff;
 }
+.combo .textbox-icon-disabled:hover {
+  cursor: default;
+}
 .textbox-invalid {
   border-color: #ffa8a8;
   background-color: #fff3f3;

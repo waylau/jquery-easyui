@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -172,6 +172,10 @@
 				return this.each(function(){
 					$(this).css({width:'',minWidth:'',maxWidth:'',height:'',minHeight:'',maxHeight:''});
 				});
+			} else if (options == 'fit'){
+				return this.each(function(){
+					_fit(this, this.tagName=='BODY' ? $('body') : $(this).parent(), true);
+				});
 			} else if (options == 'unfit'){
 				return this.each(function(){
 					_fit(this, $(this).parent(), false);
@@ -200,6 +204,7 @@
 		}
 		
 		function _fit(target, parent, fit){
+			if (!parent.length){return false;}
 			var t = $(target)[0];
 			var p = parent[0];
 			var fcount = p.fcount || 0;

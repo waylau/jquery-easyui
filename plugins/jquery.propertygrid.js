@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -9,68 +9,64 @@
  */
 (function($){
 var _1;
-function _2(_3){
-var _4=$.data(_3,"propertygrid");
-var _5=$.data(_3,"propertygrid").options;
-$(_3).datagrid($.extend({},_5,{cls:"propertygrid",view:(_5.showGroup?_5.groupView:_5.view),onClickCell:function(_6,_7,_8){
-if(_1!=this){
-_c(_1);
-_1=this;
-}
-var _9=$(this).datagrid("getRows")[_6];
-if(_5.editIndex!=_6&&_9.editor){
-var _a=$(this).datagrid("getColumnOption","value");
-_a.editor=_9.editor;
-_c(_1);
-$(this).datagrid("beginEdit",_6);
-var ed=$(this).datagrid("getEditor",{index:_6,field:_7});
-if(!ed){
-ed=$(this).datagrid("getEditor",{index:_6,field:"value"});
-}
-if(ed){
-_d(ed.target).focus();
-_5.editIndex=_6;
-}
-}
-_5.onClickCell.call(_3,_6,_7,_8);
-},loadFilter:function(_b){
-_c(this);
-return _5.loadFilter.call(this,_b);
-}}));
 $(document).unbind(".propertygrid").bind("mousedown.propertygrid",function(e){
 var p=$(e.target).closest("div.datagrid-view,div.combo-panel");
 if(p.length){
 return;
 }
-_c(_1);
+_2(_1);
 _1=undefined;
 });
+function _3(_4){
+var _5=$.data(_4,"propertygrid");
+var _6=$.data(_4,"propertygrid").options;
+$(_4).datagrid($.extend({},_6,{cls:"propertygrid",view:(_6.showGroup?_6.groupView:_6.view),onBeforeEdit:function(_7,_8){
+if(_6.onBeforeEdit.call(_4,_7,_8)==false){
+return false;
+}
+var dg=$(this);
+var _8=dg.datagrid("getRows")[_7];
+var _9=dg.datagrid("getColumnOption","value");
+_9.editor=_8.editor;
+},onClickCell:function(_a,_b,_c){
+if(_1!=this){
+_2(_1);
+_1=this;
+}
+if(_6.editIndex!=_a){
+_2(_1);
+$(this).datagrid("beginEdit",_a);
+var ed=$(this).datagrid("getEditor",{index:_a,field:_b});
+if(!ed){
+ed=$(this).datagrid("getEditor",{index:_a,field:"value"});
+}
+if(ed){
+var t=$(ed.target);
+var _d=t.data("textbox")?t.textbox("textbox"):t;
+_d.focus();
+_6.editIndex=_a;
+}
+}
+_6.onClickCell.call(_4,_a,_b,_c);
+},loadFilter:function(_e){
+_2(this);
+return _6.loadFilter.call(this,_e);
+}}));
 };
-function _d(t){
-return $(t).data("textbox")?$(t).textbox("textbox"):$(t);
-};
-function _c(_e){
-var t=$(_e);
+function _2(_f){
+var t=$(_f);
 if(!t.length){
 return;
 }
-var _f=$.data(_e,"propertygrid").options;
-var _10=_f.editIndex;
-if(_10==undefined){
-return;
-}
-var _11=t.datagrid("getEditors",_10);
-if(_11.length){
-$.map(_11,function(ed){
-_d(ed.target).blur();
-});
-if(t.datagrid("validateRow",_10)){
-t.datagrid("endEdit",_10);
+var _10=$.data(_f,"propertygrid").options;
+_10.finder.getTr(_f,null,"editing").each(function(){
+var _11=parseInt($(this).attr("datagrid-row-index"));
+if(t.datagrid("validateRow",_11)){
+t.datagrid("endEdit",_11);
 }else{
-t.datagrid("cancelEdit",_10);
+t.datagrid("cancelEdit",_11);
 }
-}
-_f.editIndex=undefined;
+});
 };
 $.fn.propertygrid=function(_12,_13){
 if(typeof _12=="string"){
@@ -92,7 +88,7 @@ _16.frozenColumns=$.extend(true,[],_16.frozenColumns);
 _16.columns=$.extend(true,[],_16.columns);
 $.data(this,"propertygrid",{options:_16});
 }
-_2(this);
+_3(this);
 });
 };
 $.fn.propertygrid.methods={options:function(jq){
@@ -240,8 +236,92 @@ _44.next("table").hide();
 $(this).datagrid("fixRowHeight");
 });
 }});
-$.fn.propertygrid.defaults=$.extend({},$.fn.datagrid.defaults,{singleSelect:true,remoteSort:false,fitColumns:true,loadMsg:"",frozenColumns:[[{field:"f",width:16,resizable:false}]],columns:[[{field:"name",title:"Name",width:100,sortable:true},{field:"value",title:"Value",width:100,resizable:false}]],showGroup:false,groupView:_18,groupField:"group",groupFormatter:function(_46,_47){
-return _46;
+$.extend(_18,{refreshGroupTitle:function(_46,_47){
+var _48=$.data(_46,"datagrid");
+var _49=_48.options;
+var dc=_48.dc;
+var _4a=this.groups[_47];
+var _4b=dc.body2.children("div.datagrid-group[group-index="+_47+"]").find("span.datagrid-group-title");
+_4b.html(_49.groupFormatter.call(_46,_4a.value,_4a.rows));
+},insertRow:function(_4c,_4d,row){
+var _4e=$.data(_4c,"datagrid");
+var _4f=_4e.options;
+var dc=_4e.dc;
+var _50=null;
+var _51;
+for(var i=0;i<this.groups.length;i++){
+if(this.groups[i].value==row[_4f.groupField]){
+_50=this.groups[i];
+_51=i;
+break;
+}
+}
+if(_50){
+if(_4d==undefined||_4d==null){
+_4d=_4e.data.rows.length;
+}
+if(_4d<_50.startIndex){
+_4d=_50.startIndex;
+}else{
+if(_4d>_50.startIndex+_50.rows.length){
+_4d=_50.startIndex+_50.rows.length;
+}
+}
+$.fn.datagrid.defaults.view.insertRow.call(this,_4c,_4d,row);
+if(_4d>=_50.startIndex+_50.rows.length){
+_52(_4d,true);
+_52(_4d,false);
+}
+_50.rows.splice(_4d-_50.startIndex,0,row);
+}else{
+_50={value:row[_4f.groupField],rows:[row],startIndex:_4e.data.rows.length};
+_51=this.groups.length;
+dc.body1.append(this.renderGroup.call(this,_4c,_51,_50,true));
+dc.body2.append(this.renderGroup.call(this,_4c,_51,_50,false));
+this.groups.push(_50);
+_4e.data.rows.push(row);
+}
+this.refreshGroupTitle(_4c,_51);
+function _52(_53,_54){
+var _55=_54?1:2;
+var _56=_4f.finder.getTr(_4c,_53-1,"body",_55);
+var tr=_4f.finder.getTr(_4c,_53,"body",_55);
+tr.insertAfter(_56);
+};
+},updateRow:function(_57,_58,row){
+var _59=$.data(_57,"datagrid").options;
+$.fn.datagrid.defaults.view.updateRow.call(this,_57,_58,row);
+var tb=_59.finder.getTr(_57,_58,"body",2).closest("table.datagrid-btable");
+var _5a=parseInt(tb.prev().attr("group-index"));
+this.refreshGroupTitle(_57,_5a);
+},deleteRow:function(_5b,_5c){
+var _5d=$.data(_5b,"datagrid");
+var _5e=_5d.options;
+var dc=_5d.dc;
+var _5f=dc.body1.add(dc.body2);
+var tb=_5e.finder.getTr(_5b,_5c,"body",2).closest("table.datagrid-btable");
+var _60=parseInt(tb.prev().attr("group-index"));
+$.fn.datagrid.defaults.view.deleteRow.call(this,_5b,_5c);
+var _61=this.groups[_60];
+if(_61.rows.length>1){
+_61.rows.splice(_5c-_61.startIndex,1);
+this.refreshGroupTitle(_5b,_60);
+}else{
+_5f.children("div.datagrid-group[group-index="+_60+"]").remove();
+for(var i=_60+1;i<this.groups.length;i++){
+_5f.children("div.datagrid-group[group-index="+i+"]").attr("group-index",i-1);
+}
+this.groups.splice(_60,1);
+}
+var _5c=0;
+for(var i=0;i<this.groups.length;i++){
+var _61=this.groups[i];
+_61.startIndex=_5c;
+_5c+=_61.rows.length;
+}
+}});
+$.fn.propertygrid.defaults=$.extend({},$.fn.datagrid.defaults,{singleSelect:true,remoteSort:false,fitColumns:true,loadMsg:"",frozenColumns:[[{field:"f",width:16,resizable:false}]],columns:[[{field:"name",title:"Name",width:100,sortable:true},{field:"value",title:"Value",width:100,resizable:false}]],showGroup:false,groupView:_18,groupField:"group",groupFormatter:function(_62,_63){
+return _62;
 }});
 })(jQuery);
 

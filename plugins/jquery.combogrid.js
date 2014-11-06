@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -116,6 +116,9 @@ var _26=_25.onChange;
 _25.onChange=function(){
 };
 _22.datagrid("clearSelections");
+if(!$.isArray(_1e)){
+_1e=_1e.split(_21.separator);
+}
 for(var i=0;i<_1e.length;i++){
 var _27=_22.datagrid("getRowIndex",_1e[i]);
 if(_27>=0){
@@ -250,7 +253,7 @@ $.fn.combogrid.parseOptions=function(_3c){
 var t=$(_3c);
 return $.extend({},$.fn.combo.parseOptions(_3c),$.fn.datagrid.parseOptions(_3c),$.parser.parseOptions(_3c,["idField","textField","mode"]));
 };
-$.fn.combogrid.defaults=$.extend({},$.fn.combo.defaults,$.fn.datagrid.defaults,{loadMsg:null,idField:null,textField:null,mode:"local",keyHandler:{up:function(e){
+$.fn.combogrid.defaults=$.extend({},$.fn.combo.defaults,$.fn.datagrid.defaults,{height:22,loadMsg:null,idField:null,textField:null,mode:"local",keyHandler:{up:function(e){
 nav(this,"prev");
 e.preventDefault();
 },down:function(e){

@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -16,6 +16,12 @@
  */
 (function($){
 	var currTarget;
+	$(document).unbind('.propertygrid').bind('mousedown.propertygrid', function(e){
+		var p = $(e.target).closest('div.datagrid-view,div.combo-panel');
+		if (p.length){return;}
+		stopEditing(currTarget);
+		currTarget = undefined;
+	});
 	
 	function buildGrid(target){
 		var state = $.data(target, 'propertygrid');
@@ -23,15 +29,19 @@
 		$(target).datagrid($.extend({}, opts, {
 			cls:'propertygrid',
 			view:(opts.showGroup ? opts.groupView : opts.view),
+			onBeforeEdit:function(index, row){
+				if (opts.onBeforeEdit.call(target, index, row) == false){return false;}
+				var dg = $(this);
+				var row = dg.datagrid('getRows')[index];
+				var col = dg.datagrid('getColumnOption', 'value');
+				col.editor = row.editor;
+			},
 			onClickCell:function(index, field, value){
 				if (currTarget != this){
 					stopEditing(currTarget);
 					currTarget = this;
 				}
-				var row = $(this).datagrid('getRows')[index];
-				if (opts.editIndex != index && row.editor){
-					var col = $(this).datagrid('getColumnOption', 'value');
-					col.editor = row.editor;
+				if (opts.editIndex != index){
 					stopEditing(currTarget);
 					$(this).datagrid('beginEdit', index);
 					var ed = $(this).datagrid('getEditor', {index:index,field:field});
@@ -39,7 +49,9 @@
 						ed = $(this).datagrid('getEditor', {index:index,field:'value'});
 					}
 					if (ed){
-						getInputBox(ed.target).focus();
+						var t = $(ed.target);
+						var input = t.data('textbox') ? t.textbox('textbox') : t;
+						input.focus();
 						opts.editIndex = index;
 					}
 				}
@@ -50,36 +62,20 @@
 				return opts.loadFilter.call(this, data);
 			}
 		}));
-		$(document).unbind('.propertygrid').bind('mousedown.propertygrid', function(e){
-			var p = $(e.target).closest('div.datagrid-view,div.combo-panel');
-			if (p.length){return;}
-			stopEditing(currTarget);
-			currTarget = undefined;
-		});
-	}
-	
-	function getInputBox(t){
-		return $(t).data('textbox') ? $(t).textbox('textbox') : $(t);
 	}
 	
 	function stopEditing(target){
 		var t = $(target);
 		if (!t.length){return}
 		var opts = $.data(target, 'propertygrid').options;
-		var index = opts.editIndex;
-		if (index == undefined){return;}
-		var editors = t.datagrid('getEditors', index);
-		if (editors.length){
-			$.map(editors, function(ed){
-				getInputBox(ed.target).blur();
-			});
+		opts.finder.getTr(target, null, 'editing').each(function(){
+			var index = parseInt($(this).attr('datagrid-row-index'));
 			if (t.datagrid('validateRow', index)){
 				t.datagrid('endEdit', index);
 			} else {
 				t.datagrid('cancelEdit', index);
 			}
-		}
-		opts.editIndex = undefined;
+		});
 	}
 	
 	$.fn.propertygrid = function(options, param){
@@ -286,6 +282,110 @@
 	        });
 	    }
 	});
+
+	$.extend(groupview, {
+		refreshGroupTitle: function(target, groupIndex){
+			var state = $.data(target, 'datagrid');
+			var opts = state.options;
+			var dc = state.dc;
+			var group = this.groups[groupIndex];
+			var span = dc.body2.children('div.datagrid-group[group-index=' + groupIndex + ']').find('span.datagrid-group-title');
+			span.html(opts.groupFormatter.call(target, group.value, group.rows));
+		},
+		
+		insertRow: function(target, index, row){
+			var state = $.data(target, 'datagrid');
+			var opts = state.options;
+			var dc = state.dc;
+			var group = null;
+			var groupIndex;
+			
+			for(var i=0; i<this.groups.length; i++){
+				if (this.groups[i].value == row[opts.groupField]){
+					group = this.groups[i];
+					groupIndex = i;
+					break;
+				}
+			}
+			if (group){
+				if (index == undefined || index == null){
+					index = state.data.rows.length;
+				}
+				if (index < group.startIndex){
+					index = group.startIndex;
+				} else if (index > group.startIndex + group.rows.length){
+					index = group.startIndex + group.rows.length;
+				}
+				$.fn.datagrid.defaults.view.insertRow.call(this, target, index, row);
+				
+				if (index >= group.startIndex + group.rows.length){
+					_moveTr(index, true);
+					_moveTr(index, false);
+				}
+				group.rows.splice(index - group.startIndex, 0, row);
+			} else {
+				group = {
+					value: row[opts.groupField],
+					rows: [row],
+					startIndex: state.data.rows.length
+				}
+				groupIndex = this.groups.length;
+				dc.body1.append(this.renderGroup.call(this, target, groupIndex, group, true));
+				dc.body2.append(this.renderGroup.call(this, target, groupIndex, group, false));
+				this.groups.push(group);
+				state.data.rows.push(row);
+			}
+			
+			this.refreshGroupTitle(target, groupIndex);
+			
+			function _moveTr(index,frozen){
+				var serno = frozen?1:2;
+				var prevTr = opts.finder.getTr(target, index-1, 'body', serno);
+				var tr = opts.finder.getTr(target, index, 'body', serno);
+				tr.insertAfter(prevTr);
+			}
+		},
+		
+		updateRow: function(target, index, row){
+			var opts = $.data(target, 'datagrid').options;
+			$.fn.datagrid.defaults.view.updateRow.call(this, target, index, row);
+			var tb = opts.finder.getTr(target, index, 'body', 2).closest('table.datagrid-btable');
+			var groupIndex = parseInt(tb.prev().attr('group-index'));
+			this.refreshGroupTitle(target, groupIndex);
+		},
+		
+		deleteRow: function(target, index){
+			var state = $.data(target, 'datagrid');
+			var opts = state.options;
+			var dc = state.dc;
+			var body = dc.body1.add(dc.body2);
+			
+			var tb = opts.finder.getTr(target, index, 'body', 2).closest('table.datagrid-btable');
+			var groupIndex = parseInt(tb.prev().attr('group-index'));
+			
+			$.fn.datagrid.defaults.view.deleteRow.call(this, target, index);
+			
+			var group = this.groups[groupIndex];
+			if (group.rows.length > 1){
+				group.rows.splice(index-group.startIndex, 1);
+				this.refreshGroupTitle(target, groupIndex);
+			} else {
+				body.children('div.datagrid-group[group-index='+groupIndex+']').remove();
+				for(var i=groupIndex+1; i<this.groups.length; i++){
+					body.children('div.datagrid-group[group-index='+i+']').attr('group-index', i-1);
+				}
+				this.groups.splice(groupIndex, 1);
+			}
+			
+			var index = 0;
+			for(var i=0; i<this.groups.length; i++){
+				var group = this.groups[i];
+				group.startIndex = index;
+				index += group.rows.length;
+			}
+		}
+	});
+
 	// end of group view definition
 	
 	$.fn.propertygrid.defaults = $.extend({}, $.fn.datagrid.defaults, {

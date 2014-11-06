@@ -11,8 +11,8 @@
   "main": "jquery.easyui.min.js",
   "keywords": [
     "easyui",
-    "1.4"
+    "1.4.1"
   ],
-  "license": "MIT",
+  "license": "GPL",
   "homepage": "https://github.com/waylau/jquery-easyui"
 }

@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4
+ * jQuery EasyUI 1.4.1
  * 
  * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
@@ -69,7 +69,7 @@ return $(_10).linkbutton("options").disabled;
 };
 };
 function _14(_15){
-var _16=$.data(_15,"menubutton").options;
+var _16=$(_15).menubutton("options");
 if(_16.disabled||!_16.menu){
 return;
 }
