@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -52,6 +52,11 @@
 		propertygrid:{
 			js:'jquery.propertygrid.js',
 			css:'propertygrid.css',
+			dependencies:['datagrid']
+		},
+		datalist:{
+			js:'jquery.datalist.js',
+			css:'datalist.css',
 			dependencies:['datagrid']
 		},
 		panel: {
@@ -187,6 +192,9 @@
 		},
 		parser:{
 			js:'jquery.parser.js'
+		},
+		mobile:{
+			js:'jquery.mobile.js'
 		}
 	};
 	

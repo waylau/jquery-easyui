@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -139,15 +139,14 @@
 		var state = $.data(target, 'datebox');
 		var opts = state.options;
 		var calendar = state.calendar;
-		$(target).combo('setValue', value);
 		calendar.calendar('moveTo', opts.parser.call(target, value));
-		if (!remainText){
+		if (remainText){
+			$(target).combo('setValue', value);
+		} else {
 			if (value){
 				value = opts.formatter.call(target, calendar.calendar('options').current);
-				$(target).combo('setValue', value).combo('setText', value);
-			} else {
-				$(target).combo('setText', value);
 			}
+			$(target).combo('setText', value).combo('setValue', value);
 		}
 	}
 	
@@ -247,10 +246,11 @@
 		buttons:[{
 			text: function(target){return $(target).datebox('options').currentText;},
 			handler: function(target){
+				var now = new Date();
 				$(target).datebox('calendar').calendar({
-					year:new Date().getFullYear(),
-					month:new Date().getMonth()+1,
-					current:new Date()
+					year:now.getFullYear(),
+					month:now.getMonth()+1,
+					current:new Date(now.getFullYear(), now.getMonth(), now.getDate())
 				});
 				doEnter(target);
 			}

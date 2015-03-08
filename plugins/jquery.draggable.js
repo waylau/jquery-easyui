@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -62,7 +62,9 @@ _b.css({left:e.data.left,top:e.data.top});
 $("body").css("cursor",_a.cursor);
 };
 function _c(e){
-$.fn.draggable.isDragging=true;
+if(!$.fn.draggable.isDragging){
+return false;
+}
 var _d=$.data(e.data.target,"draggable");
 var _e=_d.options;
 var _f=$(".droppable").filter(function(){
@@ -98,6 +100,9 @@ _e.onStartDrag.call(e.data.target,e);
 return false;
 };
 function _12(e){
+if(!$.fn.draggable.isDragging){
+return false;
+}
 var _13=$.data(e.data.target,"draggable");
 _1(e);
 if(_13.options.onDrag.call(e.data.target,e)!=false){
@@ -126,26 +131,29 @@ this.entered=false;
 return false;
 };
 function _16(e){
-$.fn.draggable.isDragging=false;
+if(!$.fn.draggable.isDragging){
+_17();
+return false;
+}
 _12(e);
-var _17=$.data(e.data.target,"draggable");
-var _18=_17.proxy;
-var _19=_17.options;
-if(_19.revert){
-if(_1a()==true){
+var _18=$.data(e.data.target,"draggable");
+var _19=_18.proxy;
+var _1a=_18.options;
+if(_1a.revert){
+if(_1b()==true){
 $(e.data.target).css({position:e.data.startPosition,left:e.data.startLeft,top:e.data.startTop});
 }else{
-if(_18){
-var _1b,top;
-if(_18.parent()[0]==document.body){
-_1b=e.data.startX-e.data.offsetWidth;
+if(_19){
+var _1c,top;
+if(_19.parent()[0]==document.body){
+_1c=e.data.startX-e.data.offsetWidth;
 top=e.data.startY-e.data.offsetHeight;
 }else{
-_1b=e.data.startLeft;
+_1c=e.data.startLeft;
 top=e.data.startTop;
 }
-_18.animate({left:_1b,top:top},function(){
-_1c();
+_19.animate({left:_1c,top:top},function(){
+_1d();
 });
 }else{
 $(e.data.target).animate({left:e.data.startLeft,top:e.data.startTop},function(){
@@ -155,104 +163,117 @@ $(e.data.target).css("position",e.data.startPosition);
 }
 }else{
 $(e.data.target).css({position:"absolute",left:e.data.left,top:e.data.top});
-_1a();
+_1b();
 }
-_19.onStopDrag.call(e.data.target,e);
-$(document).unbind(".draggable");
-setTimeout(function(){
-$("body").css("cursor","");
-},100);
-function _1c(){
-if(_18){
-_18.remove();
+_1a.onStopDrag.call(e.data.target,e);
+_17();
+function _1d(){
+if(_19){
+_19.remove();
 }
-_17.proxy=null;
+_18.proxy=null;
 };
-function _1a(){
-var _1d=false;
-_17.droppables.each(function(){
-var _1e=$(this);
-if(_1e.droppable("options").disabled){
+function _1b(){
+var _1e=false;
+_18.droppables.each(function(){
+var _1f=$(this);
+if(_1f.droppable("options").disabled){
 return;
 }
-var p2=_1e.offset();
-if(e.pageX>p2.left&&e.pageX<p2.left+_1e.outerWidth()&&e.pageY>p2.top&&e.pageY<p2.top+_1e.outerHeight()){
-if(_19.revert){
+var p2=_1f.offset();
+if(e.pageX>p2.left&&e.pageX<p2.left+_1f.outerWidth()&&e.pageY>p2.top&&e.pageY<p2.top+_1f.outerHeight()){
+if(_1a.revert){
 $(e.data.target).css({position:e.data.startPosition,left:e.data.startLeft,top:e.data.startTop});
 }
 $(this).trigger("_drop",[e.data.target]);
-_1c();
-_1d=true;
+_1d();
+_1e=true;
 this.entered=false;
 return false;
 }
 });
-if(!_1d&&!_19.revert){
-_1c();
+if(!_1e&&!_1a.revert){
+_1d();
 }
-return _1d;
+return _1e;
 };
 return false;
 };
-$.fn.draggable=function(_1f,_20){
-if(typeof _1f=="string"){
-return $.fn.draggable.methods[_1f](this,_20);
+function _17(){
+if($.fn.draggable.timer){
+clearTimeout($.fn.draggable.timer);
+$.fn.draggable.timer=undefined;
+}
+$(document).unbind(".draggable");
+$.fn.draggable.isDragging=false;
+setTimeout(function(){
+$("body").css("cursor","");
+},100);
+};
+$.fn.draggable=function(_20,_21){
+if(typeof _20=="string"){
+return $.fn.draggable.methods[_20](this,_21);
 }
 return this.each(function(){
-var _21;
-var _22=$.data(this,"draggable");
-if(_22){
-_22.handle.unbind(".draggable");
-_21=$.extend(_22.options,_1f);
+var _22;
+var _23=$.data(this,"draggable");
+if(_23){
+_23.handle.unbind(".draggable");
+_22=$.extend(_23.options,_20);
 }else{
-_21=$.extend({},$.fn.draggable.defaults,$.fn.draggable.parseOptions(this),_1f||{});
+_22=$.extend({},$.fn.draggable.defaults,$.fn.draggable.parseOptions(this),_20||{});
 }
-var _23=_21.handle?(typeof _21.handle=="string"?$(_21.handle,this):_21.handle):$(this);
-$.data(this,"draggable",{options:_21,handle:_23});
-if(_21.disabled){
+var _24=_22.handle?(typeof _22.handle=="string"?$(_22.handle,this):_22.handle):$(this);
+$.data(this,"draggable",{options:_22,handle:_24});
+if(_22.disabled){
 $(this).css("cursor","");
 return;
 }
-_23.unbind(".draggable").bind("mousemove.draggable",{target:this},function(e){
+_24.unbind(".draggable").bind("mousemove.draggable",{target:this},function(e){
 if($.fn.draggable.isDragging){
 return;
 }
-var _24=$.data(e.data.target,"draggable").options;
-if(_25(e)){
-$(this).css("cursor",_24.cursor);
+var _25=$.data(e.data.target,"draggable").options;
+if(_26(e)){
+$(this).css("cursor",_25.cursor);
 }else{
 $(this).css("cursor","");
 }
 }).bind("mouseleave.draggable",{target:this},function(e){
 $(this).css("cursor","");
 }).bind("mousedown.draggable",{target:this},function(e){
-if(_25(e)==false){
+if(_26(e)==false){
 return;
 }
 $(this).css("cursor","");
-var _26=$(e.data.target).position();
-var _27=$(e.data.target).offset();
-var _28={startPosition:$(e.data.target).css("position"),startLeft:_26.left,startTop:_26.top,left:_26.left,top:_26.top,startX:e.pageX,startY:e.pageY,offsetWidth:(e.pageX-_27.left),offsetHeight:(e.pageY-_27.top),target:e.data.target,parent:$(e.data.target).parent()[0]};
-$.extend(e.data,_28);
-var _29=$.data(e.data.target,"draggable").options;
-if(_29.onBeforeDrag.call(e.data.target,e)==false){
+var _27=$(e.data.target).position();
+var _28=$(e.data.target).offset();
+var _29={startPosition:$(e.data.target).css("position"),startLeft:_27.left,startTop:_27.top,left:_27.left,top:_27.top,startX:e.pageX,startY:e.pageY,offsetWidth:(e.pageX-_28.left),offsetHeight:(e.pageY-_28.top),target:e.data.target,parent:$(e.data.target).parent()[0]};
+$.extend(e.data,_29);
+var _2a=$.data(e.data.target,"draggable").options;
+if(_2a.onBeforeDrag.call(e.data.target,e)==false){
 return;
 }
 $(document).bind("mousedown.draggable",e.data,_c);
 $(document).bind("mousemove.draggable",e.data,_12);
 $(document).bind("mouseup.draggable",e.data,_16);
+$.fn.draggable.timer=setTimeout(function(){
+$.fn.draggable.isDragging=true;
+_c(e);
+},_2a.delay);
+return false;
 });
-function _25(e){
-var _2a=$.data(e.data.target,"draggable");
-var _2b=_2a.handle;
-var _2c=$(_2b).offset();
-var _2d=$(_2b).outerWidth();
-var _2e=$(_2b).outerHeight();
-var t=e.pageY-_2c.top;
-var r=_2c.left+_2d-e.pageX;
-var b=_2c.top+_2e-e.pageY;
-var l=e.pageX-_2c.left;
-return Math.min(t,r,b,l)>_2a.options.edge;
+function _26(e){
+var _2b=$.data(e.data.target,"draggable");
+var _2c=_2b.handle;
+var _2d=$(_2c).offset();
+var _2e=$(_2c).outerWidth();
+var _2f=$(_2c).outerHeight();
+var t=e.pageY-_2d.top;
+var r=_2d.left+_2e-e.pageX;
+var b=_2d.top+_2f-e.pageY;
+var l=e.pageX-_2d.left;
+return Math.min(t,r,b,l)>_2b.options.edge;
 };
 });
 };
@@ -269,11 +290,11 @@ return jq.each(function(){
 $(this).draggable({disabled:true});
 });
 }};
-$.fn.draggable.parseOptions=function(_2f){
-var t=$(_2f);
-return $.extend({},$.parser.parseOptions(_2f,["cursor","handle","axis",{"revert":"boolean","deltaX":"number","deltaY":"number","edge":"number"}]),{disabled:(t.attr("disabled")?true:undefined)});
+$.fn.draggable.parseOptions=function(_30){
+var t=$(_30);
+return $.extend({},$.parser.parseOptions(_30,["cursor","handle","axis",{"revert":"boolean","deltaX":"number","deltaY":"number","edge":"number","delay":"number"}]),{disabled:(t.attr("disabled")?true:undefined)});
 };
-$.fn.draggable.defaults={proxy:null,revert:false,cursor:"move",deltaX:null,deltaY:null,handle:null,disabled:false,edge:0,axis:null,onBeforeDrag:function(e){
+$.fn.draggable.defaults={proxy:null,revert:false,cursor:"move",deltaX:null,deltaY:null,handle:null,disabled:false,edge:0,axis:null,delay:100,onBeforeDrag:function(e){
 },onStartDrag:function(e){
 },onDrag:function(e){
 },onStopDrag:function(e){

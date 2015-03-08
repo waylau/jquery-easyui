@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -31,7 +31,7 @@
 		cc._size(opts);
 		var headerHeight = 0;
 		var bodyHeight = 'auto';
-		var headers = cc.find('>div.panel>div.accordion-header');
+		var headers = cc.find('>.panel>.accordion-header');
 		if (headers.length){
 			headerHeight = $(headers[0]).css('height', '')._outerHeight();
 		}
@@ -200,20 +200,27 @@
 		tool.children('a.panel-tool-collapse').hide();	// hide the old collapse button
 		var t = $('<a href="javascript:void(0)"></a>').addClass('accordion-collapse accordion-expand').appendTo(tool);
 		t.bind('click', function(){
-			var index = getPanelIndex(container, pp);
-			if (pp.panel('options').collapsed){
-				select(container, index);
-			} else {
-				unselect(container, index);
-			}
+			togglePanel(pp);
 			return false;
 		});
 		pp.panel('options').collapsible ? t.show() : t.hide();
 		
 		header.click(function(){
-			$(this).find('a.accordion-collapse:visible').triggerHandler('click');
+			togglePanel(pp);
 			return false;
 		});
+		
+		function togglePanel(p){
+			var popts = p.panel('options');
+			if (popts.collapsible){
+				var index = getPanelIndex(container, p);
+				if (popts.collapsed){
+					select(container, index);
+				} else {
+					unselect(container, index);
+				}
+			}
+		}
 	}
 	
 	/**

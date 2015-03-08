@@ -19,7 +19,7 @@
 				singleSelect:true,
 				autoRowHeight:false,
 				pagination:true,
-				pageSize:10">
+				pageSize1:10">
 		<thead>
 			<tr>
 				<th field="inv" width="80">Inv No</th>
@@ -33,6 +33,68 @@
 		</thead>
 	</table>
 	<script>
+		(function($){
+			function pagerFilter(data){
+				if ($.isArray(data)){	// is array
+					data = {
+						total: data.length,
+						rows: data
+					}
+				}
+				var dg = $(this);
+				var state = dg.data('datagrid');
+				var opts = dg.datagrid('options');
+				if (!state.allRows){
+					state.allRows = (data.rows);
+				}
+				var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+				var end = start + parseInt(opts.pageSize);
+				data.rows = $.extend(true,[],state.allRows.slice(start, end));
+				return data;
+			}
+
+			var loadDataMethod = $.fn.datagrid.methods.loadData;
+			$.extend($.fn.datagrid.methods, {
+				clientPaging: function(jq){
+					return jq.each(function(){
+						var dg = $(this);
+                        var state = dg.data('datagrid');
+                        var opts = state.options;
+                        opts.loadFilter = pagerFilter;
+                        var onBeforeLoad = opts.onBeforeLoad;
+                        opts.onBeforeLoad = function(param){
+                            state.allRows = null;
+                            return onBeforeLoad.call(this, param);
+                        }
+						dg.datagrid('getPager').pagination({
+							onSelectPage:function(pageNum, pageSize){
+								opts.pageNumber = pageNum;
+								opts.pageSize = pageSize;
+								$(this).pagination('refresh',{
+									pageNumber:pageNum,
+									pageSize:pageSize
+								});
+								dg.datagrid('loadData',state.allRows);
+							}
+						});
+                        $(this).datagrid('loadData', state.data);
+                        if (opts.url){
+                        	$(this).datagrid('reload');
+                        }
+					});
+				},
+                loadData: function(jq, data){
+                    jq.each(function(){
+                        $(this).data('datagrid').allRows = null;
+                    });
+                    return loadDataMethod.call($.fn.datagrid.methods, jq, data);
+                },
+                getAllRows: function(jq){
+                	return jq.data('datagrid').allRows;
+                }
+			})
+		})(jQuery);
+
 		function getData(){
 			var rows = [];
 			for(var i=1; i<=800; i++){
@@ -51,38 +113,8 @@
 			return rows;
 		}
 		
-		function pagerFilter(data){
-			if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
-				data = {
-					total: data.length,
-					rows: data
-				}
-			}
-			var dg = $(this);
-			var opts = dg.datagrid('options');
-			var pager = dg.datagrid('getPager');
-			pager.pagination({
-				onSelectPage:function(pageNum, pageSize){
-					opts.pageNumber = pageNum;
-					opts.pageSize = pageSize;
-					pager.pagination('refresh',{
-						pageNumber:pageNum,
-						pageSize:pageSize
-					});
-					dg.datagrid('loadData',data);
-				}
-			});
-			if (!data.originalRows){
-				data.originalRows = (data.rows);
-			}
-			var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
-			var end = start + parseInt(opts.pageSize);
-			data.rows = (data.originalRows.slice(start, end));
-			return data;
-		}
-		
 		$(function(){
-			$('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', getData());
+			$('#dg').datagrid({data:getData()}).datagrid('clientPaging');
 		});
 	</script>
 </body>

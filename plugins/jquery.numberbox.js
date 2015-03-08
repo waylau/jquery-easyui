@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -26,7 +26,9 @@ var _b=_a.options;
 var _9=_b.parser.call(_8,_9);
 var _c=_b.formatter.call(_8,_9);
 _b.value=_9;
-$(_8).textbox("setValue",_9).textbox("setText",_c);
+$(_8).textbox("setText",_c).textbox("setValue",_9);
+_c=_b.formatter.call(_8,$(_8).textbox("getValue"));
+$(_8).textbox("setText",_c);
 };
 $.fn.numberbox=function(_d,_e){
 if(typeof _d=="string"){

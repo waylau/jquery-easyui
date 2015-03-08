@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -142,10 +142,10 @@
 			ss.push(s);
 		}
 		
-		$(target).combo('setValues', vv);
 		if (!remainText){
 			$(target).combo('setText', ss.join(opts.separator));
 		}
+		$(target).combo('setValues', vv);
 	}
 	
 	/**
@@ -215,8 +215,8 @@
 		if (url){
 			opts.url = url;
 		}
-//		if (!opts.url) return;
-		param = param || {};
+		param = $.extend({}, opts.queryParams, param||{});
+//		param = param || {};
 		
 		if (opts.onBeforeLoad.call(target, param) == false) return;
 
@@ -234,13 +234,9 @@
 		var state = $.data(target, 'combobox');
 		var opts = state.options;
 		
-		if (opts.multiple && !q){
-			setValues(target, [], true);
-		} else {
-			setValues(target, [q], true);
-		}
-		
+		var qq = opts.multiple ? q.split(opts.separator) : [q];
 		if (opts.mode == 'remote'){
+			_setValues(qq);
 			request(target, null, {q:q}, true);
 		} else {
 			var panel = $(target).combo('panel');
@@ -248,9 +244,9 @@
 			panel.find('div.combobox-item,div.combobox-group').hide();
 			var data = state.data;
 			var vv = [];
-			var qq = opts.multiple ? q.split(opts.separator) : [q];
 			$.map(qq, function(q){
 				q = $.trim(q);
+				var value = q;
 				var group = undefined;
 				for(var i=0; i<data.length; i++){
 					var row = data[i];
@@ -260,7 +256,7 @@
 						var g = row[opts.groupField];
 						var item = opts.finder.getEl(target, v).show();
 						if (s.toLowerCase() == q.toLowerCase()){
-							vv.push(v);
+							value = v;
 							item.addClass('combobox-item-selected');
 						}
 						if (opts.groupField && group != g){
@@ -269,8 +265,12 @@
 						}
 					}
 				}
+				vv.push(value);
 			});
-			setValues(target, vv, true);
+			_setValues(vv);
+		}
+		function _setValues(vv){
+			setValues(target, opts.multiple ? (q?vv:[]) : vv, true);
 		}
 	}
 	
@@ -437,7 +437,15 @@
 		},
 		reload: function(jq, url){
 			return jq.each(function(){
-				request(this, url);
+				if (typeof url == 'string'){
+					request(this, url);
+				} else {
+					if (url){
+						var opts = $(this).combobox('options');
+						opts.queryParams = url;
+					}
+					request(this);
+				}
 			});
 		},
 		select: function(jq, value){
@@ -498,6 +506,7 @@
 		method: 'post',
 		url: null,
 		data: null,
+		queryParams: {},
 		
 		keyHandler: {
 			up: function(e){nav(this,'prev');e.preventDefault()},

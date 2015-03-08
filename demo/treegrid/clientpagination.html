@@ -59,15 +59,16 @@
 		                    pageNumber:pageNum,  
 		                    pageSize:pageSize  
 		                });  
-		                dg.treegrid('loadData',state.originalRows);  
+		                dg.treegrid('loadData',state.allRows);  
 		            }  
 		        });  
-		        if (!state.originalRows){
-		        	state.originalRows = data.rows;
+		        opts.pageNumber = pager.pagination('options').pageNumber || 1;
+		        if (!state.allRows){
+		        	state.allRows = data.rows;
 		        }
 		        var topRows = [];
 		        var childRows = [];
-		        $.map(state.originalRows, function(row){
+		        $.map(state.allRows, function(row){
 		        	row._parentId ? childRows.push(row) : topRows.push(row);
 		        });
 		        data.total = topRows.length;
@@ -78,6 +79,7 @@
 			}
 
 			var appendMethod = $.fn.treegrid.methods.append;
+			var removeMethod = $.fn.treegrid.methods.remove;
 			var loadDataMethod = $.fn.treegrid.methods.loadData;
 			$.extend($.fn.treegrid.methods, {
 				clientPaging: function(jq){
@@ -87,16 +89,18 @@
 						opts.loadFilter = pagerFilter;
 						var onBeforeLoad = opts.onBeforeLoad;
 						opts.onBeforeLoad = function(row,param){
-							state.originalRows = null;
-							onBeforeLoad.call(this, row, param);
+							state.allRows = null;
+							return onBeforeLoad.call(this, row, param);
 						}
 						$(this).treegrid('loadData', state.data);
-						$(this).treegrid('reload');
+						if (opts.url){
+							$(this).treegrid('reload');
+						}
 					});
 				},
 				loadData: function(jq, data){
 					jq.each(function(){
-						$(this).data('treegrid').originalRows = null;
+						$(this).data('treegrid').allRows = null;
 					});
 					return loadDataMethod.call($.fn.treegrid.methods, jq, data);
 				},
@@ -106,13 +110,33 @@
 						if (state.options.loadFilter == pagerFilter){
 							$.map(param.data, function(row){
 								row._parentId = row._parentId || param.parent;
-								state.originalRows.push(row);
+								state.allRows.push(row);
 							});
-							$(this).treegrid('loadData', state.originalRows);
+							$(this).treegrid('loadData', state.allRows);
 						} else {
-							appendMethod.call($.fn.treegrid.methods, jq, param);
+							appendMethod.call($.fn.treegrid.methods, $(this), param);
 						}
 					})
+				},
+				remove: function(jq, id){
+					return jq.each(function(){
+						if ($(this).treegrid('find', id)){
+							removeMethod.call($.fn.treegrid.methods, $(this), id);
+						}
+						var state = $(this).data('treegrid');
+						if (state.options.loadFilter == pagerFilter){
+							for(var i=0; i<state.allRows.length; i++){
+								if (state.allRows[i][state.options.idField] == id){
+									state.allRows.splice(i,1);
+									break;
+								}
+							}
+							$(this).treegrid('loadData', state.allRows);
+						}
+					})
+				},
+				getAllRows: function(jq){
+					return jq.data('treegrid').allRows;
 				}
 			});
 

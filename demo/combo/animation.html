@@ -20,9 +20,10 @@
 			<option>show</option>
 		</select>
 	</div>
-	<select id="cc" class="easyui-combo" style="width:150px"></select>
+	<select id="cc" style="width:150px"></select>
 	<script type="text/javascript">
 		$(function(){
+			$('#cc').combo();
 			changeAnimation('slide');
 		});
 		function changeAnimation(atype){

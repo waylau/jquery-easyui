@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -380,6 +380,15 @@
 		},
 		moveTo: function(jq, date){
 			return jq.each(function(){
+				if (!date){
+					var now = new Date();
+					$(this).calendar({
+						year: now.getFullYear(),
+						month: now.getMonth()+1,
+						current: date
+					});
+					return;
+				}
 				var opts = $(this).calendar('options');
 				if (opts.validator.call(this, date)){
 					var oldValue = opts.current;

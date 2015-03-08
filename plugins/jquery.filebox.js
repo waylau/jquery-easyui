@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -13,7 +13,7 @@ function _2(_3){
 var _4=$.data(_3,"filebox");
 var _5=_4.options;
 var id="filebox_file_id_"+(++_1);
-$(_3).addClass("filebox-f").textbox($.extend({},_5,{buttonText:_5.buttonText?("<label for=\""+id+"\">"+_5.buttonText+"</label>"):""}));
+$(_3).addClass("filebox-f").textbox(_5);
 $(_3).textbox("textbox").attr("readonly","readonly");
 _4.filebox=$(_3).next().addClass("filebox");
 _4.filebox.find(".textbox-value").remove();
@@ -27,6 +27,7 @@ _5.oldValue=this.value;
 });
 var _7=$(_3).filebox("button");
 if(_7.length){
+$("<label class=\"filebox-label\" for=\""+id+"\"></label>").appendTo(_7);
 if(_7.linkbutton("options").disabled){
 _6.attr("disabled","disabled");
 }else{

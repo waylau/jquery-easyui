@@ -29,8 +29,8 @@
   font-size: 12px;
   color: #aaa;
 }
-.textbox-button,
-.textbox-button:hover {
+.textbox .textbox-button,
+.textbox .textbox-button:hover {
   position: absolute;
   top: 0;
   padding: 0;

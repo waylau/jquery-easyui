@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.4.1
+ * jQuery EasyUI 1.4.2
  * 
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
  * To use it on other terms please contact us at info@jeasyui.com
@@ -16,7 +16,13 @@
  * 
  */
 (function($){
-	
+	function getContentWidth(c){
+		var w = 0;
+		$(c).children().each(function(){
+			w += $(this).outerWidth(true);
+		});
+		return w;
+	}
 	/**
 	 * set the tabs scrollers to show or not,
 	 * dependent on the tabs count and width
@@ -38,10 +44,7 @@
 		}
 		tool._outerHeight(tHeight);
 		
-		var tabsWidth = 0;
-		$('ul.tabs li', header).each(function(){
-			tabsWidth += $(this).outerWidth(true);
-		});
+		var tabsWidth = getContentWidth(header.find('ul.tabs'));
 		var cWidth = header.width() - tool._outerWidth();
 		
 		if (tabsWidth > cWidth) {
@@ -123,6 +126,7 @@
 		var opts = state.options;
 		var cc = $(container);
 		
+		if (!opts.doSize){return}
 		if (param){
 			$.extend(opts, {
 				width: param.width,
@@ -130,16 +134,60 @@
 			});
 		}
 		cc._size(opts);
-		
+
 		var header = cc.children('div.tabs-header');
 		var panels = cc.children('div.tabs-panels');
 		var wrap = header.find('div.tabs-wrap');
 		var ul = wrap.find('.tabs');
+		ul.children('li').removeClass('tabs-first tabs-last');
+		ul.children('li:first').addClass('tabs-first');
+		ul.children('li:last').addClass('tabs-last');
 		
-		for(var i=0; i<state.tabs.length; i++){
-			var p_opts = state.tabs[i].panel('options');
+		if (opts.tabPosition == 'left' || opts.tabPosition == 'right'){
+			header._outerWidth(opts.showHeader ? opts.headerWidth : 0);
+			panels._outerWidth(cc.width() - header.outerWidth());
+			header.add(panels)._outerHeight(opts.height);
+			wrap._outerWidth(header.width());
+			ul._outerWidth(wrap.width()).css('height','');
+		} else {
+			header.children('div.tabs-scroller-left,div.tabs-scroller-right,div.tabs-tool').css('display', opts.showHeader?'block':'none');
+			header._outerWidth(cc.width()).css('height','');
+			if (opts.showHeader){
+				header.css('background-color','');
+				wrap.css('height','');
+			} else {
+				header.css('background-color','transparent');
+				header._outerHeight(0);
+				wrap._outerHeight(0);
+			}
+			ul._outerHeight(opts.tabHeight).css('width','');
+			ul._outerHeight(ul.outerHeight()-ul.height()-1+opts.tabHeight).css('width','');
+			
+			panels._size('height', isNaN(opts.height) ? '' : (opts.height-header.outerHeight()));
+			panels._size('width', isNaN(opts.width) ? '' : opts.width);
+		}
+
+		if (state.tabs.length){
+			var d1 = ul.outerWidth(true) - ul.width();
+			var li = ul.children('li:first');
+			var d2 = li.outerWidth(true) - li.width();
+			var hwidth = header.width() - header.children('.tabs-tool')._outerWidth();
+			var justifiedWidth = Math.floor((hwidth-d1-d2*state.tabs.length)/state.tabs.length);
+			
+			$.map(state.tabs, function(p){
+				setTabSize(p, (opts.justified && $.inArray(opts.tabPosition,['top','bottom'])>=0) ? justifiedWidth : undefined);
+			});
+			if (opts.justified && $.inArray(opts.tabPosition,['top','bottom'])>=0){
+				var deltaWidth = hwidth - d1 - getContentWidth(ul);
+				setTabSize(state.tabs[state.tabs.length-1], justifiedWidth+deltaWidth);
+			}
+		}
+		setScrollers(container);
+
+		function setTabSize(p, width){
+			var p_opts = p.panel('options');
 			var p_t = p_opts.tab.find('a.tabs-inner');
-			var width = parseInt(p_opts.tabWidth || opts.tabWidth) || undefined;
+			var width = width ? width : (parseInt(p_opts.tabWidth||opts.tabWidth||undefined));
 			if (width){
 				p_t._outerWidth(width);
 			} else {
@@ -147,33 +195,7 @@
 			}
 			p_t._outerHeight(opts.tabHeight);
 			p_t.css('lineHeight', p_t.height()+'px');
-		}
-		if (opts.tabPosition == 'left' || opts.tabPosition == 'right'){
-			header._outerWidth(opts.showHeader ? opts.headerWidth : 0);
-//			header._outerWidth(opts.headerWidth);
-			panels._outerWidth(cc.width() - header.outerWidth());
-			header.add(panels)._outerHeight(opts.height);
-			wrap._outerWidth(header.width());
-			ul._outerWidth(wrap.width()).css('height','');
-		} else {
-			var lrt = header.children('div.tabs-scroller-left,div.tabs-scroller-right,div.tabs-tool');
-			header._outerWidth(opts.width).css('height','');
-			if (opts.showHeader){
-				header.css('background-color','');
-				wrap.css('height','');
-				lrt.show();
-			} else {
-				header.css('background-color','transparent');
-				header._outerHeight(0);
-				wrap._outerHeight(0);
-				lrt.hide();
-			}
-			ul._outerHeight(opts.tabHeight).css('width','');
-			
-			setScrollers(container);
-			
-			panels._size('height', isNaN(opts.height) ? '' : (opts.height-header.outerHeight()));
-			panels._size('width', isNaN(opts.width) ? '' : opts.width);
+			p_t.find('.easyui-fluid:visible').triggerHandler('_resize');
 		}
 	}
 	
@@ -199,14 +221,12 @@
 	 */
 	function wrapTabs(container) {
 		var tabs = $.data(container, 'tabs').tabs;
-		var cc = $(container);
-		cc.addClass('tabs-container');
-		var pp = $('<div class="tabs-panels"></div>').insertBefore(cc);
+		var cc = $(container).addClass('tabs-container');
+		var panels = $('<div class="tabs-panels"></div>').insertBefore(cc);
 		cc.children('div').each(function(){
-			pp[0].appendChild(this);
+			panels[0].appendChild(this);
 		});
-		cc[0].appendChild(pp[0]);
-//		cc.wrapInner('<div class="tabs-panels"/>');
+		cc[0].appendChild(panels[0]);
 		$('<div class="tabs-header">'
 				+ '<div class="tabs-scroller-left"></div>'
 				+ '<div class="tabs-scroller-right"></div>'
@@ -219,9 +239,7 @@
 			var opts = $.extend({}, $.parser.parseOptions(this), {
 				selected: ($(this).attr('selected') ? true : undefined)
 			});
-			var pp = $(this);
-			tabs.push(pp);
-			createTab(container, pp, opts);
+			createTab(container, opts, $(this));
 		});
 		
 		cc.children('div.tabs-header').find('.tabs-scroller-left, .tabs-scroller-right').hover(
@@ -247,7 +265,7 @@
 				$(container).tabs('scrollBy', opts.scrollIncrement);
 			} else {
 				var li = $(e.target).closest('li');
-				if (li.hasClass('tabs-disabled')){return;}
+				if (li.hasClass('tabs-disabled')){return false;}
 				var a = $(e.target).closest('a.tabs-close');
 				if (a.length){
 					closeTab(container, getLiIndex(li));
@@ -261,6 +279,7 @@
 						selectTab(container, index);
 					}
 				}
+				return false;
 			}
 		}).bind('contextmenu', function(e){
 			var li = $(e.target).closest('li');
@@ -308,6 +327,11 @@
 		} else {
 			header.removeClass('tabs-header-plain');
 		}
+		header.removeClass('tabs-header-narrow').addClass(opts.narrow?'tabs-header-narrow':'');
+		var tabs = header.find('.tabs');
+		tabs.removeClass('tabs-pill').addClass(opts.pill?'tabs-pill':'');
+		tabs.removeClass('tabs-narrow').addClass(opts.narrow?'tabs-narrow':'');
+		tabs.removeClass('tabs-justified').addClass(opts.justified?'tabs-justified':'');
 		if (opts.border == true){
 			header.removeClass('tabs-header-noborder');
 			panels.removeClass('tabs-panels-noborder');
@@ -315,14 +339,39 @@
 			header.addClass('tabs-header-noborder');
 			panels.addClass('tabs-panels-noborder');
 		}
+		opts.doSize = true;
 	}
 	
-	function createTab(container, pp, options) {
-		var state = $.data(container, 'tabs');
+	function createTab(container, options, pp) {
 		options = options || {};
+		var state = $.data(container, 'tabs');
+		var tabs = state.tabs;
+		if (options.index == undefined || options.index > tabs.length){options.index = tabs.length}
+		if (options.index < 0){options.index = 0}
+		
+		var ul = $(container).children('div.tabs-header').find('ul.tabs');
+		var panels = $(container).children('div.tabs-panels');
+		var tab = $(
+				'<li>' +
+				'<a href="javascript:void(0)" class="tabs-inner">' +
+				'<span class="tabs-title"></span>' +
+				'<span class="tabs-icon"></span>' +
+				'</a>' +
+				'</li>');
+		if (!pp){pp = $('<div></div>');}
+		if (options.index >= tabs.length){
+			tab.appendTo(ul);
+			pp.appendTo(panels);
+			tabs.push(pp);
+		} else {
+			tab.insertBefore(ul.children('li:eq('+options.index+')'));
+			pp.insertBefore(panels.children('div.panel:eq('+options.index+')'));
+			tabs.splice(options.index, 0, pp);
+		}
 		
 		// create panel
 		pp.panel($.extend({}, options, {
+			tab: tab,
 			border: false,
 			noheader: true,
 			closed: true,
@@ -333,24 +382,70 @@
 					options.onLoad.call(this, arguments);
 				}
 				state.options.onLoad.call(container, $(this));
+			},
+			onBeforeOpen: function(){
+				if (options.onBeforeOpen){
+					if (options.onBeforeOpen.call(this) == false){return false;}
+				}
+				var p = $(container).tabs('getSelected');
+				if (p){
+					if (p[0] != this){
+						$(container).tabs('unselect', getTabIndex(container, p));
+						p = $(container).tabs('getSelected');
+						if (p){
+							return false;
+						}
+					} else {
+						setSelectedSize(container);
+						return false;
+					}
+				}
+				
+				var popts = $(this).panel('options');
+				popts.tab.addClass('tabs-selected');
+				// scroll the tab to center position if required.
+				var wrap = $(container).find('>div.tabs-header>div.tabs-wrap');
+				var left = popts.tab.position().left;
+				var right = left + popts.tab.outerWidth();
+				if (left < 0 || right > wrap.width()){
+					var deltaX = left - (wrap.width()-popts.tab.width()) / 2;
+					$(container).tabs('scrollBy', deltaX);
+				} else {
+					$(container).tabs('scrollBy', 0);
+				}
+				
+				var panel = $(this).panel('panel');
+				panel.css('display','block');
+				setSelectedSize(container);
+				panel.css('display','none');
+			},
+			onOpen: function(){
+				if (options.onOpen){
+					options.onOpen.call(this);
+				}
+				var popts = $(this).panel('options');
+				state.selectHis.push(popts.title);
+				state.options.onSelect.call(container, popts.title, getTabIndex(container, this));
+			},
+			onBeforeClose: function(){
+				if (options.onBeforeClose){
+					if (options.onBeforeClose.call(this) == false){return false;}
+				}
+				$(this).panel('options').tab.removeClass('tabs-selected');
+			},
+			onClose: function(){
+				if (options.onClose){
+					options.onClose.call(this);
+				}
+				var popts = $(this).panel('options');
+				state.options.onUnselect.call(container, popts.title, getTabIndex(container, this));
 			}
 		}));
-		
-		var opts = pp.panel('options');
-		var tabs = $(container).children('div.tabs-header').find('ul.tabs');
-		
-		opts.tab = $('<li></li>').appendTo(tabs);	// set the tab object in panel options
-		opts.tab.append(
-				'<a href="javascript:void(0)" class="tabs-inner">' +
-				'<span class="tabs-title"></span>' +
-				'<span class="tabs-icon"></span>' +
-				'</a>'
-		);
 		
 		// only update the tab header
 		$(container).tabs('update', {
 			tab: pp,
-			options: opts,
+			options: pp.panel('options'),
 			type: 'header'
 		});
 	}
@@ -358,18 +453,12 @@
 	function addTab(container, options) {
 		var state = $.data(container, 'tabs');
 		var opts = state.options;
-		var tabs = state.tabs;
 		if (options.selected == undefined) options.selected = true;
 		
-		var pp = $('<div></div>').appendTo($(container).children('div.tabs-panels'));
-		tabs.push(pp);
-		createTab(container, pp, options);
-		
-		opts.onAdd.call(container, options.title, tabs.length-1);
-		
-		setSize(container);
+		createTab(container, options);
+		opts.onAdd.call(container, options.title, options.index);
 		if (options.selected){
-			selectTab(container, tabs.length-1);	// select the added tab panel
+			selectTab(container, options.index);	// select the added tab panel
 		}
 	}
 	
@@ -394,58 +483,65 @@
 			var opts = pp.panel('options');	// get the tab panel options
 			var tab = opts.tab;
 			
-			var s_title = tab.find('span.tabs-title');
-			var s_icon = tab.find('span.tabs-icon');
-			s_title.html(opts.title);
-			s_icon.attr('class', 'tabs-icon');
-			
-			tab.find('a.tabs-close').remove();
-			if (opts.closable){
-				s_title.addClass('tabs-closable');
-				$('<a href="javascript:void(0)" class="tabs-close"></a>').appendTo(tab);
-			} else{
-				s_title.removeClass('tabs-closable');
-			}
-			if (opts.iconCls){
-				s_title.addClass('tabs-with-icon');
-				s_icon.addClass(opts.iconCls);
+			if (opts.header){
+				tab.find('.tabs-inner').html($(opts.header));
 			} else {
-				s_title.removeClass('tabs-with-icon');
+				var s_title = tab.find('span.tabs-title');
+				var s_icon = tab.find('span.tabs-icon');
+				s_title.html(opts.title);
+				s_icon.attr('class', 'tabs-icon');
+				
+				tab.find('a.tabs-close').remove();
+				if (opts.closable){
+					s_title.addClass('tabs-closable');
+					$('<a href="javascript:void(0)" class="tabs-close"></a>').appendTo(tab);
+				} else{
+					s_title.removeClass('tabs-closable');
+				}
+				if (opts.iconCls){
+					s_title.addClass('tabs-with-icon');
+					s_icon.addClass(opts.iconCls);
+				} else {
+					s_title.removeClass('tabs-with-icon');
+				}
+				if (opts.tools){
+					var p_tool = tab.find('span.tabs-p-tool');
+					if (!p_tool.length){
+						var p_tool = $('<span class="tabs-p-tool"></span>').insertAfter(tab.find('a.tabs-inner'));
+					}
+					if ($.isArray(opts.tools)){
+						for(var i=0; i<opts.tools.length; i++){
+							var t = $('<a href="javascript:void(0)"></a>').appendTo(p_tool);
+							t.addClass(opts.tools[i].iconCls);
+							if (opts.tools[i].handler){
+								t.bind('click', {handler:opts.tools[i].handler}, function(e){
+									if ($(this).parents('li').hasClass('tabs-disabled')){return;}
+									e.data.handler.call(this);
+								});
+							}
+						}
+					} else {
+						$(opts.tools).children().appendTo(p_tool);
+					}
+					var pr = p_tool.children().length * 12;
+					if (opts.closable) {
+						pr += 8;
+					} else {
+						pr -= 3;
+						p_tool.css('right','5px');
+					}
+					s_title.css('padding-right', pr+'px');
+				} else {
+					tab.find('span.tabs-p-tool').remove();
+					s_title.css('padding-right', '');
+				}
 			}
-			
 			if (oldTitle != opts.title){
 				for(var i=0; i<selectHis.length; i++){
 					if (selectHis[i] == oldTitle){
 						selectHis[i] = opts.title;
 					}
 				}
-			}
-			
-			tab.find('span.tabs-p-tool').remove();
-			if (opts.tools){
-				var p_tool = $('<span class="tabs-p-tool"></span>').insertAfter(tab.find('a.tabs-inner'));
-				if ($.isArray(opts.tools)){
-					for(var i=0; i<opts.tools.length; i++){
-						var t = $('<a href="javascript:void(0)"></a>').appendTo(p_tool);
-						t.addClass(opts.tools[i].iconCls);
-						if (opts.tools[i].handler){
-							t.bind('click', {handler:opts.tools[i].handler}, function(e){
-								if ($(this).parents('li').hasClass('tabs-disabled')){return;}
-								e.data.handler.call(this);
-							});
-						}
-					}
-				} else {
-					$(opts.tools).children().appendTo(p_tool);
-				}
-				var pr = p_tool.children().length * 12;
-				if (opts.closable) {
-					pr += 8;
-				} else {
-					pr -= 3;
-					p_tool.css('right','5px');
-				}
-				s_title.css('padding-right', pr+'px');
 			}
 		}
 		
@@ -538,7 +634,7 @@
 		var tabs = $.data(container, 'tabs').tabs;
 		for(var i=0; i<tabs.length; i++){
 			var tab = tabs[i];
-			if (tab.panel('options').closed == false){
+			if (tab.panel('options').tab.hasClass('tabs-selected')){
 				return tab;
 			}
 		}
@@ -564,62 +660,25 @@
 	}
 	
 	function selectTab(container, which){
-		var state = $.data(container, 'tabs');
-		var opts = state.options;
-		var tabs = state.tabs;
-		var selectHis = state.selectHis;
-		
-		if (tabs.length == 0) {return;}
-		
-		var panel = getTab(container, which); // get the panel to be activated
-		if (!panel){return}
-		
-		var selected = getSelectedTab(container);
-		if (selected){
-			if (panel[0] == selected[0]){
-				setSelectedSize(container);
-				return;
-			}
-			unselectTab(container, getTabIndex(container, selected));
-			if (!selected.panel('options').closed){return}
+		var p = getTab(container, which);
+		if (p && !p.is(':visible')){
+			stopAnimate(container);
+			p.panel('open');
 		}
-		
-		panel.panel('open');
-		var title = panel.panel('options').title;	// the panel title
-		selectHis.push(title);	// push select history
-		
-		var tab = panel.panel('options').tab;	// get the tab object
-		tab.addClass('tabs-selected');
-		
-		// scroll the tab to center position if required.
-		var wrap = $(container).find('>div.tabs-header>div.tabs-wrap');
-		var left = tab.position().left;
-		var right = left + tab.outerWidth();
-		if (left < 0 || right > wrap.width()){
-			var deltaX = left - (wrap.width()-tab.width()) / 2;
-			$(container).tabs('scrollBy', deltaX);
-		} else {
-			$(container).tabs('scrollBy', 0);
-		}
-		
-		setSelectedSize(container);
-		
-		opts.onSelect.call(container, title, getTabIndex(container, panel));
 	}
 	
 	function unselectTab(container, which){
-		var state = $.data(container, 'tabs');
 		var p = getTab(container, which);
-		if (p){
-			var opts = p.panel('options');
-			if (!opts.closed){
-				p.panel('close');
-				if (opts.closed){
-					opts.tab.removeClass('tabs-selected');
-					state.options.onUnselect.call(container, opts.title, getTabIndex(container, p));
-				}
-			}
+		if (p && p.is(':visible')){
+			stopAnimate(container);
+			p.panel('close');
 		}
+	}
+
+	function stopAnimate(container){
+		$(container).children('div.tabs-panels').each(function(){
+			$(this).stop(true, true);
+		});
 	}
 	
 	function exists(container, which){
@@ -757,7 +816,9 @@
 	$.fn.tabs.parseOptions = function(target){
 		return $.extend({}, $.parser.parseOptions(target, [
 			'tools','toolPosition','tabPosition',
-			{fit:'boolean',border:'boolean',plain:'boolean',headerWidth:'number',tabWidth:'number',tabHeight:'number',selected:'number',showHeader:'boolean'}
+			{fit:'boolean',border:'boolean',plain:'boolean'},
+			{headerWidth:'number',tabWidth:'number',tabHeight:'number',selected:'number'},
+			{showHeader:'boolean',justified:'boolean',narrow:'boolean',pill:'boolean'}
 		]));
 	};
 	
@@ -772,6 +833,9 @@
 		plain: false,
 		fit: false,
 		border: true,
+		justified: false,
+		narrow: false,
+		pill: false,
 		tools: null,
 		toolPosition: 'right',	// left,right
 		tabPosition: 'top',		// possible values: top,bottom

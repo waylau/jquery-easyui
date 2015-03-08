@@ -1,3 +1,26 @@
+Version 1.4.2
+-------------
+*Bug
+ * treegrid: The column will restore its size to original size after recreating the treegrid. fixed.
+* Improvement
+ * draggable: Add 'delay' property that allows the user to delay the drag operation.
+ * tree: Add 'filter' property and 'doFilter' method.
+ * tabs: The 'add' method allows the user to insert a tab panel at a specified index.
+ * tabs: The user can determine what tab panel can be selected.
+ * tabs: Add 'justified' and 'narrow' properties.
+ * layout: Add 'unsplit' and 'split' methods.
+ * messager: Keyboard navigation features are supported now.
+ * form: Add 'onChange' event.
+ * combobox: Add 'queryParams' property.
+ * slider: Add 'range' property.
+ * menu: Add 'itemHeight','inline','noline' properties.
+ * panel: The 'header' property allows the user to customize the panel header.
+ * menubutton: Add 'hasDownArrow' property.
+* New Plugins
+ * datalist: The plugin to render items in a list.
+ * navpanel: The root component for the mobile page.
+ * mobile: The plugin to provide the mobile page stack management and navigation.
+
 Version 1.4.1
 -------------
 * Bug
