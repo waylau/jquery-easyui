@@ -21,7 +21,7 @@
 				toolbar: '#tb',
 				url: 'datagrid_data1.json',
 				method: 'get',
-				onClickRow: onClickRow
+				onClickCell: onClickCell
 			">
 		<thead>
 			<tr>
@@ -71,11 +71,13 @@
 				return false;
 			}
 		}
-		function onClickRow(index){
+		function onClickCell(index, field){
 			if (editIndex != index){
 				if (endEditing()){
 					$('#dg').datagrid('selectRow', index)
 							.datagrid('beginEdit', index);
+					var ed = $('#dg').datagrid('getEditor', {index:index,field:field});
+					($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
 					editIndex = index;
 				} else {
 					$('#dg').datagrid('selectRow', editIndex);

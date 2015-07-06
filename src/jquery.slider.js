@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.3
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
@@ -148,18 +148,16 @@
 				if (left < 0 || left > width) {
 					return false;
 				} else {
-					setPos(left);
+					setPos(left, this);
 					return false;
 				}
 			},
-			onBeforeDrag:function(){
-				state.isDragging = true;
-			},
 			onStartDrag:function(){
+				state.isDragging = true;
 				opts.onSlideStart.call(target, opts.value);
 			},
 			onStopDrag:function(e){
-				setPos(opts.mode=='h'?e.data.left:e.data.top);
+				setPos(opts.mode=='h'?e.data.left:e.data.top, this);
 				opts.onSlideEnd.call(target, opts.value);
 				opts.onComplete.call(target, opts.value);
 				state.isDragging = false;
@@ -172,7 +170,7 @@
 			opts.onComplete.call(target, opts.value);
 		});
 		
-		function setPos(pos){
+		function setPos(pos, handle){
 			var value = pos2value(target, pos);
 			var s = Math.abs(value % opts.step);
 			if (s < opts.step/2){
@@ -184,12 +182,21 @@
 				var v1 = opts.value[0];
 				var v2 = opts.value[1];
 				var m = parseFloat((v1+v2)/2);
-				if (value < v1){
-					v1 = value;
-				} else if (value > v2){
-					v2 = value;
+				if (handle){
+					var isLeft = $(handle).nextAll('.slider-handle').length > 0;
+					if (value <= v2 && isLeft){
+						v1 = value;
+					} else if (value >= v1 && (!isLeft)){
+						v2 = value;
+					}
 				} else {
-					value < m ? v1 = value : v2 = value;
+					if (value < v1){
+						v1 = value;
+					} else if (value > v2){
+						v2 = value;
+					} else {
+						value < m ? v1 = value : v2 = value;
+					}					
 				}
 				$(target).slider('setValues', [v1,v2]);
 			} else {
@@ -288,7 +295,8 @@
 		var opts = state.options;
 		var slider = state.slider;
 		var size = opts.mode == 'h' ? slider.width() : slider.height();
-		var value = opts.converter.toValue.call(target, opts.mode=='h'?(opts.reversed?(size-pos):pos):(size-pos), size);
+		var pos = opts.mode=='h' ? (opts.reversed?(size-pos):pos) : (opts.reversed?pos:(size-pos));
+		var value = opts.converter.toValue.call(target, pos, size);
 		return value.toFixed(0);
 	}
 	

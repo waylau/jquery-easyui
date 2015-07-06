@@ -1,6 +1,6 @@
 {
   "name": "jquery-easyui",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "dependencies": {
     "jquery": "~2.1.1"
   },
@@ -11,7 +11,7 @@
   "main": "jquery.easyui.min.js",
   "keywords": [
     "easyui",
-    "1.4.2"
+    "1.4.3"
   ],
   "license": "GPL",
   "homepage": "https://github.com/waylau/jquery-easyui"

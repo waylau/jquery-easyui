@@ -33,9 +33,6 @@
 .panel-body-noborder {
   border-width: 0px;
 }
-.panel-body-nobottom {
-  border-bottom-width: 0;
-}
 .panel-with-icon {
   padding-left: 18px;
 }
@@ -125,12 +122,4 @@
   color: #404040;
   height: 16px;
   line-height: 16px;
-}
-.panel-footer {
-  border: 1px solid #c3d9e0;
-  overflow: hidden;
-  background: #f5f5f5;
-}
-.panel-footer-noborder {
-  border-width: 1px 0 0 0;
 }

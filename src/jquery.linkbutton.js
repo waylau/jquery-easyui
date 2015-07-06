@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.3
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
@@ -216,10 +216,10 @@
 	$.fn.linkbutton.parseOptions = function(target){
 		var t = $(target);
 		return $.extend({}, $.parser.parseOptions(target, 
-			['id','iconCls','iconAlign','group','size',{plain:'boolean',toggle:'boolean',selected:'boolean',outline:'boolean'}]
+			['id','iconCls','iconAlign','group','size','text',{plain:'boolean',toggle:'boolean',selected:'boolean',outline:'boolean'}]
 		), {
 			disabled: (t.attr('disabled') ? true : undefined),
-			text: $.trim(t.html()),
+			text: ($.trim(t.html()) || undefined),
 			iconCls: (t.attr('icon') || t.attr('iconCls'))
 		});
 	};

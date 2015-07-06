@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.3
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
@@ -258,6 +258,7 @@
 						if (s.toLowerCase() == q.toLowerCase()){
 							value = v;
 							item.addClass('combobox-item-selected');
+							opts.onSelect.call(target, row);
 						}
 						if (opts.groupField && group != g){
 							$('#'+state.groupIdPrefix+'_'+$.inArray(g, state.groups)).show();
@@ -318,7 +319,7 @@
 		$(target).addClass('combobox-f');
 		$(target).combo($.extend({}, opts, {
 			onShowPanel: function(){
-				$(target).combo('panel').find('div.combobox-item,div.combobox-group').show();
+				$(target).combo('panel').find('div.combobox-item:hidden,div.combobox-group:hidden').show();
 				scrollTo(target, $(target).combobox('getValue'));
 				opts.onShowPanel.call(target);
 			}
@@ -369,20 +370,20 @@
 			var state = $.data(this, 'combobox');
 			if (state){
 				$.extend(state.options, options);
-				create(this);
 			} else {
 				state = $.data(this, 'combobox', {
 					options: $.extend({}, $.fn.combobox.defaults, $.fn.combobox.parseOptions(this), options),
 					data: []
 				});
-				create(this);
+			}
+			create(this);
+			if (state.options.data){
+				loadData(this, state.options.data);
+			} else {
 				var data = $.fn.combobox.parseData(this);
 				if (data.length){
 					loadData(this, data);
 				}
-			}
-			if (state.options.data){
-				loadData(this, state.options.data);
 			}
 			request(this);
 		});

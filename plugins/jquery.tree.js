@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.3
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
@@ -109,12 +109,15 @@ return false;
 if(e.which!=1){
 return false;
 }
-$(this).next("ul").find("div.tree-node").droppable({accept:"no-accept"});
 var _17=$(this).find("span.tree-indent");
 if(_17.length){
 e.data.offsetWidth-=_17.length*_17.width();
 }
-},onStartDrag:function(){
+},onStartDrag:function(e){
+$(this).next("ul").find("div.tree-node").each(function(){
+$(this).droppable("disable");
+_13.disabledNodes.push(this);
+});
 $(this).draggable("proxy").css({left:-10000,top:-10000});
 _14.onStartDrag.call(_12,_c(_12,this));
 var _18=_c(_12,this);
@@ -131,7 +134,6 @@ $(this).draggable("proxy").show();
 }
 this.pageY=e.pageY;
 },onStopDrag:function(){
-$(this).next("ul").find("div.tree-node").droppable({accept:"div.tree-node"});
 for(var i=0;i<_13.disabledNodes.length;i++){
 $(_13.disabledNodes[i]).droppable("enable");
 }

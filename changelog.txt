@@ -1,6 +1,22 @@
+Version 1.4.3
+-------------
+* Bug
+ * textbox: The 'setText' method does not accept value 0. fixed.
+ * timespinner: When running in IE11, the error occurs when clicking on the empty textbox. fixed.
+ * tabs: The 'update' method can not update only the panel body. fixed.
+* Improvement
+ * combobox: Improve the performance of displaying the drop-down panel.
+ * combogrid: Remember the displaying text when the drop-down datagrid go to other pages.
+ * combogrid: The 'setValue' and 'setValues' methods accept a key-value object.
+ * window: The inline window's mask can auto-stretch its size to fill parent container.
+ * tabs: The 'showTool' and 'hideTool' methods are available for users to show or hide the tools.
+ * layout: Allow the user to override the 'cls','headerCls' and 'bodyCls' property values.
+* New Plugins
+ * switchbutton: The switch button with two states:'on' and 'off'.
+
 Version 1.4.2
 -------------
-*Bug
+* Bug
  * treegrid: The column will restore its size to original size after recreating the treegrid. fixed.
 * Improvement
  * draggable: Add 'delay' property that allows the user to delay the drag operation.

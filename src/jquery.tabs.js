@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.3
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
@@ -32,7 +32,7 @@
 		if (opts.tabPosition == 'left' || opts.tabPosition == 'right' || !opts.showHeader){return}
 		
 		var header = $(container).children('div.tabs-header');
-		var tool = header.children('div.tabs-tool');
+		var tool = header.children('div.tabs-tool:not(.tabs-tool-hidden)');
 		var sLeft = header.children('div.tabs-scroller-left');
 		var sRight = header.children('div.tabs-scroller-right');
 		var wrap = header.children('div.tabs-wrap');
@@ -150,7 +150,7 @@
 			wrap._outerWidth(header.width());
 			ul._outerWidth(wrap.width()).css('height','');
 		} else {
-			header.children('div.tabs-scroller-left,div.tabs-scroller-right,div.tabs-tool').css('display', opts.showHeader?'block':'none');
+			header.children('div.tabs-scroller-left,div.tabs-scroller-right,div.tabs-tool:not(.tabs-tool-hidden)').css('display', opts.showHeader?'block':'none');
 			header._outerWidth(cc.width()).css('height','');
 			if (opts.showHeader){
 				header.css('background-color','');
@@ -171,7 +171,7 @@
 			var d1 = ul.outerWidth(true) - ul.width();
 			var li = ul.children('li:first');
 			var d2 = li.outerWidth(true) - li.width();
-			var hwidth = header.width() - header.children('.tabs-tool')._outerWidth();
+			var hwidth = header.width() - header.children('.tabs-tool:not(.tabs-tool-hidden)')._outerWidth();
 			var justifiedWidth = Math.floor((hwidth-d1-d2*state.tabs.length)/state.tabs.length);
 			
 			$.map(state.tabs, function(p){
@@ -472,15 +472,16 @@
 		param.type = param.type || 'all';
 		var selectHis = $.data(container, 'tabs').selectHis;
 		var pp = param.tab;	// the tab panel
-		var oldTitle = pp.panel('options').title;
-		
-		if (param.type == 'all' || param == 'body'){
-			pp.panel($.extend({}, param.options, {
-				iconCls: (param.options.icon ? param.options.icon : undefined)
-			}));
+		var opts = pp.panel('options');	// get the tab panel options
+		var oldTitle = opts.title;
+		$.extend(opts, param.options, {
+			iconCls: (param.options.icon ? param.options.icon : undefined)
+		});
+
+		if (param.type == 'all' || param.type == 'body'){
+			pp.panel();
 		}
 		if (param.type == 'all' || param.type == 'header'){
-			var opts = pp.panel('options');	// get the tab panel options
 			var tab = opts.tab;
 			
 			if (opts.header){
@@ -510,6 +511,7 @@
 						var p_tool = $('<span class="tabs-p-tool"></span>').insertAfter(tab.find('a.tabs-inner'));
 					}
 					if ($.isArray(opts.tools)){
+						p_tool.empty();
 						for(var i=0; i<opts.tools.length; i++){
 							var t = $('<a href="javascript:void(0)"></a>').appendTo(p_tool);
 							t.addClass(opts.tools[i].iconCls);
@@ -691,6 +693,16 @@
 		$(container).tabs('resize');
 	}
 	
+	function showTool(container, visible){
+		var tool = $(container).find('>.tabs-header>.tabs-tool');
+		if (visible){
+			tool.removeClass('tabs-tool-hidden').show();
+		} else {
+			tool.addClass('tabs-tool-hidden').hide();
+		}
+		$(container).tabs('resize').tabs('scrollBy', 0);
+	}
+	
 	
 	$.fn.tabs = function(options, param){
 		if (typeof options == 'string') {
@@ -792,6 +804,16 @@
 		hideHeader: function(jq){
 			return jq.each(function(){
 				showHeader(this, false);
+			});
+		},
+		showTool: function(jq){
+			return jq.each(function(){
+				showTool(this, true);
+			});
+		},
+		hideTool: function(jq){
+			return jq.each(function(){
+				showTool(this, false);
 			});
 		},
 		scrollBy: function(jq, deltaX){	// scroll the tab header by the specified amount of pixels

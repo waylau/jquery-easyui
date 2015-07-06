@@ -8,10 +8,9 @@
   outline: none;
   text-align: center;
   vertical-align: middle;
-  line-height: normal;
 }
 .l-btn-plain {
-  border-width: 0;
+  border: 0;
   padding: 1px;
 }
 .l-btn-left {
@@ -154,13 +153,8 @@
 }
 .l-btn-plain {
   background: transparent;
-  border-width: 0;
+  border: 0;
   filter: none;
-}
-.l-btn-outline {
-  border-width: 1px;
-  border-color: #fff0e7;
-  padding: 0;
 }
 .l-btn-plain:hover {
   background: #fff0e7;

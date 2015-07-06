@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.3
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
@@ -17,7 +17,7 @@
 		auto: true,
 		onComplete: function(context){},
 		plugins:['draggable','droppable','resizable','pagination','tooltip',
-		         'linkbutton','menu','menubutton','splitbutton','progressbar',
+		         'linkbutton','menu','menubutton','splitbutton','switchbutton','progressbar',
 				 'tree','textbox','filebox','combo','combobox','combotree','combogrid','numberbox','validatebox','searchbox',
 				 'spinner','numberspinner','timespinner','datetimespinner','calendar','datebox','datetimebox','slider',
 				 'layout','panel','datagrid','propertygrid','treegrid','datalist','tabs','accordion','window','dialog','form'
@@ -123,6 +123,9 @@
 	$(function(){
 		var d = $('<div style="position:absolute;top:-1000px;width:100px;height:100px;padding:5px"></div>').appendTo('body');
 		$._boxModel = d.outerWidth()!=100;
+		d.remove();
+		d = $('<div style="position:fixed"></div>').appendTo('body');
+		$._positionFixed = (d.css('position') == 'fixed');
 		d.remove();
 		
 		if (!window.easyloader && $.parser.auto){

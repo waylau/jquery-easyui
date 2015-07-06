@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.3
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
@@ -151,18 +151,34 @@
 		 * check the checkbox and radio fields
 		 */
 		function _checkField(name, val){
-			var cc = $(target).find('input[name="'+name+'"][type=radio], input[name="'+name+'"][type=checkbox]');
+			var cc = $(target).find('[switchbuttonName="'+name+'"]');
+			if (cc.length){
+				cc.switchbutton('uncheck');
+				cc.each(function(){
+					if (_isChecked($(this).switchbutton('options').value, val)){
+						$(this).switchbutton('check');
+					}
+				});
+				return true;
+			}
+			cc = $(target).find('input[name="'+name+'"][type=radio], input[name="'+name+'"][type=checkbox]');
 			if (cc.length){
 				cc._propAttr('checked', false);
 				cc.each(function(){
-					var f = $(this);
-					if (f.val() == String(val) || $.inArray(f.val(), $.isArray(val)?val:[val]) >= 0){
-						f._propAttr('checked', true);
+					if (_isChecked($(this).val(), val)){
+						$(this)._propAttr('checked', true);
 					}
 				});
 				return true;
 			}
 			return false;
+		}
+		function _isChecked(v, val){
+			if (v == String(val) || $.inArray(v, $.isArray(val)?val:[val]) >= 0){
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		function _loadBox(name, val){
@@ -356,7 +372,7 @@
 	$.fn.form.defaults = {
 		fieldTypes: ['combobox','combotree','combogrid','datetimebox','datebox','combo',
 		        'datetimespinner','timespinner','numberspinner','spinner',
-		        'slider','searchbox','numberbox','textbox'],
+		        'slider','searchbox','numberbox','textbox','switchbutton'],
 		novalidate: false,
 		ajax: true,
 		url: null,

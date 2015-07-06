@@ -1,5 +1,5 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.3
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
@@ -99,7 +99,7 @@ var pp=$(el);
 if(!pp.length){
 pp=$("<div></div>").appendTo(cc);
 }
-var _1b=$.extend({},$.fn.layout.paneldefaults,{width:(pp.length?parseInt(pp[0].style.width)||pp.outerWidth():"auto"),height:(pp.length?parseInt(pp[0].style.height)||pp.outerHeight():"auto"),doSize:false,collapsible:true,cls:("layout-panel layout-panel-"+dir),bodyCls:"layout-body",onOpen:function(){
+var _1b=$.extend({},$.fn.layout.paneldefaults,{width:(pp.length?parseInt(pp[0].style.width)||pp.outerWidth():"auto"),height:(pp.length?parseInt(pp[0].style.height)||pp.outerHeight():"auto"),doSize:false,collapsible:true,onOpen:function(){
 var _1c=$(this).panel("header").children("div.panel-tool");
 _1c.children("a.panel-tool-collapse").hide();
 var _1d={north:"up",south:"down",east:"right",west:"left"};
@@ -116,7 +116,7 @@ return false;
 });
 }
 $(this).panel("options").collapsible?t.show():t.hide();
-}},_19);
+}},_19,{cls:((_19.cls||"")+" layout-panel layout-panel-"+dir),bodyCls:((_19.bodyCls||"")+" layout-body")});
 pp.panel(_1b);
 _1a[dir]=pp;
 var _1f={north:"s",south:"n",east:"w",west:"e"};

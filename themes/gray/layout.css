@@ -9,6 +9,10 @@
   position: absolute;
   overflow: hidden;
 }
+.layout-body {
+  min-width: 1px;
+  min-height: 1px;
+}
 .layout-panel-east,
 .layout-panel-west {
   z-index: 2;

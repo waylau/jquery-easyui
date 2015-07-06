@@ -28,7 +28,7 @@ if ($.fn.validatebox){
 	$.fn.validatebox.defaults.rules.remote.message = 'Aggiusta questo campo.';
 }
 if ($.fn.calendar){
-	$.fn.calendar.defaults.weeks = ['S','M','T','W','T','F','S'];
+	$.fn.calendar.defaults.weeks = ['D','L','M','M','G','V','S'];
 	$.fn.calendar.defaults.months = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
 }
 if ($.fn.datebox){
