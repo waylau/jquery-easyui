@@ -1,10 +1,10 @@
 /**
- * jQuery EasyUI 1.4.3
+ * jQuery EasyUI 1.4.4
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
- * To use it on other terms please contact us at info@jeasyui.com
+ * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
+ * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
@@ -76,7 +76,7 @@
 		messager:{
 			js:'jquery.messager.js',
 			css:'messager.css',
-			dependencies:['linkbutton','window','progressbar']
+			dependencies:['linkbutton','dialog','progressbar']
 		},
 		layout:{
 			js:'jquery.layout.js',
@@ -190,9 +190,6 @@
 		slider:{
 			js:'jquery.slider.js',
 			dependencies:['draggable']
-		},
-		tooltip:{
-			js:'jquery.tooltip.js'
 		},
 		parser:{
 			js:'jquery.parser.js'

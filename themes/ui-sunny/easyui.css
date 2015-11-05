@@ -537,6 +537,9 @@
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
 }
+.textbox textarea.textbox-text {
+  white-space: pre-wrap;
+}
 .textbox .textbox-prompt {
   font-size: 12px;
   color: #aaa;
@@ -612,6 +615,7 @@
   left: 0;
   top: 0;
   z-index: 10;
+  background: url('images/blank.gif') no-repeat;
 }
 .l-btn-disabled .filebox-label {
   cursor: default;
@@ -711,6 +715,10 @@
   position: absolute;
   overflow: hidden;
 }
+.layout-body {
+  min-width: 1px;
+  min-height: 1px;
+}
 .layout-panel-east,
 .layout-panel-west {
   z-index: 2;
@@ -734,6 +742,44 @@
 }
 .layout-expand .panel-header {
   border-bottom-width: 0px;
+}
+.layout-expand .panel-body {
+  position: relative;
+}
+.layout-expand .panel-body .panel-icon {
+  margin-top: 0;
+  top: 0;
+  left: 50%;
+  margin-left: -8px;
+}
+.layout-expand-west .panel-header .panel-icon,
+.layout-expand-east .panel-header .panel-icon {
+  display: none;
+}
+.layout-expand-title {
+  position: absolute;
+  top: 0;
+  left: 21px;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-transform: rotate(90deg);
+  -webkit-transform-origin: 0 0;
+  -moz-transform: rotate(90deg);
+  -moz-transform-origin: 0 0;
+  -o-transform: rotate(90deg);
+  -o-transform-origin: 0 0;
+  transform: rotate(90deg);
+  transform-origin: 0 0;
+}
+.layout-expand-with-icon {
+  top: 18px;
+}
+.layout-expand .panel-body-noheader .layout-expand-title,
+.layout-expand .panel-body-noheader .panel-icon {
+  top: 5px;
+}
+.layout-expand .panel-body-noheader .layout-expand-with-icon {
+  top: 23px;
 }
 .layout-split-proxy-h,
 .layout-split-proxy-v {
@@ -1247,6 +1293,7 @@
 }
 .datagrid-sort-icon {
   padding: 0;
+  display: none;
 }
 .datagrid-toolbar {
   height: auto;
@@ -1313,10 +1360,11 @@
 }
 .datagrid-cell-group {
   text-align: center;
+  text-overflow: ellipsis;
 }
 .datagrid-header-rownumber,
 .datagrid-cell-rownumber {
-  width: 25px;
+  width: 30px;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -1392,11 +1440,18 @@
   -webkit-border-radius: 0 0 0 0;
   border-radius: 0 0 0 0;
 }
+.datagrid-sort .datagrid-sort-icon {
+  display: inline;
+  padding: 0 13px 0 0;
+  background: url('images/datagrid_icons.png') no-repeat -64px center;
+}
 .datagrid-sort-desc .datagrid-sort-icon {
+  display: inline;
   padding: 0 13px 0 0;
   background: url('images/datagrid_icons.png') no-repeat -16px center;
 }
 .datagrid-sort-asc .datagrid-sort-icon {
+  display: inline;
   padding: 0 13px 0 0;
   background: url('images/datagrid_icons.png') no-repeat 0px center;
 }
@@ -2429,11 +2484,11 @@
 }
 .messager-body {
   padding: 10px;
-  overflow: hidden;
+  overflow: auto;
 }
 .messager-button {
   text-align: center;
-  padding-top: 10px;
+  padding: 5px;
 }
 .messager-button .l-btn {
   width: 70px;
@@ -2663,6 +2718,9 @@
   _border-color: tomato;
   _filter: chroma(color=tomato);
 }
+.tooltip-arrow {
+  display: none \9;
+}
 .tooltip-right .tooltip-arrow-outer {
   left: 0;
   top: 50%;
@@ -2731,6 +2789,83 @@
 }
 .tooltip-bottom .tooltip-arrow {
   border-bottom-color: #feeebd;
+}
+.switchbutton {
+  text-decoration: none;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: #d19405;
+  border: 1px solid #d19405;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
+.switchbutton-inner {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  top: -1px;
+  left: -1px;
+}
+.switchbutton-on,
+.switchbutton-off,
+.switchbutton-handle {
+  display: inline-block;
+  text-align: center;
+  height: 100%;
+  float: left;
+  font-size: 12px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
+.switchbutton-on {
+  background: #ffffff;
+  color: #0074c7;
+}
+.switchbutton-off {
+  background-color: #feeebd;
+  color: #000000;
+}
+.switchbutton-on,
+.switchbutton-reversed .switchbutton-off {
+  -moz-border-radius: 5px 0 0 5px;
+  -webkit-border-radius: 5px 0 0 5px;
+  border-radius: 5px 0 0 5px;
+}
+.switchbutton-off,
+.switchbutton-reversed .switchbutton-on {
+  -moz-border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 0 5px 5px 0;
+  border-radius: 0 5px 5px 0;
+}
+.switchbutton-handle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  background-color: #feeebd;
+  color: #000000;
+  border: 1px solid #d19405;
+  -moz-box-shadow: 0 0 3px 0 #d19405;
+  -webkit-box-shadow: 0 0 3px 0 #d19405;
+  box-shadow: 0 0 3px 0 #d19405;
+}
+.switchbutton-value {
+  position: absolute;
+  top: 0;
+  left: -5000px;
+}
+.switchbutton-disabled {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.switchbutton-disabled,
+.switchbutton-readonly {
+  cursor: default;
 }
 .datagrid-body {
   background: #ffffff;

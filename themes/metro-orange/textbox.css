@@ -17,6 +17,7 @@
   border: 0;
   margin: 0;
   padding: 4px;
+  white-space: normal;
   vertical-align: top;
   outline-style: none;
   resize: none;
@@ -24,12 +25,15 @@
   -webkit-border-radius: 0px 0px 0px 0px;
   border-radius: 0px 0px 0px 0px;
 }
+.textbox textarea.textbox-text {
+  white-space: pre-wrap;
+}
 .textbox .textbox-prompt {
   font-size: 12px;
   color: #aaa;
 }
-.textbox-button,
-.textbox-button:hover {
+.textbox .textbox-button,
+.textbox .textbox-button:hover {
   position: absolute;
   top: 0;
   padding: 0;
@@ -61,6 +65,7 @@
   opacity: 0.6;
   filter: alpha(opacity=60);
   text-decoration: none;
+  outline-style: none;
 }
 .textbox-icon-disabled,
 .textbox-icon-readonly {

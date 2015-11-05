@@ -1,10 +1,10 @@
 /**
- * jQuery EasyUI 1.4.3
+ * jQuery EasyUI 1.4.4
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
- * To use it on other terms please contact us at info@jeasyui.com
+ * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
+ * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 (function($){
@@ -78,7 +78,7 @@ var _21=_20.selections[_20.highlight];
 var s1=s.substring(0,_21[0]);
 var s2=s.substring(_21[0],_21[1]);
 var s3=s.substring(_21[1]);
-var v=s1+((parseInt(s2)||0)+_20.increment*(_1f?-1:1))+s3;
+var v=s1+((parseInt(s2,10)||0)+_20.increment*(_1f?-1:1))+s3;
 $(_1e).timespinner("setValue",v);
 _13(_1e);
 };
@@ -169,11 +169,6 @@ return null;
 var tt=s.split(_30.separator);
 return new Date(1900,0,0,parseInt(tt[0],10)||0,parseInt(tt[1],10)||0,parseInt(tt[2],10)||0);
 };
-if(!s){
-return null;
-}
-var tt=s.split(_30.separator);
-return new Date(1900,0,0,parseInt(tt[0],10)||0,parseInt(tt[1],10)||0,parseInt(tt[2],10)||0);
 },selections:[[0,2],[3,5],[6,8]],separator:":",showSeconds:false,highlight:0,spin:function(_33){
 _1d(this,_33);
 }});

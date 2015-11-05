@@ -1,10 +1,10 @@
 /**
- * jQuery EasyUI 1.4.3
+ * jQuery EasyUI 1.4.4
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
- * To use it on other terms please contact us at info@jeasyui.com
+ * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
+ * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
@@ -143,24 +143,22 @@
 		
 		// create mask
 		if (state.mask){state.mask.remove();}
-		if (opts.modal == true){
+		if (opts.modal){
 			state.mask = $('<div class="window-mask" style="display:none"></div>').insertAfter(state.window);
 		}
 		
 		// create shadow
 		if (state.shadow){state.shadow.remove();}
-		if (opts.shadow == true){
+		if (opts.shadow){
 			state.shadow = $('<div class="window-shadow" style="display:none"></div>').insertAfter(state.window);
 		}
 		
-		// if require center the window
+		// center and open the window
+		var closed = opts.closed;
 		if (opts.left == null){hcenter(target);}
 		if (opts.top == null){vcenter(target);}
 		moveWindow(target);
-		
-		if (!opts.closed){
-			win.window('open');	// open the window
-		}
+		if (!closed){win.window('open');}
 	}
 	
 	

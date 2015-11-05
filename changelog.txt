@@ -1,3 +1,22 @@
+Version 1.4.4
+-------------
+* Bug
+ * filebox: The 'clear' and 'reset' methods do not work properly in IE9. fixed.
+ * messager: After calling $.messager.progress() with no arguments, the $.messager.progress('close') does not work properly. fixed.
+ * timespinner: The value does not display properly in IE8 while clicking the spin buttons. fixed.
+ * window: The window does not display when calling 'options' method in 'onMove' event. fixed.
+ * treegrid: The 'getLevel' method does not accept the parameter value of 0. fixed.
+* Improvement
+ * layout: The 'collapsedContent','expandMode' and 'hideExpandTool' properties are supported in region panel.
+ * layout: The 'hideCollapsedContent' property can be set to display the vertical title bar on collapsed panel.
+ * layout: Add 'onCollapse','onExpand','onAdd','onRemove' events.
+ * datagrid: Display the 'up-down' icon on the sortable columns.
+ * datagrid: Add 'gotoPage' method.
+ * propertygrid: Add 'groups' method that allows to get all the data groups.
+ * messager: Auto scroll feature is supported when displaying long messages.
+ * tabs: The 'disabled' property is supported when defining a disabled tab panel.
+ * tabs: The percentange size is supported now.
+
 Version 1.4.3
 -------------
 * Bug
