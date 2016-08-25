@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -75,8 +75,8 @@ var _e=t.dialog("options");
 var _f=_e.noheader;
 var tb=t.siblings(".dialog-toolbar");
 var bb=t.siblings(".dialog-button");
-tb.insertBefore(_c).css({position:"relative",borderTopWidth:(_f?1:0),top:(_f?tb.length:0)});
-bb.insertAfter(_c).css({position:"relative",top:-1});
+tb.insertBefore(_c).css({borderTopWidth:(_f?1:0),top:(_f?tb.length:0)});
+bb.insertAfter(_c);
 tb.add(bb)._outerWidth(t._outerWidth()).find(".easyui-fluid:visible").each(function(){
 $(this).triggerHandler("_resize");
 });

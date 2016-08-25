@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -283,6 +283,9 @@
 		
 		var data = ['<table class="calendar-dtable" cellspacing="0" cellpadding="0" border="0">'];
 		data.push('<thead><tr>');
+		if (opts.showWeek){
+			data.push('<th class="calendar-week">'+opts.weekNumberHeader+'</th>');
+		}
 		for(var i=opts.firstDay; i<opts.weeks.length; i++){
 			data.push('<th>'+opts.weeks[i]+'</th>');
 		}
@@ -299,6 +302,10 @@
 			if (i == 0){cls = 'calendar-first';}
 			else if (i == weeks.length - 1){cls = 'calendar-last';}
 			data.push('<tr class="' + cls + '">');
+			if (opts.showWeek){
+				var weekNumber = opts.getWeekNumber(new Date(week[0][0], parseInt(week[0][1])-1, week[0][2]));
+				data.push('<td class="calendar-week">'+weekNumber+'</td>');
+			}
 			for(var j=0; j<week.length; j++){
 				var day = week[j];
 				var s = day[0]+','+day[1]+','+day[2];
@@ -408,7 +415,7 @@
 	$.fn.calendar.parseOptions = function(target){
 		var t = $(target);
 		return $.extend({}, $.parser.parseOptions(target, [
-			{firstDay:'number',fit:'boolean',border:'boolean'}
+			'weekNumberHeader',{firstDay:'number',fit:'boolean',border:'boolean',showWeek:'boolean'}
 		]));
 	};
 	
@@ -417,6 +424,7 @@
 		height:180,
 		fit:false,
 		border:true,
+		showWeek:false,
 		firstDay:0,
 		weeks:['S','M','T','W','T','F','S'],
 		months:['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -426,7 +434,16 @@
 			var d = new Date();
 			return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 		})(),
-		
+		weekNumberHeader:'',
+		getWeekNumber: function(date){
+			var checkDate = new Date(date.getTime());
+			checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7));
+			var time = checkDate.getTime();
+			checkDate.setMonth(0);
+			checkDate.setDate(1);
+			return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+		},
+
 		formatter:function(date){return date.getDate()},
 		styler:function(date){return ''},
 		validator:function(date){return true},

@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -67,7 +67,7 @@ return false;
 }
 var _d=$.data(e.data.target,"draggable");
 var _e=_d.options;
-var _f=$(".droppable").filter(function(){
+var _f=$(".droppable:visible").filter(function(){
 return e.data.target!=this;
 }).filter(function(){
 var _10=$.data(this,"droppable").options.accept;
@@ -248,7 +248,7 @@ return;
 $(this).css("cursor","");
 var _27=$(e.data.target).position();
 var _28=$(e.data.target).offset();
-var _29={startPosition:$(e.data.target).css("position"),startLeft:_27.left,startTop:_27.top,left:_27.left,top:_27.top,startX:e.pageX,startY:e.pageY,offsetWidth:(e.pageX-_28.left),offsetHeight:(e.pageY-_28.top),target:e.data.target,parent:$(e.data.target).parent()[0]};
+var _29={startPosition:$(e.data.target).css("position"),startLeft:_27.left,startTop:_27.top,left:_27.left,top:_27.top,startX:e.pageX,startY:e.pageY,width:$(e.data.target).outerWidth(),height:$(e.data.target).outerHeight(),offsetWidth:(e.pageX-_28.left),offsetHeight:(e.pageY-_28.top),target:e.data.target,parent:$(e.data.target).parent()[0]};
 $.extend(e.data,_29);
 var _2a=$.data(e.data.target,"draggable").options;
 if(_2a.onBeforeDrag.call(e.data.target,e)==false){

@@ -13,9 +13,13 @@
 	<h2>Basic Combo</h2>
 	<p>Click the right arrow button to show drop down panel that can be filled with any content.</p>
 	<div style="margin:20px 0"></div>
-	<select id="cc" style="width:150px"></select>
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input id="cc" style="width:100%;">
+		</div>
+	</div>
 	<div id="sp">
-		<div style="color:#99BBE8;background:#fafafa;padding:5px;">Select a language</div>
+		<div style="line-height:22px;background:#fafafa;padding:5px;">Select a language</div>
 		<div style="padding:10px">
 			<input type="radio" name="lang" value="01"><span>Java</span><br/>
 			<input type="radio" name="lang" value="02"><span>C#</span><br/>
@@ -28,7 +32,9 @@
 		$(function(){
 			$('#cc').combo({
 				required:true,
-				editable:false
+				editable:false,
+				label:'Language:',
+				labelPosition:'top'
 			});
 			$('#sp').appendTo($('#cc').combo('panel'));
 			$('#sp input').click(function(){

@@ -70,6 +70,16 @@
 					return p;
 				}
 			}
+			function getParentItem(pmenu, menu){
+				var item = undefined;
+				$(pmenu).find('.menu-item').each(function(){
+					if ($(this.submenu)[0] == $(menu)[0]){
+						item = $(this);
+						return false;
+					}
+				});
+				return item;
+			}
 
 			$.extend($.fn.menubutton.methods, {
 				enableNav: function(enabled){
@@ -109,8 +119,12 @@
 								case 37:  // left
 									var pmenu = getParentMenu(currButton.data('menubutton') ? $(currButton.menubutton('options').menu) : $(), curr.menu);
 									if (pmenu){
+										item.trigger('mouseleave');
+										var pitem = getParentItem(pmenu, curr.menu);
+										if (pitem){
+											pitem.trigger('mouseenter');
+										}
 										curr.menu = pmenu;
-										item.triggerHandler('mouseleave');
 									} else {
 										var prev = currButton.prevAll('.l-btn:first');
 										if (prev.length){

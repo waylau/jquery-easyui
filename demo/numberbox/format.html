@@ -13,28 +13,22 @@
 	<h2>Format NumberBox</h2>
 	<p>Number formatting is the ability to control how a number is displayed.</p>
 	<div style="margin:20px 0;"></div>
-	<table>
-		<tr>
-			<td>Number in the United States</td>
-			<td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:','"></input></td>
-		</tr>
-		<tr>
-			<td>Number in France</td>
-			<td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:' ',decimalSeparator:','"></input></td>
-		</tr>
-		<tr>
-			<td>Currency:USD</td>
-			<td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'$'"></input></td>
-		</tr>
-		<tr>
-			<td>Currency:EUR</td>
-			<td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:',',decimalSeparator:' ',prefix:'€'"></input></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:' ',decimalSeparator:',',suffix:'€'"></input></td>
-		</tr>
-	</table>
-
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-numberbox" value="1234567.89" data-options="label:'Number in the United States',labelPosition:'top',precision:2,groupSeparator:',',width:'100%'">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-numberbox" value="1234567.89" data-options="label:'Number in France',labelPosition:'top',precision:2,groupSeparator:' ',decimalSeparator:',',width:'100%'">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-numberbox" value="1234567.89" data-options="label:'Currency:USD',labelPosition:'top',precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'$',width:'100%'">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-numberbox" value="1234567.89" data-options="label:'Currency:EUR',labelPosition:'top',precision:2,groupSeparator:',',decimalSeparator:' ',prefix:'€',width:'100%'">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-numberbox" value="1234567.89" data-options="label:'Currency:EUR',labelPosition:'top',precision:2,groupSeparator:' ',decimalSeparator:',',suffix:'€',width:'100%'">
+		</div>
+	</div>
 </body>
 </html>

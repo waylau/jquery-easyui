@@ -13,10 +13,14 @@
 	<h2>DateBox Events</h2>
 	<p>Click the calendar image on the right side.</p>
 	<div style="margin:20px 0;"></div>
-	<input class="easyui-datebox" data-options="onSelect:onSelect"></input>
-	<div style="margin:10px 0">
-		<span>Selected Date: </span>
-		<span id="result"></span>
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-datebox" data-options="label:'Select Date:',labelPosition:'top',onSelect:onSelect" style="width:100%;">
+		</div>
+		<div style="margin:10px 0">
+			<span>Selected Date: </span>
+			<span id="result"></span>
+		</div>
 	</div>
 	<script>
 		function onSelect(date){

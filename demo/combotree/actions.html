@@ -18,7 +18,11 @@
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="disable()">Disable</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="enable()">Enable</a>
 	</div>
-	<input id="cc" class="easyui-combotree" data-options="url:'tree_data1.json',method:'get',required:true" style="width:200px;">
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input id="cc" class="easyui-combotree" data-options="url:'tree_data1.json',method:'get',label:'Select Node:',labelPosition:'top'" style="width:100%">
+		</div>
+	</div>
 	<script type="text/javascript">
 		function getValue(){
 			var val = $('#cc').combotree('getValue');

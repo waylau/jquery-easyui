@@ -74,6 +74,16 @@
 					return p;
 				}
 			}
+			function getParentItem(pmenu, menu){
+				var item = undefined;
+				$(pmenu).find('.menu-item').each(function(){
+					if ($(this.submenu)[0] == $(menu)[0]){
+						item = $(this);
+						return false;
+					}
+				});
+				return item;
+			}
 
 			$.extend($.fn.menu.methods, {
 				enableNav: function(jq, rootMenu){
@@ -82,7 +92,7 @@
 					return jq.each(function(){
 						var menu = $(this);
 						rootMenu = $(rootMenu).length ? $(rootMenu) : menu;
-						menu.attr('tabindex','0').css('outline','none').unbind('.menu').bind('keydown.menu', function(e){
+						menu.attr('tabindex','0').css('outline','none').unbind('.menunav').bind('keydown.menunav', function(e){
 							var item = $(this).find('.menu-active');
 							switch(e.keyCode){
 								case 13:  // enter
@@ -103,6 +113,10 @@
 									var pmenu = getParentMenu(rootMenu, menu);
 									if (pmenu){
 										item.trigger('mouseleave');
+										var pitem = getParentItem(pmenu, menu);
+										if (pitem){
+											pitem.trigger('mouseenter');
+										}
 										pmenu.focus();
 									}
 									return false;

@@ -1,6 +1,3 @@
-*{
-	font-size:12px;
-}
 body {
     font-family:verdana,helvetica,arial,sans-serif;
     padding:20px;
@@ -18,4 +15,10 @@ h2 {
 }
 .demo-tip{
 	display:none;
+}
+.label-top{
+    display: block;
+    height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
 }

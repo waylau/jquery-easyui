@@ -13,7 +13,10 @@
 	<h2>Basic ComboTree</h2>
 	<p>Click the right arrow button to show the tree panel.</p>
 	<div style="margin:20px 0"></div>
-	<input class="easyui-combotree" data-options="url:'tree_data1.json',method:'get',required:true" style="width:200px;">
-
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-combotree" data-options="url:'tree_data1.json',method:'get',label:'Select Node:',labelPosition:'top'" style="width:100%">
+		</div>
+	</div>
 </body>
 </html>

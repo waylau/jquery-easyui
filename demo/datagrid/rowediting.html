@@ -21,7 +21,8 @@
 				toolbar: '#tb',
 				url: 'datagrid_data1.json',
 				method: 'get',
-				onClickCell: onClickCell
+				onClickCell: onClickCell,
+				onEndEdit: onEndEdit
 			">
 		<thead>
 			<tr>
@@ -61,9 +62,6 @@
 		function endEditing(){
 			if (editIndex == undefined){return true}
 			if ($('#dg').datagrid('validateRow', editIndex)){
-				var ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'productid'});
-				var productname = $(ed.target).combobox('getText');
-				$('#dg').datagrid('getRows')[editIndex]['productname'] = productname;
 				$('#dg').datagrid('endEdit', editIndex);
 				editIndex = undefined;
 				return true;
@@ -82,9 +80,18 @@
 					}
 					editIndex = index;
 				} else {
-					$('#dg').datagrid('selectRow', editIndex);
+					setTimeout(function(){
+						$('#dg').datagrid('selectRow', editIndex);
+					},0);
 				}
 			}
+		}
+		function onEndEdit(index, row){
+			var ed = $(this).datagrid('getEditor', {
+				index: index,
+				field: 'productid'
+			});
+			row.productname = $(ed.target).combobox('getText');
 		}
 		function append(){
 			if (endEditing()){

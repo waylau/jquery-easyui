@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -492,27 +492,30 @@ _50(_5b,0);
 };
 function _61(_65,_66,_67){
 var _68=$.data(_65,"tabs").tabs;
+var tab=null;
 if(typeof _66=="number"){
-if(_66<0||_66>=_68.length){
-return null;
-}else{
-var tab=_68[_66];
+if(_66>=0&&_66<_68.length){
+tab=_68[_66];
 if(_67){
 _68.splice(_66,1);
 }
-return tab;
 }
-}
+}else{
+var tmp=$("<span></span>");
 for(var i=0;i<_68.length;i++){
-var tab=_68[i];
-if(tab.panel("options").title==_66){
+var p=_68[i];
+tmp.html(p.panel("options").title);
+if(tmp.text()==_66){
+tab=p;
 if(_67){
 _68.splice(i,1);
 }
+break;
+}
+}
+tmp.remove();
+}
 return tab;
-}
-}
-return null;
 };
 function _4a(_69,tab){
 var _6a=$.data(_69,"tabs").tabs;

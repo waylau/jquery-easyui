@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -37,7 +37,7 @@
 		
 		var menus = splitMenu($(target));
 		for(var i=0; i<menus.length; i++){
-			createMenu(menus[i]);
+			createMenu(target, menus[i]);
 		}
 		
 		function splitMenu(menu){
@@ -48,7 +48,6 @@
 				menu.children('div').each(function(){
 					var submenu = $(this).children('div');
 					if (submenu.length){
-//						submenu.insertAfter(target);
 						submenu.appendTo('body');
 						this.submenu = submenu;		// point to the sub menu
 						var mm = splitMenu(submenu);
@@ -58,58 +57,77 @@
 			}
 			return menus;
 		}
-		
-		function createMenu(menu){
-			var wh = $.parser.parseOptions(menu[0], ['width','height']);
-			menu[0].originalHeight = wh.height || 0;
-			if (menu.hasClass('menu-content')){
-				menu[0].originalWidth = wh.width || menu._outerWidth();
-			} else {
-				menu[0].originalWidth = wh.width || 0;
-				menu.children('div').each(function(){
-					var item = $(this);
-					var itemOpts = $.extend({}, $.parser.parseOptions(this,['name','iconCls','href',{separator:'boolean'}]), {
-						disabled: (item.attr('disabled') ? true : undefined)
-					});
-					if (itemOpts.separator){
-						item.addClass('menu-sep');
-					}
-					if (!item.hasClass('menu-sep')){
-						item[0].itemName = itemOpts.name || '';
-						item[0].itemHref = itemOpts.href || '';
-						
-						var text = item.addClass('menu-item').html();
-						item.empty().append($('<div class="menu-text"></div>').html(text));
-						if (itemOpts.iconCls){
-							$('<div class="menu-icon"></div>').addClass(itemOpts.iconCls).appendTo(item);
-						}
-						if (itemOpts.disabled){
-							setDisabled(target, item[0], true);
-						}
-						if (item[0].submenu){
-							$('<div class="menu-rightarrow"></div>').appendTo(item);	// has sub menu
-						}
-						
-						bindMenuItemEvent(target, item);
-					}
-				});
-				$('<div class="menu-line"></div>').prependTo(menu);
+	}
+
+	function createMenu(target, div){
+		var menu = $(div).addClass('menu');
+		if (!menu.data('menu')){
+			menu.data('menu', {
+				options: $.parser.parseOptions(menu[0], ['width','height'])
+			});
+		}
+		if (!menu.hasClass('menu-content')){
+			menu.children('div').each(function(){
+				createItem(target, this);
+			});
+			$('<div class="menu-line"></div>').prependTo(menu);
+		}
+		setMenuSize(target, menu);
+		if (!menu.hasClass('menu-inline')){
+			menu.hide();
+		}
+		bindMenuEvent(target, menu);
+	}
+
+	/**
+	 * create the menu item
+	 */
+	function createItem(target, div, options){
+		var item = $(div);
+		var itemOpts = $.extend({}, $.parser.parseOptions(item[0], ['id','name','iconCls','href',{separator:'boolean'}]), {
+			disabled: (item.attr('disabled') ? true : undefined),
+			text: $.trim(item.html()),
+			onclick: item[0].onclick
+		}, options||{});
+		itemOpts.onclick = itemOpts.onclick || itemOpts.handler || null;
+		item.data('menuitem', {
+			options: itemOpts
+		});
+		if (itemOpts.separator){
+			item.addClass('menu-sep');
+		}
+		if (!item.hasClass('menu-sep')){
+			item.addClass('menu-item');
+			item.empty().append($('<div class="menu-text"></div>').html(itemOpts.text));
+			if (itemOpts.iconCls){
+				$('<div class="menu-icon"></div>').addClass(itemOpts.iconCls).appendTo(item);
 			}
-			setMenuSize(target, menu);
-			if (!menu.hasClass('menu-inline')){
-				menu.hide();
+			if (itemOpts.id){
+				item.attr('id', itemOpts.id);
 			}
-			
-			bindMenuEvent(target, menu);
+			if (itemOpts.onclick){
+				if (typeof itemOpts.onclick == 'string'){
+					item.attr('onclick', itemOpts.onclick);
+				} else {
+					item[0].onclick = eval(itemOpts.onclick);
+				}
+			}
+			if (itemOpts.disabled){
+				setDisabled(target, item[0], true);
+			}
+			if (item[0].submenu){
+				$('<div class="menu-rightarrow"></div>').appendTo(item);	// has sub menu
+			}
 		}
 	}
 	
 	function setMenuSize(target, menu){
 		var opts = $.data(target, 'menu').options;
 		var style = menu.attr('style') || '';
+		var isVisible = menu.is(':visible');
 		menu.css({
 			display: 'block',
-			left:-10000,
+			left: -10000,
 			height: 'auto',
 			overflow: 'hidden'
 		});
@@ -122,22 +140,22 @@
 		});
 		menu.removeClass('menu-noline').addClass(opts.noline?'menu-noline':'');
 		
-		var width = menu[0].originalWidth || 'auto';
+		var mopts = menu.data('menu').options;
+		var width = mopts.width;
+		var height = mopts.height;
 		if (isNaN(parseInt(width))){
 			width = 0;
 			menu.find('div.menu-text').each(function(){
-				if (width < $(this)._outerWidth()){
-					width = $(this)._outerWidth();
+				if (width < $(this).outerWidth()){
+					width = $(this).outerWidth();
 				}
 			});
-			width += 40;
+			// width += 40;
+			width = width ? width+40 : '';
 		}
-		
 		var autoHeight = menu.outerHeight();
-		var height = menu[0].originalHeight || 'auto';
 		if (isNaN(parseInt(height))){
 			height = autoHeight;
-			
 			if (menu.hasClass('menu-top') && opts.alignTo){
 				var at = $(opts.alignTo);
 				var h1 = at.offset().top - $(document).scrollTop();
@@ -147,61 +165,55 @@
 				height = $(window).height();
 			}
 		}
-		
+
 		menu.attr('style', style);	// restore the original style
-		menu._size({
-			fit: (menu[0]==target?opts.fit:false),
+		menu.show();
+		menu._size($.extend({}, mopts, {
 			width: width,
-			minWidth: opts.minWidth,
-			height: height
-		});
+			height: height,
+			minWidth: mopts.minWidth || opts.minWidth,
+			maxWidth: mopts.maxWidth || opts.maxWidth
+		}));
+		menu.find('.easyui-fluid').triggerHandler('_resize', [true]);
 		menu.css('overflow', menu.outerHeight() < autoHeight ? 'auto' : 'hidden');
 		menu.children('div.menu-line')._outerHeight(autoHeight-2);
+		if (!isVisible){
+			menu.hide();
+		}
 	}
 	
 	/**
 	 * bind menu event
 	 */
 	function bindMenuEvent(target, menu){
-		if (menu.hasClass('menu-inline')){return}
 		var state = $.data(target, 'menu');
-		menu.unbind('.menu').bind('mouseenter.menu', function(){
-			if (state.timer){
-				clearTimeout(state.timer);
-				state.timer = null;
-			}
-		}).bind('mouseleave.menu', function(){
-			if (state.options.hideOnUnhover){
-				state.timer = setTimeout(function(){
-					hideAll(target, $(target).hasClass('menu-inline'));
-				}, state.options.duration);
-			}
-		});
+		var opts = state.options;
+		menu.unbind('.menu');
+		for(var event in opts.events){
+			menu.bind(event+'.menu', {target:target}, opts.events[event]);
+		}
 	}
-	
-	/**
-	 * bind menu item event
-	 */
-	function bindMenuItemEvent(target, item){
-		if (!item.hasClass('menu-item')){return}
-		item.unbind('.menu');
-		item.bind('click.menu', function(){
-			if ($(this).hasClass('menu-item-disabled')){
-				return;
-			}
-			// only the sub menu clicked can hide all menus
-			if (!this.submenu){
+	function mouseenterHandler(e){
+		var target = e.data.target;
+		var state = $.data(target, 'menu');
+		if (state.timer){
+			clearTimeout(state.timer);
+			state.timer = null;
+		}
+	}
+	function mouseleaveHandler(e){
+		var target = e.data.target;
+		var state = $.data(target, 'menu');
+		if (state.options.hideOnUnhover){
+			state.timer = setTimeout(function(){
 				hideAll(target, $(target).hasClass('menu-inline'));
-				var href = this.itemHref;
-				if (href){
-					location.href = href;
-				}
-			}
-			$(this).trigger('mouseenter');
-			var item = $(target).menu('getItem', this);
-			$.data(target, 'menu').options.onClick.call(target, item);
-		}).bind('mouseenter.menu', function(e){
-			// hide other menu
+			}, state.options.duration);
+		}
+	}
+	function mouseoverHandler(e){
+		var target = e.data.target;
+		var item = $(e.target).closest('.menu-item');
+		if (item.length){
 			item.siblings().each(function(){
 				if (this.submenu){
 					hideMenu(this.submenu);
@@ -211,7 +223,7 @@
 			// show this menu
 			item.addClass('menu-active');
 			
-			if ($(this).hasClass('menu-item-disabled')){
+			if (item.hasClass('menu-item-disabled')){
 				item.addClass('menu-active-disabled');
 				return;
 			}
@@ -223,7 +235,11 @@
 					parent: item
 				});
 			}
-		}).bind('mouseleave.menu', function(e){
+		}
+	}
+	function mouseoutHandler(e){
+		var item = $(e.target).closest('.menu-item');
+		if (item.length){
 			item.removeClass('menu-active menu-active-disabled');
 			var submenu = item[0].submenu;
 			if (submenu){
@@ -232,11 +248,27 @@
 				} else {
 					hideMenu(submenu);
 				}
-				
 			} else {
 				item.removeClass('menu-active');
 			}
-		});
+		}
+	}
+	function clickHandler(e){
+		var target = e.data.target;
+		var item = $(e.target).closest('.menu-item');
+		if (item.length){
+			var opts = $(target).data('menu').options;
+			var itemOpts = item.data('menuitem').options;
+			if (itemOpts.disabled){return;}
+			if (!item[0].submenu){
+				hideAll(target, opts.inline);
+				if (itemOpts.href){
+					location.href = itemOpts.href;
+				}
+			}
+			item.trigger('mouseenter');
+			opts.onClick.call(target, $(target).menu('getItem', item[0]));
+		}
 	}
 	
 	/**
@@ -266,12 +298,12 @@
 	 * alignTo: the element object to align to
 	 */
 	function showMenu(target, param){
-		var left,top;
 		param = param || {};
+		var left,top;
+		var opts = $.data(target, 'menu').options;
 		var menu = $(param.menu || target);
 		$(target).menu('resize', menu[0]);
 		if (menu.hasClass('menu-top')){
-			var opts = $.data(target, 'menu').options;
 			$.extend(opts, param);
 			left = opts.left;
 			top = opts.top;
@@ -309,7 +341,7 @@
 			return top;
 		}
 		
-		menu.css({left:left,top:top});
+		menu.css(opts.position.call(target, menu[0], left, top));
 		menu.show(0, function(){
 			if (!menu[0].shadow){
 				menu[0].shadow = $('<div class="menu-shadow"></div>').insertAfter(menu);
@@ -324,7 +356,7 @@
 			});
 			menu.css('z-index', $.fn.menu.defaults.zIndex++);
 			if (menu.hasClass('menu-top')){
-				$.data(menu[0], 'menu').options.onShow.call(menu[0]);
+				opts.onShow.call(target);
 			}
 		});
 	}
@@ -370,19 +402,15 @@
 	
 	function setDisabled(target, itemEl, disabled){
 		var t = $(itemEl);
-		if (!t.hasClass('menu-item')){return}
-		
-		if (disabled){
-			t.addClass('menu-item-disabled');
-			if (itemEl.onclick){
-				itemEl.onclick1 = itemEl.onclick;
-				itemEl.onclick = null;
-			}
-		} else {
-			t.removeClass('menu-item-disabled');
-			if (itemEl.onclick1){
-				itemEl.onclick = itemEl.onclick1;
-				itemEl.onclick1 = null;
+		if (t.hasClass('menu-item')){
+			var opts = t.data('menuitem').options;
+			opts.disabled = disabled;
+			if (disabled){
+				t.addClass('menu-item-disabled');
+				t[0].onclick = null;
+			} else {
+				t.removeClass('menu-item-disabled');
+				t[0].onclick = opts.onclick;
 			}
 		}
 	}
@@ -392,36 +420,15 @@
 		var menu = $(target);
 		if (param.parent){
 			if (!param.parent.submenu){
-				var submenu = $('<div class="menu"><div class="menu-line"></div></div>').appendTo('body');
-				submenu.hide();
+				var submenu = $('<div></div>').appendTo('body');
 				param.parent.submenu = submenu;
 				$('<div class="menu-rightarrow"></div>').appendTo(param.parent);
+				createMenu(target, submenu);
 			}
 			menu = param.parent.submenu;
 		}
-		if (param.separator){
-			var item = $('<div class="menu-sep"></div>').appendTo(menu);
-		} else {
-			var item = $('<div class="menu-item"></div>').appendTo(menu);
-			$('<div class="menu-text"></div>').html(param.text).appendTo(item);
-		}
-		if (param.iconCls) $('<div class="menu-icon"></div>').addClass(param.iconCls).appendTo(item);
-		if (param.id) item.attr('id', param.id);
-		if (param.name){item[0].itemName = param.name}
-		if (param.href){item[0].itemHref = param.href}
-		if (param.onclick){
-			if (typeof param.onclick == 'string'){
-				item.attr('onclick', param.onclick);
-			} else {
-				item[0].onclick = eval(param.onclick);
-			}
-		}
-		if (param.handler){item[0].onclick = eval(param.handler)}
-		if (param.disabled){setDisabled(target, item[0], true)}
-		
-		bindMenuItemEvent(target, item);
-		bindMenuEvent(target, menu);
-		setMenuSize(target, menu);
+		var div = $('<div></div>').appendTo(menu);
+		createItem(target, div, param);
 	}
 	
 	function removeItem(target, itemEl){
@@ -436,9 +443,7 @@
 			}
 			$(el).remove();
 		}
-		var menu = $(itemEl).parent();
 		removeit(itemEl);
-		setMenuSize(target, menu);
 	}
 	
 	function setVisible(target, itemEl, visible){
@@ -510,6 +515,8 @@
 		 */
 		setText: function(jq, param){
 			return jq.each(function(){
+				var item = $(param.target).data('menuitem').options;
+				item.text = param.text;
 				$(param.target).children('div.menu-text').html(param.text);
 			});
 		},
@@ -522,6 +529,8 @@
 		 */
 		setIcon: function(jq, param){
 			return jq.each(function(){
+				var item = $(param.target).data('menuitem').options;
+				item.iconCls = param.iconCls;
 				$(param.target).children('div.menu-icon').remove();
 				if (param.iconCls){
 					$('<div class="menu-icon"></div>').addClass(param.iconCls).appendTo(param.target);
@@ -540,30 +549,10 @@
 		 * }
 		 */
 		getItem: function(jq, itemEl){
-			var t = $(itemEl);
-			var item = {
-				target: itemEl,
-				id: t.attr('id'),
-				text: $.trim(t.children('div.menu-text').html()),
-				disabled: t.hasClass('menu-item-disabled'),
-//				href: t.attr('href'),
-//				name: t.attr('name'),
-				name: itemEl.itemName,
-				href: itemEl.itemHref,
-				onclick: itemEl.onclick
-			}
-			var icon = t.children('div.menu-icon');
-			if (icon.length){
-				var cc = [];
-				var aa = icon.attr('class').split(' ');
-				for(var i=0; i<aa.length; i++){
-					if (aa[i] != 'menu-icon'){
-						cc.push(aa[i]);
-					}
-				}
-				item.iconCls = cc.join(' ');
-			}
-			return item;
+			var item = $(itemEl).data('menuitem').options;
+			return $.extend({}, item, {
+				target: $(itemEl)[0]
+			});
 		},
 		findItem: function(jq, text){
 			return findItem(jq[0], text);
@@ -605,7 +594,7 @@
 		},
 		resize: function(jq, menuEl){
 			return jq.each(function(){
-				setMenuSize(this, $(menuEl));
+				setMenuSize(this, menuEl ? $(menuEl) : $(this));
 			});
 		}
 	};
@@ -630,6 +619,16 @@
 		inline: false,	// true to stay inside its parent, false to go on top of all elements
 		fit: false,
 		noline: false,
+		events: {
+			mouseenter: mouseenterHandler,
+			mouseleave: mouseleaveHandler,
+			mouseover: mouseoverHandler,
+			mouseout: mouseoutHandler,
+			click: clickHandler
+		},
+		position: function(target, left, top){
+			return {left:left,top:top}
+		},
 		onShow: function(){},
 		onHide: function(){},
 		onClick: function(item){}

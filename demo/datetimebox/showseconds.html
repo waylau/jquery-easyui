@@ -16,7 +16,10 @@
 		<span>Show Seconds: </span>
 		<input type="checkbox" checked onchange="$('#dt').datetimebox({showSeconds:$(this).is(':checked')})">
 	</div>
-	<input id="dt" class="easyui-datetimebox" style="width:200px">
-	
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input id="dt" class="easyui-datetimebox" label="Select DateTime:" labelPosition="top" style="width:100%;">
+		</div>
+	</div>
 </body>
 </html>

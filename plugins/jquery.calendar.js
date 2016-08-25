@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -249,6 +249,9 @@ var _35=$(_2f).find("div.calendar-body");
 _35.children("table").remove();
 var _36=["<table class=\"calendar-dtable\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">"];
 _36.push("<thead><tr>");
+if(_30.showWeek){
+_36.push("<th class=\"calendar-week\">"+_30.weekNumberHeader+"</th>");
+}
 for(var i=_30.firstDay;i<_30.weeks.length;i++){
 _36.push("<th>"+_30.weeks[i]+"</th>");
 }
@@ -269,20 +272,24 @@ cls="calendar-last";
 }
 }
 _36.push("<tr class=\""+cls+"\">");
+if(_30.showWeek){
+var _39=_30.getWeekNumber(new Date(_38[0][0],parseInt(_38[0][1])-1,_38[0][2]));
+_36.push("<td class=\"calendar-week\">"+_39+"</td>");
+}
 for(var j=0;j<_38.length;j++){
 var day=_38[j];
 var s=day[0]+","+day[1]+","+day[2];
-var _39=new Date(day[0],parseInt(day[1])-1,day[2]);
-var d=_30.formatter.call(_2f,_39);
-var css=_30.styler.call(_2f,_39);
-var _3a="";
+var _3a=new Date(day[0],parseInt(day[1])-1,day[2]);
+var d=_30.formatter.call(_2f,_3a);
+var css=_30.styler.call(_2f,_3a);
 var _3b="";
+var _3c="";
 if(typeof css=="string"){
-_3b=css;
+_3c=css;
 }else{
 if(css){
-_3a=css["class"]||"";
-_3b=css["style"]||"";
+_3b=css["class"]||"";
+_3c=css["style"]||"";
 }
 }
 var cls="calendar-day";
@@ -309,11 +316,11 @@ if(j==_38.length-1){
 cls+=" calendar-last";
 }
 }
-cls+=" "+_3a;
-if(!_30.validator.call(_2f,_39)){
+cls+=" "+_3b;
+if(!_30.validator.call(_2f,_3a)){
 cls+=" calendar-disabled";
 }
-_36.push("<td class=\""+cls+"\" abbr=\""+s+"\" style=\""+_3b+"\">"+d+"</td>");
+_36.push("<td class=\""+cls+"\" abbr=\""+s+"\" style=\""+_3c+"\">"+d+"</td>");
 }
 _36.push("</tr>");
 }
@@ -323,20 +330,20 @@ _35.append(_36.join(""));
 _35.children("table.calendar-dtable").prependTo(_35);
 _30.onNavigate.call(_2f,_30.year,_30.month);
 };
-$.fn.calendar=function(_3c,_3d){
-if(typeof _3c=="string"){
-return $.fn.calendar.methods[_3c](this,_3d);
+$.fn.calendar=function(_3d,_3e){
+if(typeof _3d=="string"){
+return $.fn.calendar.methods[_3d](this,_3e);
 }
-_3c=_3c||{};
+_3d=_3d||{};
 return this.each(function(){
-var _3e=$.data(this,"calendar");
-if(_3e){
-$.extend(_3e.options,_3c);
+var _3f=$.data(this,"calendar");
+if(_3f){
+$.extend(_3f.options,_3d);
 }else{
-_3e=$.data(this,"calendar",{options:$.extend({},$.fn.calendar.defaults,$.fn.calendar.parseOptions(this),_3c)});
+_3f=$.data(this,"calendar",{options:$.extend({},$.fn.calendar.defaults,$.fn.calendar.parseOptions(this),_3d)});
 _6(this);
 }
-if(_3e.options.border==false){
+if(_3f.options.border==false){
 $(this).addClass("calendar-noborder");
 }
 _1(this);
@@ -347,43 +354,50 @@ $(this).find("div.calendar-menu").hide();
 };
 $.fn.calendar.methods={options:function(jq){
 return $.data(jq[0],"calendar").options;
-},resize:function(jq,_3f){
+},resize:function(jq,_40){
 return jq.each(function(){
-_1(this,_3f);
+_1(this,_40);
 });
-},moveTo:function(jq,_40){
+},moveTo:function(jq,_41){
 return jq.each(function(){
-if(!_40){
+if(!_41){
 var now=new Date();
-$(this).calendar({year:now.getFullYear(),month:now.getMonth()+1,current:_40});
+$(this).calendar({year:now.getFullYear(),month:now.getMonth()+1,current:_41});
 return;
 }
-var _41=$(this).calendar("options");
-if(_41.validator.call(this,_40)){
-var _42=_41.current;
-$(this).calendar({year:_40.getFullYear(),month:_40.getMonth()+1,current:_40});
-if(!_42||_42.getTime()!=_40.getTime()){
-_41.onChange.call(this,_41.current,_42);
+var _42=$(this).calendar("options");
+if(_42.validator.call(this,_41)){
+var _43=_42.current;
+$(this).calendar({year:_41.getFullYear(),month:_41.getMonth()+1,current:_41});
+if(!_43||_43.getTime()!=_41.getTime()){
+_42.onChange.call(this,_42.current,_43);
 }
 }
 });
 }};
-$.fn.calendar.parseOptions=function(_43){
-var t=$(_43);
-return $.extend({},$.parser.parseOptions(_43,[{firstDay:"number",fit:"boolean",border:"boolean"}]));
+$.fn.calendar.parseOptions=function(_44){
+var t=$(_44);
+return $.extend({},$.parser.parseOptions(_44,["weekNumberHeader",{firstDay:"number",fit:"boolean",border:"boolean",showWeek:"boolean"}]));
 };
-$.fn.calendar.defaults={width:180,height:180,fit:false,border:true,firstDay:0,weeks:["S","M","T","W","T","F","S"],months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],year:new Date().getFullYear(),month:new Date().getMonth()+1,current:(function(){
+$.fn.calendar.defaults={width:180,height:180,fit:false,border:true,showWeek:false,firstDay:0,weeks:["S","M","T","W","T","F","S"],months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],year:new Date().getFullYear(),month:new Date().getMonth()+1,current:(function(){
 var d=new Date();
 return new Date(d.getFullYear(),d.getMonth(),d.getDate());
-})(),formatter:function(_44){
-return _44.getDate();
-},styler:function(_45){
+})(),weekNumberHeader:"",getWeekNumber:function(_45){
+var _46=new Date(_45.getTime());
+_46.setDate(_46.getDate()+4-(_46.getDay()||7));
+var _47=_46.getTime();
+_46.setMonth(0);
+_46.setDate(1);
+return Math.floor(Math.round((_47-_46)/86400000)/7)+1;
+},formatter:function(_48){
+return _48.getDate();
+},styler:function(_49){
 return "";
-},validator:function(_46){
+},validator:function(_4a){
 return true;
-},onSelect:function(_47){
-},onChange:function(_48,_49){
-},onNavigate:function(_4a,_4b){
+},onSelect:function(_4b){
+},onChange:function(_4c,_4d){
+},onNavigate:function(_4e,_4f){
 }};
 })(jQuery);
 

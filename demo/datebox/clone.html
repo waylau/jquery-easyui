@@ -15,8 +15,12 @@
 	<div style="margin:20px 0;">
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="cloneDatebox()">Clone</a>
 	</div>
-	<input id="dt" class="easyui-datebox"></input>
-	<div id="cc" style="margin-top:10px"></div>
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input id="dt" class="easyui-datebox" label="Select Date:" labelPosition="top" style="width:100%;">
+		</div>
+		<div id="cc" style="margin-top:10px"></div>
+	</div>
 	<script type="text/javascript">
 		function cloneDatebox(){
 			var dt = $('<input>').appendTo('#cc');

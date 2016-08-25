@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -13,12 +13,77 @@
  */
 
 (function($){
+	$.easyui = {
+		/**
+		 * Get the index of array item, return -1 when the item is not found.
+		 */
+		indexOfArray: function(a, o, id){
+			for(var i=0,len=a.length; i<len; i++){
+				if (id == undefined){
+					if (a[i] == o){return i;}
+				} else {
+					if (a[i][o] == id){return i;}
+				}
+			}
+			return -1;
+		},
+		/**
+		 * Remove array item, 'o' parameter can be item object or id field name.
+		 * When 'o' parameter is the id field name, the 'id' parameter is valid.
+		 */
+		removeArrayItem: function(a, o, id){
+			if (typeof o == 'string'){
+				for(var i=0,len=a.length; i<len; i++){
+					if (a[i][o] == id){
+						a.splice(i, 1);
+						return;
+					}
+				}
+			} else {
+				var index = this.indexOfArray(a,o);
+				if (index != -1){
+					a.splice(index, 1);
+				}
+			}
+		},
+		/**
+		 * Add un-duplicate array item, 'o' parameter is the id field name, if the 'r' object is exists, deny the action.
+		 */
+		addArrayItem: function(a, o, r){
+			var index = this.indexOfArray(a, o, r ? r[o] : undefined);
+			if (index == -1){
+				a.push(r ? r : o);
+			} else {
+				a[index] = r ? r : o;
+			}
+		},
+		getArrayItem: function(a, o, id){
+			var index = this.indexOfArray(a, o, id);
+			return index==-1 ? null : a[index];
+		},
+		forEach: function(data, deep, callback){
+			var nodes = [];
+			for(var i=0; i<data.length; i++){
+				nodes.push(data[i]);
+			}
+			while(nodes.length){
+				var node = nodes.shift();
+				if (callback(node) == false){return;}
+				if (deep && node.children){
+					for(var i=node.children.length-1; i>=0; i--){
+						nodes.unshift(node.children[i]);
+					}
+				}
+			}
+		}
+	};
+
 	$.parser = {
 		auto: true,
 		onComplete: function(context){},
 		plugins:['draggable','droppable','resizable','pagination','tooltip',
 		         'linkbutton','menu','menubutton','splitbutton','switchbutton','progressbar',
-				 'tree','textbox','filebox','combo','combobox','combotree','combogrid','numberbox','validatebox','searchbox',
+				 'tree','textbox','passwordbox','filebox','combo','combobox','combotree','combogrid','combotreegrid','numberbox','validatebox','searchbox',
 				 'spinner','numberspinner','timespinner','datetimespinner','calendar','datebox','datetimebox','slider',
 				 'layout','panel','datagrid','propertygrid','treegrid','datalist','tabs','accordion','window','dialog','form'
 		],
@@ -29,7 +94,9 @@
 				var r = $('.easyui-' + name, context);
 				if (r.length){
 					if (r[name]){
-						r[name]();
+						r.each(function(){
+							$(this)[name]($.data(this, 'options')||{});
+						});
 					} else {
 						aa.push({name:name,jq:r});
 					}
@@ -44,7 +111,9 @@
 					for(var i=0; i<aa.length; i++){
 						var name = aa[i].name;
 						var jq = aa[i].jq;
-						jq[name]();
+						jq.each(function(){
+							$(this)[name]($.data(this, 'options')||{});
+						});
 					}
 					$.parser.onComplete.call($.parser, context);
 				});
@@ -92,7 +161,10 @@
 				var pv = $.trim(target.style[p] || '');
 				if (pv){
 					if (pv.indexOf('%') == -1){
-						pv = parseInt(pv) || undefined;
+						pv = parseInt(pv);
+						if (isNaN(pv)){
+							pv = undefined;
+						}
 					}
 					options[p] = pv;
 				}

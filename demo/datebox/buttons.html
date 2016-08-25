@@ -13,8 +13,14 @@
 	<h2>DateBox Buttons</h2>
 	<p>This example shows how to customize the datebox buttons underneath the calendar.</p>
 	<div style="margin:20px 0;"></div>
-	<input class="easyui-datebox"></input>
-	<input class="easyui-datebox" data-options="buttons:buttons"></input>
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-datebox" label="Date With 2 Buttons:" labelPosition="top" style="width:100%;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-datebox" label="Date With 3 Buttons:" labelPosition="top" data-options="buttons:buttons" style="width:100%;">
+		</div>
+	</div>
 	<script>
 		var buttons = $.extend([], $.fn.datebox.defaults.buttons);
 		buttons.splice(1, 0, {

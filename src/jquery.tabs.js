@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -605,27 +605,30 @@
 	 */
 	function getTab(container, which, removeit){
 		var tabs = $.data(container, 'tabs').tabs;
+		var tab = null;
 		if (typeof which == 'number'){
-			if (which < 0 || which >= tabs.length){
-				return null;
-			} else {
-				var tab = tabs[which];
-				if (removeit) {
+			if (which >=0 && which < tabs.length){
+				tab = tabs[which];
+				if (removeit){
 					tabs.splice(which, 1);
 				}
-				return tab;
 			}
-		}
-		for(var i=0; i<tabs.length; i++){
-			var tab = tabs[i];
-			if (tab.panel('options').title == which){
-				if (removeit){
-					tabs.splice(i, 1);
+		} else {
+			var tmp = $('<span></span>');
+			for(var i=0; i<tabs.length; i++){
+				var p = tabs[i];
+				tmp.html(p.panel('options').title);
+				if (tmp.text() == which){
+					tab = p;
+					if (removeit){
+						tabs.splice(i, 1);
+					}
+					break;
 				}
-				return tab;
 			}
+			tmp.remove();
 		}
-		return null;
+		return tab;
 	}
 	
 	function getTabIndex(container, tab){
@@ -669,8 +672,9 @@
 		var p = getTab(container, which);
 		if (p && !p.is(':visible')){
 			stopAnimate(container);
-			if (!p.panel('options').disabled)
-			p.panel('open');
+			if (!p.panel('options').disabled){
+				p.panel('open');				
+			}
 		}
 	}
 	

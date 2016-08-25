@@ -13,16 +13,21 @@
 	<h2>DateTimeSpinner with Clear Icon</h2>
 	<p>A clear icon can be attached to the datetimespinner. Click it to clear the entered value.</p>
 	<div style="margin:20px 0;"></div>
-	<input class="easyui-datetimespinner" style="width:180px;" data-options="
-			value: '6/24/2014 17:23:56',
-			showSeconds: true,
-			prompt: 'Input date time here!',
-			icons:[{
-				iconCls:'icon-clear',
-				handler: function(e){
-					$(e.data.target).datetimespinner('clear');
-				}
-			}]
-			">
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-datetimespinner" value="6/24/2015 17:23:40" style="width:100%;" data-options="
+					showSeconds: true,
+					prompt: 'Input date time here!',
+					icons:[{
+						iconCls:'icon-clear',
+						handler: function(e){
+							$(e.data.target).datetimespinner('clear');
+						}
+					}],
+					label: 'Start Time:',
+					labelPosition: 'top'
+					">
+		</div>
+	</div>
 </body>
 </html>

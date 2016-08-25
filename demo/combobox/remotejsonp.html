@@ -13,12 +13,18 @@
 	<h2>Remote JSONP</h2>
 	<p>This sample shows how to use JSONP to retrieve data from a remote site.</p>
 	<div style="margin:20px 0"></div>
-	<input class="easyui-combobox" style="width:250px" data-options="
-				loader: myloader,
-				mode: 'remote',
-				valueField: 'id',
-				textField: 'name'
-			">
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-combobox" style="width:100%;" data-options="
+					loader: myloader,
+					mode: 'remote',
+					valueField: 'id',
+					textField: 'name',
+					label: 'State:',
+					labelPosition: 'top'
+					">
+		</div>
+	</div>
 	<script>
 		var myloader = function(param,success,error){
 			var q = param.q || '';

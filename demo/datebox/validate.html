@@ -13,7 +13,14 @@
 	<h2>Validate DateBox</h2>
 	<p>When the selected date is greater than specified date. The field validator will raise an error.</p>
 	<div style="margin:20px 0;"></div>
-	<input class="easyui-datebox" required data-options="validType:'md[\'10/11/2012\']'"></input>
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-datebox" label="Required Date:" labelPosition="top" required style="width:100%;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-datebox" label="End Date:" labelPosition="top" required data-options="validType:'md[\'10/11/2015\']'" style="width:100%;">
+		</div>
+	</div>
 	<script>
 		$.extend($.fn.validatebox.defaults.rules, {
 			md: {

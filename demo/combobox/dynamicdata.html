@@ -17,7 +17,15 @@
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#language').combobox('reload', 'combobox_data1.json')">LoadData</a>
 	</div>
 
-	<input class="easyui-combobox" id="language" name="language"
-			data-options="valueField:'id',textField:'text'">
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input id="language" class="easyui-combobox" name="language" style="width:100%;" data-options="
+					valueField: 'id',
+					textField: 'text',
+					label: 'Language:',
+					labelPosition: 'top'
+					">
+		</div>
+	</div>
 </body>
 </html>

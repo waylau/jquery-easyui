@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -78,14 +78,16 @@ function _f(_11){
 _c.position=_11||"bottom";
 _d.removeClass("tooltip-top tooltip-bottom tooltip-left tooltip-right").addClass("tooltip-"+_c.position);
 var _12,top;
+var _13=$.isFunction(_c.deltaX)?_c.deltaX.call(_a,_c.position):_c.deltaX;
+var _14=$.isFunction(_c.deltaY)?_c.deltaY.call(_a,_c.position):_c.deltaY;
 if(_c.trackMouse){
 t=$();
-_12=_c.trackMouseX+_c.deltaX;
-top=_c.trackMouseY+_c.deltaY;
+_12=_c.trackMouseX+_13;
+top=_c.trackMouseY+_14;
 }else{
 var t=$(_a);
-_12=t.offset().left+_c.deltaX;
-top=t.offset().top+_c.deltaY;
+_12=t.offset().left+_13;
+top=t.offset().top+_14;
 }
 switch(_c.position){
 case "right":
@@ -108,82 +110,82 @@ break;
 return {left:_12,top:top};
 };
 };
-function _13(_14,e){
-var _15=$.data(_14,"tooltip");
-var _16=_15.options;
-var tip=_15.tip;
+function _15(_16,e){
+var _17=$.data(_16,"tooltip");
+var _18=_17.options;
+var tip=_17.tip;
 if(!tip){
 tip=$("<div tabindex=\"-1\" class=\"tooltip\">"+"<div class=\"tooltip-content\"></div>"+"<div class=\"tooltip-arrow-outer\"></div>"+"<div class=\"tooltip-arrow\"></div>"+"</div>").appendTo("body");
-_15.tip=tip;
-_17(_14);
+_17.tip=tip;
+_19(_16);
 }
-_6(_14);
-_15.showTimer=setTimeout(function(){
-$(_14).tooltip("reposition");
+_6(_16);
+_17.showTimer=setTimeout(function(){
+$(_16).tooltip("reposition");
 tip.show();
-_16.onShow.call(_14,e);
-var _18=tip.children(".tooltip-arrow-outer");
-var _19=tip.children(".tooltip-arrow");
-var bc="border-"+_16.position+"-color";
-_18.add(_19).css({borderTopColor:"",borderBottomColor:"",borderLeftColor:"",borderRightColor:""});
-_18.css(bc,tip.css(bc));
-_19.css(bc,tip.css("backgroundColor"));
-},_16.showDelay);
+_18.onShow.call(_16,e);
+var _1a=tip.children(".tooltip-arrow-outer");
+var _1b=tip.children(".tooltip-arrow");
+var bc="border-"+_18.position+"-color";
+_1a.add(_1b).css({borderTopColor:"",borderBottomColor:"",borderLeftColor:"",borderRightColor:""});
+_1a.css(bc,tip.css(bc));
+_1b.css(bc,tip.css("backgroundColor"));
+},_18.showDelay);
 };
-function _1a(_1b,e){
-var _1c=$.data(_1b,"tooltip");
-if(_1c&&_1c.tip){
-_6(_1b);
-_1c.hideTimer=setTimeout(function(){
-_1c.tip.hide();
-_1c.options.onHide.call(_1b,e);
-},_1c.options.hideDelay);
+function _1c(_1d,e){
+var _1e=$.data(_1d,"tooltip");
+if(_1e&&_1e.tip){
+_6(_1d);
+_1e.hideTimer=setTimeout(function(){
+_1e.tip.hide();
+_1e.options.onHide.call(_1d,e);
+},_1e.options.hideDelay);
 }
 };
-function _17(_1d,_1e){
-var _1f=$.data(_1d,"tooltip");
-var _20=_1f.options;
-if(_1e){
-_20.content=_1e;
+function _19(_1f,_20){
+var _21=$.data(_1f,"tooltip");
+var _22=_21.options;
+if(_20){
+_22.content=_20;
 }
-if(!_1f.tip){
+if(!_21.tip){
 return;
 }
-var cc=typeof _20.content=="function"?_20.content.call(_1d):_20.content;
-_1f.tip.children(".tooltip-content").html(cc);
-_20.onUpdate.call(_1d,cc);
+var cc=typeof _22.content=="function"?_22.content.call(_1f):_22.content;
+_21.tip.children(".tooltip-content").html(cc);
+_22.onUpdate.call(_1f,cc);
 };
-function _21(_22){
-var _23=$.data(_22,"tooltip");
-if(_23){
-_6(_22);
-var _24=_23.options;
-if(_23.tip){
-_23.tip.remove();
+function _23(_24){
+var _25=$.data(_24,"tooltip");
+if(_25){
+_6(_24);
+var _26=_25.options;
+if(_25.tip){
+_25.tip.remove();
 }
-if(_24._title){
-$(_22).attr("title",_24._title);
+if(_26._title){
+$(_24).attr("title",_26._title);
 }
-$.removeData(_22,"tooltip");
-$(_22).unbind(".tooltip").removeClass("tooltip-f");
-_24.onDestroy.call(_22);
+$.removeData(_24,"tooltip");
+$(_24).unbind(".tooltip").removeClass("tooltip-f");
+_26.onDestroy.call(_24);
 }
 };
-$.fn.tooltip=function(_25,_26){
-if(typeof _25=="string"){
-return $.fn.tooltip.methods[_25](this,_26);
+$.fn.tooltip=function(_27,_28){
+if(typeof _27=="string"){
+return $.fn.tooltip.methods[_27](this,_28);
 }
-_25=_25||{};
+_27=_27||{};
 return this.each(function(){
-var _27=$.data(this,"tooltip");
-if(_27){
-$.extend(_27.options,_25);
+var _29=$.data(this,"tooltip");
+if(_29){
+$.extend(_29.options,_27);
 }else{
-$.data(this,"tooltip",{options:$.extend({},$.fn.tooltip.defaults,$.fn.tooltip.parseOptions(this),_25)});
+$.data(this,"tooltip",{options:$.extend({},$.fn.tooltip.defaults,$.fn.tooltip.parseOptions(this),_27)});
 _1(this);
 }
 _3(this);
-_17(this);
+_19(this);
 });
 };
 $.fn.tooltip.methods={options:function(jq){
@@ -194,15 +196,15 @@ return $.data(jq[0],"tooltip").tip;
 return jq.tooltip("tip").children(".tooltip-arrow-outer,.tooltip-arrow");
 },show:function(jq,e){
 return jq.each(function(){
-_13(this,e);
+_15(this,e);
 });
 },hide:function(jq,e){
 return jq.each(function(){
-_1a(this,e);
+_1c(this,e);
 });
-},update:function(jq,_28){
+},update:function(jq,_2a){
 return jq.each(function(){
-_17(this,_28);
+_19(this,_2a);
 });
 },reposition:function(jq){
 return jq.each(function(){
@@ -210,22 +212,22 @@ _9(this);
 });
 },destroy:function(jq){
 return jq.each(function(){
-_21(this);
+_23(this);
 });
 }};
-$.fn.tooltip.parseOptions=function(_29){
-var t=$(_29);
-var _2a=$.extend({},$.parser.parseOptions(_29,["position","showEvent","hideEvent","content",{trackMouse:"boolean",deltaX:"number",deltaY:"number",showDelay:"number",hideDelay:"number"}]),{_title:t.attr("title")});
+$.fn.tooltip.parseOptions=function(_2b){
+var t=$(_2b);
+var _2c=$.extend({},$.parser.parseOptions(_2b,["position","showEvent","hideEvent","content",{trackMouse:"boolean",deltaX:"number",deltaY:"number",showDelay:"number",hideDelay:"number"}]),{_title:t.attr("title")});
 t.attr("title","");
-if(!_2a.content){
-_2a.content=_2a._title;
+if(!_2c.content){
+_2c.content=_2c._title;
 }
-return _2a;
+return _2c;
 };
 $.fn.tooltip.defaults={position:"bottom",content:null,trackMouse:false,deltaX:0,deltaY:0,showEvent:"mouseenter",hideEvent:"mouseleave",showDelay:200,hideDelay:100,onShow:function(e){
 },onHide:function(e){
-},onUpdate:function(_2b){
-},onPosition:function(_2c,top){
+},onUpdate:function(_2d){
+},onPosition:function(_2e,top){
 },onDestroy:function(){
 }};
 })(jQuery);

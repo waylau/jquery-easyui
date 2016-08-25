@@ -12,15 +12,22 @@
 <body>
 	<h2>Group ComboBox</h2>
 	<p>This example shows how to display combobox items in groups.</p>
-	<div style="margin:20px 0"></div>
-	
-	<input class="easyui-combobox" name="browser" style="width:280px;" data-options="
-				url: 'combobox_data2.json',
-				method: 'get',
-				valueField:'value',
-				textField:'text',
-				groupField:'group'
-			">
-
+	<div style="margin:20px 0">
+		<input type="checkbox" onchange="$('#cc').combobox({groupPosition:$(this).is(':checked')?'sticky':'static'})">
+		<span>Sticky Group</span>
+	</div>
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input id="cc" class="easyui-combobox" name="browser" style="width:100%;" data-options="
+					url: 'combobox_data2.json',
+					method: 'get',
+					valueField:'value',
+					textField:'text',
+					groupField:'group',
+					label: 'Browser:',
+					labelPosition: 'top'
+					">
+		</div>
+	</div>
 </body>
 </html>

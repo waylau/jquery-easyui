@@ -13,36 +13,31 @@
 	<h2>Basic ValidateBox</h2>
 	<p>It's easy to add validate logic to a input box.</p>
 	<div style="margin:20px 0;"></div>
-	<div class="easyui-panel" title="Register" style="width:400px;padding:10px 60px 20px 60px">
-		<table cellpadding="5">
-			<tr>
-				<td>User Name:</td>
-				<td><input class="easyui-validatebox textbox" data-options="required:true,validType:'length[3,10]'"></td>
-			</tr>
-			<tr>
-				<td>Email:</td>
-				<td><input class="easyui-validatebox textbox" data-options="required:true,validType:'email'"></td>
-			</tr>
-			<tr>
-				<td>Birthday:</td>
-				<td><input class="easyui-datebox textbox"></td>
-			</tr>
-			<tr>
-				<td>URL:</td>
-				<td><input class="easyui-validatebox textbox" data-options="required:true,validType:'url'"></td>
-			</tr>
-			<tr>
-				<td>Phone:</td>
-				<td><input class="easyui-validatebox textbox" data-options="required:true"></td>
-			</tr>
-		</table>
+	<div class="easyui-panel" title="Register" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<label for="username" class="label-top">User Name:</label>
+			<input id="username" class="easyui-validatebox tb" data-options="required:true,validType:'length[3,10]'">
+		</div>
+		<div style="margin-bottom:20px">
+			<label for="email" class="label-top">Email:</label>
+			<input id="email" class="easyui-validatebox tb" data-options="required:true,validType:'email'">
+		</div>
+		<div style="margin-bottom:20px">
+			<label for="url" class="label-top">Url:</label>
+			<input id="url" class="easyui-validatebox tb" data-options="required:true,validType:'url'">
+		</div>
+		<div style="margin-bottom:20px">
+			<label for="phone" class="label-top">Phone:</label>
+			<input id="phone" class="easyui-validatebox tb" data-options="required:true">
+		</div>
 	</div>
 	<style scoped="scoped">
-		.textbox{
-			height:20px;
+		.tb{
+			width:100%;
 			margin:0;
-			padding:0 2px;
-			box-sizing:content-box;
+			padding:5px 4px;
+			border:1px solid #ccc;
+			box-sizing:border-box;
 		}
 	</style>
 

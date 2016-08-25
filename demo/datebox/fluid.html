@@ -13,9 +13,13 @@
 	<h2>Fluid DateBox</h2>
 	<p>This example shows how to set the width of DateBox to a percentage of its parent container.</p>
 	<div style="margin:20px 0;"></div>
-	<p>width: 50%</p>
-	<input class="easyui-datebox" style="width:50%"></input>
-	<p>width: 30%</p>
-	<input class="easyui-datebox" style="width:30%"></input>
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input class="easyui-datebox" label="width: 100%" labelPosition="top" style="width:100%;">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-datebox" label="width: 50%" labelPosition="top" style="width:50%;">
+		</div>
+	</div>
 </body>
 </html>

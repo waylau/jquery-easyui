@@ -1,5 +1,5 @@
 .messager-body {
-  padding: 10px;
+  padding: 10px 10px 30px 10px;
   overflow: auto;
 }
 .messager-button {
@@ -35,6 +35,10 @@
 }
 .messager-body .messager-input {
   width: 100%;
-  padding: 1px 0;
+  padding: 4px 0;
+  outline-style: none;
   border: 1px solid #D3D3D3;
+}
+.window-thinborder .messager-button {
+  padding-bottom: 8px;
 }

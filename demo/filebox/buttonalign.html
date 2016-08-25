@@ -19,7 +19,10 @@
 		<option value="right" selected>Right</option>
 	</select>
 	<div style="margin:20px 0;"></div>
-	<input id="fb" class="easyui-filebox" style="width:400px" data-options="prompt:'Choose a file...'">
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<input id="fb" class="easyui-filebox" style="width:100%" data-options="prompt:'Choose a file...'">
+	</div>
+
 	<script type="text/javascript">
 		function changeAlign(align){
 			$('#fb').filebox({buttonAlign:align});

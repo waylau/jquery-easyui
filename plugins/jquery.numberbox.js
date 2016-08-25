@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -91,27 +91,29 @@ $(_17).numberbox("setValue",$(_17).numberbox("getText"));
 }},min:null,max:null,precision:0,decimalSeparator:".",groupSeparator:"",prefix:"",suffix:"",filter:function(e){
 var _18=$(this).numberbox("options");
 var s=$(this).numberbox("getText");
-if(e.which==13){
+if(e.metaKey||e.ctrlKey){
 return true;
 }
-if(e.which==45){
-return (s.indexOf("-")==-1?true:false);
+if($.inArray(String(e.which),["46","8","13","0"])>=0){
+return true;
 }
-var c=String.fromCharCode(e.which);
-if(c==_18.decimalSeparator){
-return (s.indexOf(c)==-1?true:false);
+var tmp=$("<span></span>");
+tmp.html(String.fromCharCode(e.which));
+var c=tmp.text();
+tmp.remove();
+if(!c){
+return true;
+}
+if(c=="-"||c==_18.decimalSeparator){
+return (s.indexOf(c)==-1)?true:false;
 }else{
 if(c==_18.groupSeparator){
 return true;
 }else{
-if((e.which>=48&&e.which<=57&&e.ctrlKey==false&&e.shiftKey==false)||e.which==0||e.which==8){
-return true;
-}else{
-if(e.ctrlKey==true&&(e.which==99||e.which==118)){
+if("0123456789".indexOf(c)>=0){
 return true;
 }else{
 return false;
-}
 }
 }
 }

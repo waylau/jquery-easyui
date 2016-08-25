@@ -18,7 +18,11 @@
 		<a href="#" class="easyui-linkbutton" onclick="disable()">Disable</a>
 		<a href="#" class="easyui-linkbutton" onclick="enable()">Enable</a>
 	</div>
-	<input id="dt" class="easyui-timespinner" style="width:80px;">
+	<div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<input id="dt" class="easyui-timespinner" label="Select Time:" labelPosition="top" value="01:20" style="width:100%;">
+		</div>
+	</div>
 	<script>
 		function getValue(){
 			var val = $('#dt').timespinner('getValue');

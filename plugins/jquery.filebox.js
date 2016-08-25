@@ -1,7 +1,7 @@
-/**
- * jQuery EasyUI 1.4.4
+﻿/**
+ * jQuery EasyUI 1.5
  * 
- * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -34,36 +34,46 @@ _a.filebox.find(".textbox-value").remove();
 _b.oldValue="";
 var _c=$("<input type=\"file\" class=\"textbox-value\">").appendTo(_a.filebox);
 _c.attr("id",_b.fileboxId).attr("name",$(_9).attr("textboxName")||"");
+_c.attr("accept",_b.accept);
+if(_b.multiple){
+_c.attr("multiple","multiple");
+}
 _c.change(function(){
-$(_9).filebox("setText",this.value);
-_b.onChange.call(_9,this.value,_b.oldValue);
-_b.oldValue=this.value;
+var _d=this.value;
+if(this.files){
+_d=$.map(this.files,function(_e){
+return _e.name;
+}).join(_b.separator);
+}
+$(_9).filebox("setText",_d);
+_b.onChange.call(_9,_d,_b.oldValue);
+_b.oldValue=_d;
 });
 return _c;
 };
-$.fn.filebox=function(_d,_e){
-if(typeof _d=="string"){
-var _f=$.fn.filebox.methods[_d];
-if(_f){
-return _f(this,_e);
+$.fn.filebox=function(_f,_10){
+if(typeof _f=="string"){
+var _11=$.fn.filebox.methods[_f];
+if(_11){
+return _11(this,_10);
 }else{
-return this.textbox(_d,_e);
+return this.textbox(_f,_10);
 }
 }
-_d=_d||{};
+_f=_f||{};
 return this.each(function(){
-var _10=$.data(this,"filebox");
-if(_10){
-$.extend(_10.options,_d);
+var _12=$.data(this,"filebox");
+if(_12){
+$.extend(_12.options,_f);
 }else{
-$.data(this,"filebox",{options:$.extend({},$.fn.filebox.defaults,$.fn.filebox.parseOptions(this),_d)});
+$.data(this,"filebox",{options:$.extend({},$.fn.filebox.defaults,$.fn.filebox.parseOptions(this),_f)});
 }
 _2(this);
 });
 };
 $.fn.filebox.methods={options:function(jq){
-var _11=jq.textbox("options");
-return $.extend($.data(jq[0],"filebox").options,{width:_11.width,value:_11.value,originalValue:_11.originalValue,disabled:_11.disabled,readonly:_11.readonly});
+var _13=jq.textbox("options");
+return $.extend($.data(jq[0],"filebox").options,{width:_13.width,value:_13.value,originalValue:_13.originalValue,disabled:_13.disabled,readonly:_13.readonly});
 },clear:function(jq){
 return jq.each(function(){
 $(this).textbox("clear");
@@ -73,10 +83,15 @@ _7(this);
 return jq.each(function(){
 $(this).filebox("clear");
 });
+},setValue:function(jq){
+return jq;
+},setValues:function(jq){
+return jq;
 }};
-$.fn.filebox.parseOptions=function(_12){
-return $.extend({},$.fn.textbox.parseOptions(_12),{});
+$.fn.filebox.parseOptions=function(_14){
+var t=$(_14);
+return $.extend({},$.fn.textbox.parseOptions(_14),$.parser.parseOptions(_14,["accept","separator"]),{multiple:(t.attr("multiple")?true:undefined)});
 };
-$.fn.filebox.defaults=$.extend({},$.fn.textbox.defaults,{buttonIcon:null,buttonText:"Choose File",buttonAlign:"right",inputEvents:{}});
+$.fn.filebox.defaults=$.extend({},$.fn.textbox.defaults,{buttonIcon:null,buttonText:"Choose File",buttonAlign:"right",inputEvents:{},accept:"",separator:",",multiple:false});
 })(jQuery);
 

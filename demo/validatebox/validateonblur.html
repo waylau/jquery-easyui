@@ -13,43 +13,31 @@
 	<h2>Validate On Blur</h2>
 	<p>Active validation on first blur event.</p>
 	<div style="margin:20px 0;"></div>
-	<div class="easyui-panel" title="Register" style="width:400px;padding:10px 60px 20px 60px">
-		<table cellpadding="5">
-			<tr>
-				<td>User Name:</td>
-				<td><input class="easyui-validatebox textbox" data-options="required:true,validType:'length[3,10]',novalidate:true"></td>
-			</tr>
-			<tr>
-				<td>Email:</td>
-				<td><input class="easyui-validatebox textbox" data-options="required:true,validType:'email',novalidate:true"></td>
-			</tr>
-			<tr>
-				<td>Birthday:</td>
-				<td><input class="easyui-datebox textbox" data-options="required:true,novalidate:true"></td>
-			</tr>
-			<tr>
-				<td>URL:</td>
-				<td><input class="easyui-validatebox textbox" data-options="required:true,validType:'url',novalidate:true"></td>
-			</tr>
-			<tr>
-				<td>Phone:</td>
-				<td><input class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
-			</tr>
-		</table>
+	<div class="easyui-panel" title="Register" style="width:100%;max-width:400px;padding:30px 60px;">
+		<div style="margin-bottom:20px">
+			<label for="username" class="label-top">User Name:</label>
+			<input id="username" class="easyui-validatebox tb" data-options="required:true,validType:'length[3,10]',validateOnCreate:false,validateOnBlur:true">
+		</div>
+		<div style="margin-bottom:20px">
+			<label for="email" class="label-top">Email:</label>
+			<input id="email" class="easyui-validatebox tb" data-options="required:true,validType:'email',validateOnCreate:false,validateOnBlur:true">
+		</div>
+		<div style="margin-bottom:20px">
+			<label for="url" class="label-top">Url:</label>
+			<input id="url" class="easyui-validatebox tb" data-options="required:true,validType:'url',validateOnCreate:false,validateOnBlur:true">
+		</div>
+		<div style="margin-bottom:20px">
+			<label for="phone" class="label-top">Phone:</label>
+			<input id="phone" class="easyui-validatebox tb" data-options="required:true,validateOnCreate:false,validateOnBlur:true">
+		</div>
 	</div>
-	<script type="text/javascript">
-		$(function(){
-			$('.validatebox-text').bind('blur', function(){
-				$(this).validatebox('enableValidation').validatebox('validate');
-			});
-		})
-	</script>
 	<style scoped="scoped">
-		.textbox{
-			height:20px;
+		.tb{
+			width:100%;
 			margin:0;
-			padding:0 2px;
-			box-sizing:content-box;
+			padding:5px 4px;
+			border:1px solid #ccc;
+			box-sizing:border-box;
 		}
 	</style>
 
