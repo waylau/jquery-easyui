@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -109,7 +109,7 @@
 				var tr = tools.find('tr');
 				for(var i=0; i<opts.tools.length; i++){
 					var td = $('<td></td>').appendTo(tr);
-					var tool = $('<a href="javascript:void(0);"></a>').appendTo(td);
+					var tool = $('<a href="javascript:;"></a>').appendTo(td);
 					tool[0].onclick = eval(opts.tools[i].handler || function(){});
 					tool.linkbutton($.extend({}, opts.tools[i], {
 						plain: true
@@ -354,7 +354,7 @@
 		var panels = $(container).children('div.tabs-panels');
 		var tab = $(
 				'<li>' +
-				'<a href="javascript:void(0)" class="tabs-inner">' +
+				'<a href="javascript:;" class="tabs-inner">' +
 				'<span class="tabs-title"></span>' +
 				'<span class="tabs-icon"></span>' +
 				'</a>' +
@@ -496,7 +496,7 @@
 				tab.find('a.tabs-close').remove();
 				if (opts.closable){
 					s_title.addClass('tabs-closable');
-					$('<a href="javascript:void(0)" class="tabs-close"></a>').appendTo(tab);
+					$('<a href="javascript:;" class="tabs-close"></a>').appendTo(tab);
 				} else{
 					s_title.removeClass('tabs-closable');
 				}
@@ -514,7 +514,7 @@
 					if ($.isArray(opts.tools)){
 						p_tool.empty();
 						for(var i=0; i<opts.tools.length; i++){
-							var t = $('<a href="javascript:void(0)"></a>').appendTo(p_tool);
+							var t = $('<a href="javascript:;"></a>').appendTo(p_tool);
 							t.addClass(opts.tools[i].iconCls);
 							if (opts.tools[i].handler){
 								t.bind('click', {handler:opts.tools[i].handler}, function(e){
@@ -529,6 +529,7 @@
 					var pr = p_tool.children().length * 12;
 					if (opts.closable) {
 						pr += 8;
+						p_tool.css('right', '');
 					} else {
 						pr -= 3;
 						p_tool.css('right','5px');

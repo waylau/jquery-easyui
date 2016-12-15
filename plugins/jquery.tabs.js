@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -65,7 +65,7 @@ var _11=$("<div class=\"tabs-tool\"><table cellspacing=\"0\" cellpadding=\"0\" s
 var tr=_11.find("tr");
 for(var i=0;i<_f.tools.length;i++){
 var td=$("<td></td>").appendTo(tr);
-var _12=$("<a href=\"javascript:void(0);\"></a>").appendTo(td);
+var _12=$("<a href=\"javascript:;\"></a>").appendTo(td);
 _12[0].onclick=eval(_f.tools[i].handler||function(){
 });
 _12.linkbutton($.extend({},_f.tools[i],{plain:true}));
@@ -287,7 +287,7 @@ _3e.index=0;
 }
 var ul=$(_3d).children("div.tabs-header").find("ul.tabs");
 var _41=$(_3d).children("div.tabs-panels");
-var tab=$("<li>"+"<a href=\"javascript:void(0)\" class=\"tabs-inner\">"+"<span class=\"tabs-title\"></span>"+"<span class=\"tabs-icon\"></span>"+"</a>"+"</li>");
+var tab=$("<li>"+"<a href=\"javascript:;\" class=\"tabs-inner\">"+"<span class=\"tabs-title\"></span>"+"<span class=\"tabs-icon\"></span>"+"</a>"+"</li>");
 if(!pp){
 pp=$("<div></div>");
 }
@@ -396,7 +396,7 @@ _58.attr("class","tabs-icon");
 tab.find("a.tabs-close").remove();
 if(_55.closable){
 _57.addClass("tabs-closable");
-$("<a href=\"javascript:void(0)\" class=\"tabs-close\"></a>").appendTo(tab);
+$("<a href=\"javascript:;\" class=\"tabs-close\"></a>").appendTo(tab);
 }else{
 _57.removeClass("tabs-closable");
 }
@@ -414,7 +414,7 @@ var _59=$("<span class=\"tabs-p-tool\"></span>").insertAfter(tab.find("a.tabs-in
 if($.isArray(_55.tools)){
 _59.empty();
 for(var i=0;i<_55.tools.length;i++){
-var t=$("<a href=\"javascript:void(0)\"></a>").appendTo(_59);
+var t=$("<a href=\"javascript:;\"></a>").appendTo(_59);
 t.addClass(_55.tools[i].iconCls);
 if(_55.tools[i].handler){
 t.bind("click",{handler:_55.tools[i].handler},function(e){
@@ -431,6 +431,7 @@ $(_55.tools).children().appendTo(_59);
 var pr=_59.children().length*12;
 if(_55.closable){
 pr+=8;
+_59.css("right","");
 }else{
 pr-=3;
 _59.css("right","5px");

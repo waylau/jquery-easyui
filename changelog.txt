@@ -1,3 +1,22 @@
+Version 1.5.1
+-------------
+* Bug
+ * datagrid: The selecting and checking flags will lose after calling 'updateRow' method. fixed.
+ * tabs: The trip tools have a wrong position when calling 'update' method. fixed.
+ * window: When the height is set to 'auto', it will disappear after moving the window. fixed.
+ * messager: When display the progress message window and then close it immediately, an exception occurs. fixed.
+ * form: The 'clear' method does not clear the selected drop-down items of the combobox. fixed.
+* Improvement
+ * textbox: The 'cls' property is available to add a custom style to textbox.
+ * numberbox: Allow the user to format currency in Italian.
+ * combo: Add 'multivalue' property that allows the user to determine how to submit the multiple values.
+ * combobox: Add 'reversed' property.
+ * combobox: Add 'onClick' event.
+ * combogrid: Add 'reversed' property.
+ * treegrid: Enable multiple selection with the shift key.
+* New Plugins
+ * tagbox: Allows the user to add tags to a form field.
+
 Version 1.5
 -------------
 * Bug

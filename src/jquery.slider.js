@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -18,7 +18,7 @@
 	function init(target){
 		var slider = $('<div class="slider">' +
 				'<div class="slider-inner">' +
-				'<a href="javascript:void(0)" class="slider-handle"></a>' +
+				'<a href="javascript:;" class="slider-handle"></a>' +
 				'<span class="slider-tip"></span>' +
 				'</div>' +
 				'<div class="slider-rule"></div>' +
@@ -124,12 +124,12 @@
 		
 		var inner = slider.find('.slider-inner');
 		inner.html(
-			'<a href="javascript:void(0)" class="slider-handle"></a>' +
+			'<a href="javascript:;" class="slider-handle"></a>' +
 			'<span class="slider-tip"></span>'
 		);
 		if (opts.range){
 			inner.append(
-				'<a href="javascript:void(0)" class="slider-handle"></a>' +
+				'<a href="javascript:;" class="slider-handle"></a>' +
 				'<span class="slider-tip"></span>'
 			);
 		}

@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -111,7 +111,7 @@ _17.disabled=true;
 var _18=$(_14).attr("href");
 if(_18){
 _16.href=_18;
-$(_14).attr("href","javascript:void(0)");
+$(_14).attr("href","javascript:;");
 }
 if(_14.onclick){
 _16.onclick=_14.onclick;

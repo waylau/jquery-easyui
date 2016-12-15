@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -237,6 +237,9 @@ return false;
 };
 function _32(_33){
 $("input,select,textarea",_33).each(function(){
+if($(this).hasClass("textbox-value")){
+return;
+}
 var t=this.type,tag=this.tagName.toLowerCase();
 if(t=="text"||t=="hidden"||t=="password"||tag=="textarea"){
 this.value="";
@@ -264,13 +267,15 @@ this.selectedIndex=-1;
 }
 }
 });
+var tmp=$();
 var _36=$(_33);
 var _37=$.data(_33,"form").options;
-for(var i=_37.fieldTypes.length-1;i>=0;i--){
+for(var i=0;i<_37.fieldTypes.length;i++){
 var _38=_37.fieldTypes[i];
-var _39=_36.find("."+_38+"-f");
+var _39=_36.find("."+_38+"-f").not(tmp);
 if(_39.length&&_39[_38]){
 _39[_38]("clear");
+tmp=tmp.add(_39);
 }
 }
 _36.form("validate");

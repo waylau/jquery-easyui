@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -120,7 +120,18 @@
 		}
 
 		// unselect the old rows
-		$.map($(target).combo('getValues'), function(v){
+		var oldValues = $(target).combo('getValues');
+		if (panel.is(':visible')){
+			panel.find('.combobox-item-selected').each(function(){
+				var row = opts.finder.getRow(target, $(this));
+				if (row){
+					if ($.easyui.indexOfArray(oldValues, row[opts.valueField]) == -1){
+						$(this).removeClass('combobox-item-selected');
+					}
+				}
+			});
+		}
+		$.map(oldValues, function(v){
 			if ($.easyui.indexOfArray(values, v) == -1){
 				var el = opts.finder.getEl(target, v);
 				if (el.hasClass('combobox-item-selected')){
@@ -215,7 +226,8 @@
 	function doQuery(target, q){
 		var state = $.data(target, 'combobox');
 		var opts = state.options;
-		
+
+		var highlightItem = $();
 		var qq = opts.multiple ? q.split(opts.separator) : [q];
 		if (opts.mode == 'remote'){
 			_setValues(qq);
@@ -230,6 +242,7 @@
 				q = $.trim(q);
 				var value = q;
 				var group = undefined;
+				highlightItem = $();
 				for(var i=0; i<data.length; i++){
 					var row = data[i];
 					if (opts.filter.call(target, q, row)){
@@ -239,7 +252,11 @@
 						var item = opts.finder.getEl(target, v).show();
 						if (s.toLowerCase() == q.toLowerCase()){
 							value = v;
-							select(target, v, true);
+							if (opts.reversed){
+								highlightItem = item;
+							} else {
+								select(target, v, true);
+							}
 						}
 						if (opts.groupField && group != g){
 							opts.finder.getGroupEl(target, g).show();
@@ -252,7 +269,11 @@
 			_setValues(vv);
 		}
 		function _setValues(vv){
-			setValues(target, opts.multiple ? (q?vv:[]) : vv, true);
+			if (opts.reversed){
+				highlightItem.addClass('combobox-item-hover');
+			} else {
+				setValues(target, opts.multiple ? (q?vv:[]) : vv, true);
+			}
 		}
 	}
 	
@@ -262,6 +283,7 @@
 		var panel = t.combobox('panel');
 		var item = panel.children('div.combobox-item-hover');
 		if (item.length){
+			item.removeClass('combobox-item-hover');
 			var row = opts.finder.getRow(target, item);
 			var value = row[opts.valueField];
 			if (opts.multiple){
@@ -329,7 +351,12 @@
 		var item = $(e.target).closest('div.combobox-item');
 		if (!item.length || item.hasClass('combobox-item-disabled')){return}
 		var row = opts.finder.getRow(target, item);
-		if (!row){return}
+		if (!row){return;}
+		if (opts.blurTimer){
+			clearTimeout(opts.blurTimer);
+			opts.blurTimer = null;
+		}
+		opts.onClick.call(target, row);
 		var value = row[opts.valueField];
 		if (opts.multiple){
 			if (item.hasClass('combobox-item-selected')){
@@ -596,8 +623,21 @@
 			blur: function(e){
 				var target = e.data.target;
 				var opts = $(target).combobox('options');
-				if (opts.limitToList){
-					doEnter(target);
+				if (opts.reversed || opts.limitToList){
+					if (opts.blurTimer){
+						clearTimeout(opts.blurTimer);
+					}
+					opts.blurTimer = setTimeout(function(){
+						var existing = $(target).parent().length;
+						if (existing){
+							if (opts.reversed){
+								$(target).combobox('setValues', $(target).combobox('getValues'));
+							} else if (opts.limitToList){
+								doEnter(target);
+							}
+							opts.blurTimer = null;
+						}
+					},50);
 				}
 			}
 		}),
@@ -659,9 +699,10 @@
 		},
 		
 		onBeforeLoad: function(param){},
-		onLoadSuccess: function(){},
+		onLoadSuccess: function(data){},
 		onLoadError: function(){},
 		onSelect: function(record){},
-		onUnselect: function(record){}
+		onUnselect: function(record){},
+		onClick: function(record){}
 	});
 })(jQuery);

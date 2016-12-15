@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -174,7 +174,7 @@ _1d.children("div.panel-body").removeClass("panel-body-noheader");
 }
 };
 function _26(c,_27,_28){
-var a=$("<a href=\"javascript:void(0)\"></a>").addClass(_27).appendTo(c);
+var a=$("<a href=\"javascript:;\"></a>").addClass(_27).appendTo(c);
 a.bind("click",_28);
 };
 function _1f(){

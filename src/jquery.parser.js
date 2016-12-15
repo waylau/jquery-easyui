@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -83,7 +83,7 @@
 		onComplete: function(context){},
 		plugins:['draggable','droppable','resizable','pagination','tooltip',
 		         'linkbutton','menu','menubutton','splitbutton','switchbutton','progressbar',
-				 'tree','textbox','passwordbox','filebox','combo','combobox','combotree','combogrid','combotreegrid','numberbox','validatebox','searchbox',
+				 'tree','textbox','passwordbox','filebox','combo','combobox','combotree','combogrid','combotreegrid','tagbox','numberbox','validatebox','searchbox',
 				 'spinner','numberspinner','timespinner','datetimespinner','calendar','datebox','datetimebox','slider',
 				 'layout','panel','datagrid','propertygrid','treegrid','datalist','tabs','accordion','window','dialog','form'
 		],

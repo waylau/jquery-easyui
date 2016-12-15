@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -29,7 +29,7 @@ if(_6=="-"){
 $("<td><div class=\"dialog-tool-separator\"></div></td>").appendTo(tr);
 }else{
 var td=$("<td></td>").appendTo(tr);
-var _7=$("<a href=\"javascript:void(0)\"></a>").appendTo(td);
+var _7=$("<a href=\"javascript:;\"></a>").appendTo(td);
 _7[0].onclick=eval(_6.handler||function(){
 });
 _7.linkbutton($.extend({},_6,{plain:true}));
@@ -48,7 +48,7 @@ $(_2).siblings("div.dialog-button").remove();
 var _8=$("<div class=\"dialog-button\"></div>").appendTo(_4);
 for(var i=0;i<_3.buttons.length;i++){
 var p=_3.buttons[i];
-var _9=$("<a href=\"javascript:void(0)\"></a>").appendTo(_8);
+var _9=$("<a href=\"javascript:;\"></a>").appendTo(_8);
 if(p.handler){
 _9[0].onclick=p.handler;
 }

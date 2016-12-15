@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -114,7 +114,7 @@ return;
 var _20="layout-button-"+_1f[dir];
 var t=_1e.children("a."+_20);
 if(!t.length){
-t=$("<a href=\"javascript:void(0)\"></a>").addClass(_20).appendTo(_1e);
+t=$("<a href=\"javascript:;\"></a>").addClass(_20).appendTo(_1e);
 t.bind("click",{dir:dir},function(e){
 _2d(_1a,e.data.dir);
 return false;

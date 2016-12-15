@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -93,7 +93,7 @@
 			for(var i=0; i<opts.buttons.length; i++){
 				var td = $('<td></td>').appendTo(tr);
 				var btn = opts.buttons[i];
-				var t = $('<a class="datebox-button-a" href="javascript:void(0)"></a>').html($.isFunction(btn.text) ? btn.text(target) : btn.text).appendTo(td);
+				var t = $('<a class="datebox-button-a" href="javascript:;"></a>').html($.isFunction(btn.text) ? btn.text(target) : btn.text).appendTo(td);
 				t.attr('datebox-button-index', i);
 			}
 			tr.find('td').css('width', (100/opts.buttons.length)+'%');

@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -198,7 +198,7 @@
 		var header = pp.panel('header');
 		var tool = header.children('div.panel-tool');
 		tool.children('a.panel-tool-collapse').hide();	// hide the old collapse button
-		var t = $('<a href="javascript:void(0)"></a>').addClass('accordion-collapse accordion-expand').appendTo(tool);
+		var t = $('<a href="javascript:;"></a>').addClass('accordion-collapse accordion-expand').appendTo(tool);
 		t.bind('click', function(){
 			togglePanel(pp);
 			return false;

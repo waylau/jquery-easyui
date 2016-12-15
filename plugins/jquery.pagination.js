@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -92,7 +92,7 @@ if(_b=="-"){
 $("<td><div class=\"pagination-btn-separator\"></div></td>").appendTo(tr);
 }else{
 var td=$("<td></td>").appendTo(tr);
-var a=$("<a href=\"javascript:void(0)\"></a>").appendTo(td);
+var a=$("<a href=\"javascript:;\"></a>").appendTo(td);
 a[0].onclick=eval(_b.handler||function(){
 });
 a.linkbutton($.extend({},_b,{plain:true}));
@@ -107,7 +107,7 @@ $("<div class=\"pagination-info\"></div>").appendTo(_5);
 $("<div style=\"clear:both;\"></div>").appendTo(_5);
 function _9(_c){
 var _d=_4.nav[_c];
-var a=$("<a href=\"javascript:void(0)\"></a>").appendTo(tr);
+var a=$("<a href=\"javascript:;\"></a>").appendTo(tr);
 a.wrap("<td></td>");
 a.linkbutton({iconCls:_d.iconCls,plain:true}).unbind(".pagination").bind("click.pagination",function(){
 _d.handler.call(_2);
@@ -170,7 +170,7 @@ if(_1a<1){
 _1a=1;
 }
 for(var i=_1a;i<=_1b;i++){
-var a=$("<a class=\"pagination-link\" href=\"javascript:void(0)\"></a>").appendTo(td);
+var a=$("<a class=\"pagination-link\" href=\"javascript:;\"></a>").appendTo(td);
 a.linkbutton({plain:true,text:i});
 if(i==_18.pageNumber){
 a.linkbutton("select");

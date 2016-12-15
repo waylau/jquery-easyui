@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -219,7 +219,7 @@
 				return false;
 			},
 			onStopDrag: function(e){
-				stop1(e);
+				stop1(e, 'move');
 			}
 		});
 		
@@ -233,7 +233,7 @@
 				return false;
 			},
 			onStopResize: function(e){
-				stop1(e);
+				stop1(e, 'resize');
 			}
 		});
 
@@ -274,9 +274,9 @@
 			state.proxy._outerWidth(e.data.width);
 			state.proxy._outerHeight(e.data.height);
 		}
-		function stop1(e){
+		function stop1(e, method){
 			$.extend(e.data, constrain.call(target, e.data.left, e.data.top, e.data.width+0.1, e.data.height+0.1));
-			$(target).window('resize', e.data);
+			$(target).window(method, e.data);
 			state.pmask.remove();
 			state.pmask = null;
 			state.proxy.remove();

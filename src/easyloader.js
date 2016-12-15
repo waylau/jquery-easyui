@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -154,6 +154,10 @@
 		combotreegrid:{
 			js:'jquery.combotreegrid.js',
 			dependencies:['combo','treegrid']
+		},
+		tagbox:{
+			js:'jquery.tagbox.js',
+			dependencies:['combobox']
 		},
 		validatebox:{
 			js:'jquery.validatebox.js',

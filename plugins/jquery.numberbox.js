@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -23,6 +23,7 @@ $(_2).numberbox("initValue",_5).numberbox("setText",_6);
 function _7(_8,_9){
 var _a=$.data(_8,"numberbox");
 var _b=_a.options;
+_b.value=parseFloat(_9);
 var _9=_b.parser.call(_8,_9);
 var _c=_b.formatter.call(_8,_9);
 _b.value=_9;
@@ -55,11 +56,14 @@ var _11=jq.data("textbox")?jq.textbox("options"):{};
 return $.extend($.data(jq[0],"numberbox").options,{width:_11.width,originalValue:_11.originalValue,disabled:_11.disabled,readonly:_11.readonly});
 },fix:function(jq){
 return jq.each(function(){
-$(this).numberbox("setValue",$(this).numberbox("getText"));
+var _12=$(this).numberbox("options");
+_12.value=null;
+var _13=_12.parser.call(this,$(this).numberbox("getText"));
+$(this).numberbox("setValue",_13);
 });
-},setValue:function(jq,_12){
+},setValue:function(jq,_14){
 return jq.each(function(){
-_7(this,_12);
+_7(this,_14);
 });
 },clear:function(jq){
 return jq.each(function(){
@@ -72,21 +76,19 @@ $(this).textbox("reset");
 $(this).numberbox("setValue",$(this).numberbox("getValue"));
 });
 }};
-$.fn.numberbox.parseOptions=function(_13){
-var t=$(_13);
-return $.extend({},$.fn.textbox.parseOptions(_13),$.parser.parseOptions(_13,["decimalSeparator","groupSeparator","suffix",{min:"number",max:"number",precision:"number"}]),{prefix:(t.attr("prefix")?t.attr("prefix"):undefined)});
+$.fn.numberbox.parseOptions=function(_15){
+var t=$(_15);
+return $.extend({},$.fn.textbox.parseOptions(_15),$.parser.parseOptions(_15,["decimalSeparator","groupSeparator","suffix",{min:"number",max:"number",precision:"number"}]),{prefix:(t.attr("prefix")?t.attr("prefix"):undefined)});
 };
 $.fn.numberbox.defaults=$.extend({},$.fn.textbox.defaults,{inputEvents:{keypress:function(e){
-var _14=e.data.target;
-var _15=$(_14).numberbox("options");
-return _15.filter.call(_14,e);
-},blur:function(e){
 var _16=e.data.target;
-$(_16).numberbox("setValue",$(_16).numberbox("getText"));
+var _17=$(_16).numberbox("options");
+return _17.filter.call(_16,e);
+},blur:function(e){
+$(e.data.target).numberbox("fix");
 },keydown:function(e){
 if(e.keyCode==13){
-var _17=e.data.target;
-$(_17).numberbox("setValue",$(_17).numberbox("getText"));
+$(e.data.target).numberbox("fix");
 }
 }},min:null,max:null,precision:0,decimalSeparator:".",groupSeparator:"",prefix:"",suffix:"",filter:function(e){
 var _18=$(this).numberbox("options");
@@ -143,13 +145,13 @@ return _1a.prefix+s1+_1a.suffix;
 },parser:function(s){
 s=s+"";
 var _1c=$(this).numberbox("options");
-if(parseFloat(s)!=s){
 if(_1c.prefix){
 s=$.trim(s.replace(new RegExp("\\"+$.trim(_1c.prefix),"g"),""));
 }
 if(_1c.suffix){
 s=$.trim(s.replace(new RegExp("\\"+$.trim(_1c.suffix),"g"),""));
 }
+if(parseFloat(s)!=_1c.value){
 if(_1c.groupSeparator){
 s=$.trim(s.replace(new RegExp("\\"+_1c.groupSeparator,"g"),""));
 }

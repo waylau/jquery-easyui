@@ -1,5 +1,5 @@
-﻿/**
- * jQuery EasyUI 1.5
+/**
+ * jQuery EasyUI 1.5.1
  * 
  * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
  *
@@ -97,7 +97,7 @@ if(_1c=="hide"||!_1b){
 t.tooltip("hide");
 }else{
 if((t.is(":focus")&&_1d.validating)||_1c=="show"){
-t.tooltip($.extend({},_1e.tipOptions,{content:_1b,position:_1e.tipPosition,deltaX:_1e.deltaX})).tooltip("show");
+t.tooltip($.extend({},_1e.tipOptions,{content:_1b,position:_1e.tipPosition,deltaX:_1e.deltaX,deltaY:_1e.deltaY})).tooltip("show");
 }
 }
 };
@@ -269,7 +269,7 @@ $.fn.validatebox.parseOptions=function(_3d){
 var t=$(_3d);
 return $.extend({},$.parser.parseOptions(_3d,["validType","missingMessage","invalidMessage","tipPosition",{delay:"number",interval:"number",deltaX:"number"},{editable:"boolean",validateOnCreate:"boolean",validateOnBlur:"boolean"}]),{required:(t.attr("required")?true:undefined),disabled:(t.attr("disabled")?true:undefined),readonly:(t.attr("readonly")?true:undefined),novalidate:(t.attr("novalidate")!=undefined?true:undefined)});
 };
-$.fn.validatebox.defaults={required:false,validType:null,validParams:null,delay:200,interval:200,missingMessage:"This field is required.",invalidMessage:null,tipPosition:"right",deltaX:0,novalidate:false,editable:true,disabled:false,readonly:false,validateOnCreate:true,validateOnBlur:false,events:{focus:_a,blur:_f,mouseenter:_13,mouseleave:_16,click:function(e){
+$.fn.validatebox.defaults={required:false,validType:null,validParams:null,delay:200,interval:200,missingMessage:"This field is required.",invalidMessage:null,tipPosition:"right",deltaX:0,deltaY:0,novalidate:false,editable:true,disabled:false,readonly:false,validateOnCreate:true,validateOnBlur:false,events:{focus:_a,blur:_f,mouseenter:_13,mouseleave:_16,click:function(e){
 var t=$(e.data.target);
 if(t.attr("type")=="checkbox"||t.attr("type")=="radio"){
 t.focus().validatebox("validate");
