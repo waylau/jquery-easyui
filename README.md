@@ -6,11 +6,11 @@ It inclides easyui sources, jqueryui-style and metro-style themes.
 
 提供给 git 和 [bower](http://bower.io) 使用的 lib,与 [easyui](http://www.jeasyui.com/) 官网保持同步,并包含了源码、示例以及 jqueryui、 metro 样式主题。
 
-截止目前为止（2016-12-12），easyui 的 最新版本为 1.5.1
+截止目前为止（2017-04-26），easyui 的 最新版本为 1.5.2
 
 ## How to use 如何使用
 
-###bower search 
+### bower search 
 
 bower search for `jquery-easyui-bower` or `jquery.easyui`.
 
@@ -20,7 +20,7 @@ bower search for `jquery-easyui-bower` or `jquery.easyui`.
 
 ![jquery-easyui](http://i1288.photobucket.com/albums/b484/waylau/waylau%20blog/easyui_zps899e00b7.jpg)
 
-###install 直接下载安装
+### install 直接下载安装
 
 	$bower install jquery.easyui --save
 
@@ -28,12 +28,13 @@ bower search for `jquery-easyui-bower` or `jquery.easyui`.
 
 	$bower install jquery-easyui-bower --save
 
-##Who’s Using jquery-easyui?
+## Who’s Using jquery-easyui?
 
 * [easyui-scaffold easyui脚手架](https://github.com/waylau/easyui-scaffold)
 
-##Release History
+## Release History
 
+* v1.5.2  2017-04-26 同步EasyUI v1.5.2
 * v1.5.1  2016-12-12 同步EasyUI v1.5.1
 * v1.5.0  2016-08-25 同步EasyUI v1.5.0
 * v1.4.4  2015-07-03 同步EasyUI v1.4.4

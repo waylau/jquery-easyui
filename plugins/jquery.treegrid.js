@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.1
+ * jQuery EasyUI 1.5.2
  * 
- * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -1190,6 +1190,9 @@ _118(row.children,row[opts.idField]);
 };
 _118(data,_116);
 }
+this.sort(_115,data);
+this.treeNodes=data;
+this.treeLevel=$(_115).treegrid("getLevel",_116);
 var node=_37(_115,_116);
 if(node){
 if(node.children){
@@ -1200,9 +1203,6 @@ node.children=data;
 }else{
 _117.data=_117.data.concat(data);
 }
-this.sort(_115,data);
-this.treeNodes=data;
-this.treeLevel=$(_115).treegrid("getLevel",_116);
 },sort:function(_11b,data){
 var opts=$.data(_11b,"treegrid").options;
 if(!opts.remoteSort&&opts.sortName){

@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.1
+ * jQuery EasyUI 1.5.2
  * 
- * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -35,6 +35,7 @@ _b.oldValue="";
 var _c=$("<input type=\"file\" class=\"textbox-value\">").appendTo(_a.filebox);
 _c.attr("id",_b.fileboxId).attr("name",$(_9).attr("textboxName")||"");
 _c.attr("accept",_b.accept);
+_c.attr("capture",_b.capture);
 if(_b.multiple){
 _c.attr("multiple","multiple");
 }
@@ -90,8 +91,8 @@ return jq;
 }};
 $.fn.filebox.parseOptions=function(_14){
 var t=$(_14);
-return $.extend({},$.fn.textbox.parseOptions(_14),$.parser.parseOptions(_14,["accept","separator"]),{multiple:(t.attr("multiple")?true:undefined)});
+return $.extend({},$.fn.textbox.parseOptions(_14),$.parser.parseOptions(_14,["accept","capture","separator"]),{multiple:(t.attr("multiple")?true:undefined)});
 };
-$.fn.filebox.defaults=$.extend({},$.fn.textbox.defaults,{buttonIcon:null,buttonText:"Choose File",buttonAlign:"right",inputEvents:{},accept:"",separator:",",multiple:false});
+$.fn.filebox.defaults=$.extend({},$.fn.textbox.defaults,{buttonIcon:null,buttonText:"Choose File",buttonAlign:"right",inputEvents:{},accept:"",capture:"",separator:",",multiple:false});
 })(jQuery);
 

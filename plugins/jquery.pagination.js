@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.1
+ * jQuery EasyUI 1.5.2
  * 
- * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -17,6 +17,9 @@ var tr=_5.find("tr");
 var aa=$.extend([],_4.layout);
 if(!_4.showPageList){
 _6(aa,"list");
+}
+if(!_4.showPageInfo){
+_6(aa,"info");
 }
 if(!_4.showRefresh){
 _6(aa,"refresh");
@@ -73,6 +76,15 @@ bb.refresh=_9("refresh");
 }else{
 if(_8=="links"){
 $("<td class=\"pagination-links\"></td>").appendTo(tr);
+}else{
+if(_8=="info"){
+if(_7==aa.length-1){
+$("<div class=\"pagination-info\"></div>").appendTo(_5);
+$("<div style=\"clear:both;\"></div>").appendTo(_5);
+}else{
+$("<td><div class=\"pagination-info\"></div></td>").appendTo(tr);
+}
+}
 }
 }
 }
@@ -103,8 +115,6 @@ var td=$("<td></td>").appendTo(tr);
 $(_4.buttons).appendTo(td).show();
 }
 }
-$("<div class=\"pagination-info\"></div>").appendTo(_5);
-$("<div style=\"clear:both;\"></div>").appendTo(_5);
 function _9(_c){
 var _d=_4.nav[_c];
 var a=$("<a href=\"javascript:;\"></a>").appendTo(tr);
@@ -247,9 +257,9 @@ _10(this,_27);
 }};
 $.fn.pagination.parseOptions=function(_28){
 var t=$(_28);
-return $.extend({},$.parser.parseOptions(_28,[{total:"number",pageSize:"number",pageNumber:"number",links:"number"},{loading:"boolean",showPageList:"boolean",showRefresh:"boolean"}]),{pageList:(t.attr("pageList")?eval(t.attr("pageList")):undefined)});
+return $.extend({},$.parser.parseOptions(_28,[{total:"number",pageSize:"number",pageNumber:"number",links:"number"},{loading:"boolean",showPageList:"boolean",showPageInfo:"boolean",showRefresh:"boolean"}]),{pageList:(t.attr("pageList")?eval(t.attr("pageList")):undefined)});
 };
-$.fn.pagination.defaults={total:1,pageSize:10,pageNumber:1,pageList:[10,20,30,50],loading:false,buttons:null,showPageList:true,showRefresh:true,links:10,layout:["list","sep","first","prev","sep","manual","sep","next","last","sep","refresh"],onSelectPage:function(_29,_2a){
+$.fn.pagination.defaults={total:1,pageSize:10,pageNumber:1,pageList:[10,20,30,50],loading:false,buttons:null,showPageList:true,showPageInfo:true,showRefresh:true,links:10,layout:["list","sep","first","prev","sep","manual","sep","next","last","sep","refresh","info"],onSelectPage:function(_29,_2a){
 },onBeforeRefresh:function(_2b,_2c){
 },onRefresh:function(_2d,_2e){
 },onChangePageSize:function(_2f){

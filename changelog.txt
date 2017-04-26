@@ -1,3 +1,19 @@
+Version 1.5.2
+-------------
+* Bug
+ * form: The initialized value of the inputing box will disappear after calling the 'reset' method. fixed.
+ * textbox: Calling the 'destroy' method does not clean the field label. fixed.
+ * datagrid: Calling the 'selectRow' method on an unexisting row causes undesired record set. fixed.
+* Improvement
+ * datagrid: The ctrl selection is supported on Mac keyboards.
+ * datagrid: The 'scrollOnSelect' property is available for the user to determine whether to scroll to the specified row when selecting it.
+ * combotree: Add the 'textField' property.
+ * combotreegrid: Add the 'textField' property.
+ * pagination: Add 'showPageInfo' property.
+ * panel: Add 'halign' and 'titleDirection' properties to allow the user to align the panel header to left or right side.
+ * accordion: Add 'halign' property to build the horizontal accordion.
+ * tagbox: The 'required' propery can be applied to validate whether the value is empty.
+
 Version 1.5.1
 -------------
 * Bug

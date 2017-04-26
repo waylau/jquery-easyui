@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.1
+ * jQuery EasyUI 1.5.2
  * 
- * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -16,12 +16,58 @@
  */
 (function($){
 	
+	// function setSize(container, param){
+	// 	var state = $.data(container, 'accordion');
+	// 	var opts = state.options;
+	// 	var panels = state.panels;
+	// 	var cc = $(container);
+		
+	// 	if (param){
+	// 		$.extend(opts, {
+	// 			width: param.width,
+	// 			height: param.height
+	// 		});
+	// 	}
+	// 	cc._size(opts);
+	// 	var headerHeight = 0;
+	// 	var bodyHeight = 'auto';
+	// 	var headers = cc.find('>.panel>.accordion-header');
+	// 	if (headers.length){
+	// 		headerHeight = $(headers[0]).css('height', '')._outerHeight();
+	// 	}
+	// 	if (!isNaN(parseInt(opts.height))){
+	// 		bodyHeight = cc.height() - headerHeight*headers.length;
+	// 	}
+		
+	// 	_resize(true, bodyHeight - _resize(false) + 1);
+		
+	// 	function _resize(collapsible, height){
+	// 		var totalHeight = 0;
+	// 		for(var i=0; i<panels.length; i++){
+	// 			var p = panels[i];
+	// 			var h = p.panel('header')._outerHeight(headerHeight);
+	// 			if (p.panel('options').collapsible == collapsible){
+	// 				var pheight = isNaN(height) ? undefined : (height+headerHeight*h.length);
+	// 				p.panel('resize', {
+	// 					width: cc.width(),
+	// 					height: (collapsible ? pheight : undefined)
+	// 				});
+	// 				totalHeight += p.panel('panel').outerHeight()-headerHeight*h.length;
+	// 			}
+	// 		}
+	// 		return totalHeight;
+	// 	}
+	// }
+
 	function setSize(container, param){
 		var state = $.data(container, 'accordion');
 		var opts = state.options;
 		var panels = state.panels;
 		var cc = $(container);
-		
+		var isHorizontal = (opts.halign=='left' || opts.halign=='right');
+		cc.children('.panel-last').removeClass('panel-last');
+		cc.children('.panel:last').addClass('panel-last');
+
 		if (param){
 			$.extend(opts, {
 				width: param.width,
@@ -33,26 +79,48 @@
 		var bodyHeight = 'auto';
 		var headers = cc.find('>.panel>.accordion-header');
 		if (headers.length){
-			headerHeight = $(headers[0]).css('height', '')._outerHeight();
+			if (isHorizontal){
+				$(panels[0]).panel('resize', {width:cc.width(),height:cc.height()});
+				headerHeight = $(headers[0])._outerWidth();
+			} else {
+				headerHeight = $(headers[0]).css('height', '')._outerHeight();
+			}
 		}
 		if (!isNaN(parseInt(opts.height))){
-			bodyHeight = cc.height() - headerHeight*headers.length;
+			if (isHorizontal){
+				bodyHeight = cc.width() - headerHeight*headers.length;
+			} else {
+				bodyHeight = cc.height() - headerHeight*headers.length;
+			}
 		}
 		
-		_resize(true, bodyHeight - _resize(false) + 1);
+		// _resize(true, bodyHeight - _resize(false) + 1);
+		_resize(true, bodyHeight - _resize(false));
 		
 		function _resize(collapsible, height){
 			var totalHeight = 0;
 			for(var i=0; i<panels.length; i++){
 				var p = panels[i];
-				var h = p.panel('header')._outerHeight(headerHeight);
+				if (isHorizontal){
+					var h = p.panel('header')._outerWidth(headerHeight);
+				} else {
+					var h = p.panel('header')._outerHeight(headerHeight);
+				}
 				if (p.panel('options').collapsible == collapsible){
 					var pheight = isNaN(height) ? undefined : (height+headerHeight*h.length);
-					p.panel('resize', {
-						width: cc.width(),
-						height: (collapsible ? pheight : undefined)
-					});
-					totalHeight += p.panel('panel').outerHeight()-headerHeight*h.length;
+					if (isHorizontal){
+						p.panel('resize', {
+							height: cc.height(),
+							width: (collapsible ? pheight : undefined)
+						});
+						totalHeight += p.panel('panel')._outerWidth()-headerHeight*h.length;
+					} else {
+						p.panel('resize', {
+							width: cc.width(),
+							height: (collapsible ? pheight : undefined)
+						});
+						totalHeight += p.panel('panel').outerHeight()-headerHeight*h.length;
+					}
 				}
 			}
 			return totalHeight;
@@ -158,7 +226,8 @@
 			doSize: false,
 			collapsed: true,
 			headerCls: 'accordion-header',
-			bodyCls: 'accordion-body'
+			bodyCls: 'accordion-body',
+			halign: opts.halign
 		}, options, {
 			onBeforeExpand: function(){
 				if (options.onBeforeExpand){
@@ -178,6 +247,7 @@
 				header.find('.accordion-collapse').removeClass('accordion-expand');
 			},
 			onExpand: function(){
+				$(container).find('>.panel-last>.accordion-header').removeClass('accordion-header-border');
 				if (options.onExpand){options.onExpand.call(this)}
 				opts.onSelect.call(container, $(this).panel('options').title, getPanelIndex(container, this));
 			},
@@ -185,11 +255,15 @@
 				if (options.onBeforeCollapse){
 					if (options.onBeforeCollapse.call(this) == false){return false}
 				}
+				$(container).find('>.panel-last>.accordion-header').addClass('accordion-header-border');
 				var header = $(this).panel('header');
 				header.removeClass('accordion-header-selected');
 				header.find('.accordion-collapse').addClass('accordion-expand');
 			},
 			onCollapse: function(){
+				if (isNaN(parseInt(opts.height))){
+					$(container).find('>.panel-last>.accordion-header').removeClass('accordion-header-border');
+				}
 				if (options.onCollapse){options.onCollapse.call(this)}
 				opts.onUnselect.call(container, $(this).panel('options').title, getPanelIndex(container, this));
 			}
@@ -204,6 +278,9 @@
 			return false;
 		});
 		pp.panel('options').collapsible ? t.show() : t.hide();
+		if (opts.halign=='left' || opts.halign=='right'){
+			t.hide();
+		}
 		
 		header.click(function(){
 			togglePanel(pp);
@@ -244,6 +321,8 @@
 	
 	function doFirstSelect(container){
 		var opts = $.data(container, 'accordion').options;
+		$(container).find('>.panel-last>.accordion-header').addClass('accordion-header-border');
+
 		var p = findBy(container, 'selected', true);
 		if (p){
 			_select(getPanelIndex(container, p));
@@ -390,7 +469,7 @@
 	$.fn.accordion.parseOptions = function(target){
 		var t = $(target);
 		return $.extend({}, $.parser.parseOptions(target, [
-			'width','height',
+			'width','height','halign',
 			{fit:'boolean',border:'boolean',animate:'boolean',multiple:'boolean',selected:'number'}
 		]));
 	};
@@ -403,6 +482,7 @@
 		animate: true,
 		multiple: false,
 		selected: 0,
+		halign: 'top',	// the header alignment: 'top','left','right'
 		
 		onSelect: function(title, index){},
 		onUnselect: function(title, index){},

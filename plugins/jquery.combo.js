@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.1
+ * jQuery EasyUI 1.5.2
  * 
- * Copyright (c) 2009-2016 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -204,7 +204,7 @@ _2d.previousText=_2c;
 function _2f(_30){
 var _31=$.data(_30,"combo");
 var _32=_31.options;
-var _33=_31.combo;
+var _33=$(_30).next();
 var _34=[];
 _33.find(".textbox-value").each(function(){
 _34.push($(this).val());
@@ -217,27 +217,27 @@ return _34.length?_34[0].split(_32.separator):_34;
 };
 function _35(_36,_37){
 var _38=$.data(_36,"combo");
-var _39=_38.options;
-var _3a=_38.combo;
+var _39=_38.combo;
+var _3a=$(_36).combo("options");
 if(!$.isArray(_37)){
-_37=_37.split(_39.separator);
+_37=_37.split(_3a.separator);
 }
 var _3b=_2f(_36);
-_3a.find(".textbox-value").remove();
+_39.find(".textbox-value").remove();
 if(_37.length){
-if(_39.multivalue){
+if(_3a.multivalue){
 for(var i=0;i<_37.length;i++){
 _3c(_37[i]);
 }
 }else{
-_3c(_37.join(_39.separator));
+_3c(_37.join(_3a.separator));
 }
 }
 function _3c(_3d){
 var _3e=$(_36).attr("textboxName")||"";
-var _3f=$("<input type=\"hidden\" class=\"textbox-value\">").appendTo(_3a);
+var _3f=$("<input type=\"hidden\" class=\"textbox-value\">").appendTo(_39);
 _3f.attr("name",_3e);
-if(_39.disabled){
+if(_3a.disabled){
 _3f.attr("disabled","disabled");
 }
 _3f.val(_3d);
@@ -254,11 +254,11 @@ return true;
 return false;
 })();
 if(_40){
-$(_36).val(_37.join(_39.separator));
-if(_39.multiple){
-_39.onChange.call(_36,_37,_3b);
+$(_36).val(_37.join(_3a.separator));
+if(_3a.multiple){
+_3a.onChange.call(_36,_37,_3b);
 }else{
-_39.onChange.call(_36,_37[0],_3b[0]);
+_3a.onChange.call(_36,_37[0],_3b[0]);
 }
 $(_36).closest("form").trigger("_change",[_36]);
 }

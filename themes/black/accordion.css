@@ -39,3 +39,51 @@
 .accordion .accordion-header-selected .panel-title {
   color: #fff;
 }
+.accordion .panel-last > .accordion-header {
+  border-bottom-color: #3d3d3d;
+}
+.accordion .panel-last > .accordion-body {
+  border-bottom-color: #666;
+}
+.accordion .panel-last > .accordion-header-selected,
+.accordion .panel-last > .accordion-header-border {
+  border-bottom-color: #000;
+}
+.accordion> .panel-hleft {
+  float: left;
+}
+.accordion> .panel-hleft>.panel-header {
+  border-width: 0 1px 0 0;
+}
+.accordion> .panel-hleft> .panel-body {
+  border-width: 0 1px 0 0;
+}
+.accordion> .panel-hleft.panel-last > .accordion-header {
+  border-right-color: #3d3d3d;
+}
+.accordion> .panel-hleft.panel-last > .accordion-body {
+  border-right-color: #666;
+}
+.accordion> .panel-hleft.panel-last > .accordion-header-selected,
+.accordion> .panel-hleft.panel-last > .accordion-header-border {
+  border-right-color: #000;
+}
+.accordion> .panel-hright {
+  float: right;
+}
+.accordion> .panel-hright>.panel-header {
+  border-width: 0 0 0 1px;
+}
+.accordion> .panel-hright> .panel-body {
+  border-width: 0 0 0 1px;
+}
+.accordion> .panel-hright.panel-last > .accordion-header {
+  border-left-color: #3d3d3d;
+}
+.accordion> .panel-hright.panel-last > .accordion-body {
+  border-left-color: #666;
+}
+.accordion> .panel-hright.panel-last > .accordion-header-selected,
+.accordion> .panel-hright.panel-last > .accordion-header-border {
+  border-left-color: #000;
+}
