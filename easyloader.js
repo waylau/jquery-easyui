@@ -129,7 +129,7 @@ _1e();
 }else{
 if(_1d<easyloader.timeout){
 _1d+=10;
-setTimeout(arguments.callee,10);
+setTimeout(_1e,10);
 }
 }
 }
