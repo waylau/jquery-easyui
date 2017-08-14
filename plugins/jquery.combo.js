@@ -159,10 +159,10 @@ _22.panel("resize",{width:(_23.panelWidth?_23.panelWidth:_21._outerWidth()),heig
 _22.panel("panel").hide();
 _22.panel("open");
 }
-(function(){
+(function _fixCombo(){
 if(_24.comboTarget==_1f&&_22.is(":visible")){
 _22.panel("move",{left:_25(),top:_26()});
-setTimeout(arguments.callee,200);
+setTimeout(_fixCombo,200);
 }
 })();
 function _25(){

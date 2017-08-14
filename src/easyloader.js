@@ -366,7 +366,7 @@
 				} else {
 					if (time < easyloader.timeout){
 						time += 10;
-						setTimeout(arguments.callee, 10);
+						setTimeout(loadMm, 10);
 					}
 				}
 			} else {

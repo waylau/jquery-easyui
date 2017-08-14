@@ -43,7 +43,7 @@ return;
 }
 _c.validating=true;
 _c.value=_d.val(_b);
-(function(){
+(function _fixValidateBox(){
 if(!$(_b).is(":visible")){
 _c.validating=false;
 }
@@ -62,7 +62,7 @@ if(_c.message){
 _d.err(_b,_c.message);
 }
 }
-_c.ftimer=setTimeout(arguments.callee,_d.interval);
+_c.ftimer=setTimeout(_fixValidateBox,_d.interval);
 }
 })();
 };
