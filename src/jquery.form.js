@@ -1,14 +1,14 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
- * form - jQuery EasyUI
+ * form - EasyUI for jQuery
  * 
  */
 (function($){
@@ -42,7 +42,8 @@
 			disabledFields = $(target).find('input[name]:enabled,textarea[name]:enabled,select[name]:enabled').filter(function(){
 				return $.inArray(this, ff) == -1;
 			});
-			disabledFields.attr('disabled', 'disabled');
+			// disabledFields.attr('disabled', 'disabled');
+			disabledFields._propAttr('disabled', true);
 		}
 
 		if (opts.ajax){
@@ -60,7 +61,8 @@
 		}
 
 		if (opts.dirty){
-			disabledFields.removeAttr('disabled');
+			// disabledFields.removeAttr('disabled');
+			disabledFields._propAttr('disabled', false);
 		}
 	}
 
@@ -229,17 +231,21 @@
 		 * check the checkbox and radio fields
 		 */
 		function _checkField(name, val){
-			var cc = $(target).find('[switchbuttonName="'+name+'"]');
-			if (cc.length){
-				cc.switchbutton('uncheck');
-				cc.each(function(){
-					if (_isChecked($(this).switchbutton('options').value, val)){
-						$(this).switchbutton('check');
-					}
-				});
-				return true;
+			var plugins = ['switchbutton','radiobutton','checkbox'];
+			for(var i=0; i<plugins.length; i++){
+				var plugin = plugins[i];
+				var cc = $(target).find('['+plugin+'Name="'+name+'"]');
+				if (cc.length){
+					cc[plugin]('uncheck');
+					cc.each(function(){
+						if (_isChecked($(this)[plugin]('options').value, val)){
+							$(this)[plugin]('check');
+						}
+					});
+					return true;
+				}
 			}
-			cc = $(target).find('input[name="'+name+'"][type=radio], input[name="'+name+'"][type=checkbox]');
+			var cc = $(target).find('input[name="'+name+'"][type=radio], input[name="'+name+'"][type=checkbox]');
 			if (cc.length){
 				cc._propAttr('checked', false);
 				cc.each(function(){
@@ -469,9 +475,9 @@
 	};
 	
 	$.fn.form.defaults = {
-		fieldTypes: ['combobox','combotree','combogrid','combotreegrid','datetimebox','datebox','combo',
+		fieldTypes: ['tagbox','combobox','combotree','combogrid','combotreegrid','datetimebox','datebox','combo',
 		        'datetimespinner','timespinner','numberspinner','spinner',
-		        'slider','searchbox','numberbox','passwordbox','filebox','textbox','switchbutton'],
+		        'slider','searchbox','numberbox','passwordbox','filebox','textbox','switchbutton','radiobutton','checkbox'],
 		novalidate: false,
 		ajax: true,
 		iframe: true,

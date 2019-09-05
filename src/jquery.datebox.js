@@ -1,14 +1,14 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
- * datebox - jQuery EasyUI
+ * datebox - EasyUI for jQuery
  * 
  * Dependencies:
  * 	 calendar
@@ -65,9 +65,9 @@
 				onSelect:function(date){
 					var target = this.target;
 					var opts = $(target).datebox('options');
+					opts.onSelect.call(target, date);
 					setValue(target, opts.formatter.call(target, date));
 					$(target).combo('hidePanel');
-					opts.onSelect.call(target, date);
 				}
 			});
 		}
@@ -226,7 +226,7 @@
 	};
 	
 	$.fn.datebox.defaults = $.extend({}, $.fn.combo.defaults, {
-		panelWidth:180,
+		panelWidth:250,
 		panelHeight:'auto',
 		sharedCalendar:null,
 		
@@ -246,12 +246,15 @@
 		buttons:[{
 			text: function(target){return $(target).datebox('options').currentText;},
 			handler: function(target){
+				var opts = $(target).datebox('options');
 				var now = new Date();
+				var current = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 				$(target).datebox('calendar').calendar({
-					year:now.getFullYear(),
-					month:now.getMonth()+1,
-					current:new Date(now.getFullYear(), now.getMonth(), now.getDate())
+					year:current.getFullYear(),
+					month:current.getMonth()+1,
+					current:current
 				});
+				opts.onSelect.call(target, current);
 				doEnter(target);
 			}
 		},{
@@ -268,15 +271,16 @@
 			return (m<10?('0'+m):m)+'/'+(d<10?('0'+d):d)+'/'+y;
 		},
 		parser:function(s){
-			if (!s) return new Date();
+			var copts = $(this).datebox('calendar').calendar('options');
+			if (!s) return new copts.Date();
 			var ss = s.split('/');
 			var m = parseInt(ss[0],10);
 			var d = parseInt(ss[1],10);
 			var y = parseInt(ss[2],10);
 			if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
-				return new Date(y,m-1,d);
+				return new copts.Date(y,m-1,d);
 			} else {
-				return new Date();
+				return new copts.Date();
 			}
 		},
 		

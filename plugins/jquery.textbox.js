@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -225,6 +225,7 @@ $(this).val(_2b.prompt).addClass("textbox-prompt");
 $(this).removeClass("textbox-prompt");
 }
 tb.removeClass("textbox-focused");
+tb.closest(".form-field").removeClass("form-field-focused");
 }).bind("focus.textbox",function(e){
 _2b.hasFocusMe=true;
 if(tb.hasClass("textbox-focused")){
@@ -235,6 +236,7 @@ $(this).val(_2b.value);
 }
 $(this).removeClass("textbox-prompt");
 tb.addClass("textbox-focused");
+tb.closest(".form-field").addClass("form-field-focused");
 });
 for(var _2d in _2b.inputEvents){
 _2c.bind(_2d+".textbox",{target:_29},_2b.inputEvents[_2d]);
@@ -281,12 +283,12 @@ if(_39.disabled){
 _3a.blur();
 _3a.validatebox("disable");
 tb.addClass("textbox-disabled");
-ss.attr("disabled","disabled");
+ss._propAttr("disabled",true);
 $(_38.label).addClass("textbox-label-disabled");
 }else{
 _3a.validatebox("enable");
 tb.removeClass("textbox-disabled");
-ss.removeAttr("disabled");
+ss._propAttr("disabled",false);
 $(_38.label).removeClass("textbox-label-disabled");
 }
 };
@@ -423,6 +425,11 @@ _51.removeClass("textbox-prompt");
 _51.val(_50.prompt).addClass("textbox-prompt");
 }
 }
+if(_50.value){
+$(this).closest(".form-field").removeClass("form-field-empty");
+}else{
+$(this).closest(".form-field").addClass("form-field-empty");
+}
 $(this).textbox("validate");
 });
 },initValue:function(jq,_52){
@@ -538,7 +545,7 @@ $.fn.textbox.parseOptions=function(_69){
 var t=$(_69);
 return $.extend({},$.fn.validatebox.parseOptions(_69),$.parser.parseOptions(_69,["prompt","iconCls","iconAlign","buttonText","buttonIcon","buttonAlign","label","labelPosition","labelAlign",{multiline:"boolean",iconWidth:"number",labelWidth:"number"}]),{value:(t.val()||undefined),type:(t.attr("type")?t.attr("type"):undefined)});
 };
-$.fn.textbox.defaults=$.extend({},$.fn.validatebox.defaults,{doSize:true,width:"auto",height:"auto",cls:null,prompt:"",value:"",type:"text",multiline:false,icons:[],iconCls:null,iconAlign:"right",iconWidth:18,buttonText:"",buttonIcon:null,buttonAlign:"right",label:null,labelWidth:"auto",labelPosition:"before",labelAlign:"left",inputEvents:{blur:function(e){
+$.fn.textbox.defaults=$.extend({},$.fn.validatebox.defaults,{doSize:true,width:"auto",height:"auto",cls:null,prompt:"",value:"",type:"text",multiline:false,icons:[],iconCls:null,iconAlign:"right",iconWidth:26,buttonText:"",buttonIcon:null,buttonAlign:"right",label:null,labelWidth:"auto",labelPosition:"before",labelAlign:"left",inputEvents:{blur:function(e){
 var t=$(e.data.target);
 var _6a=t.textbox("options");
 if(t.textbox("getValue")!=_6a.value){

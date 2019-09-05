@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -25,7 +25,7 @@ var _7=$(_2).datebox("panel");
 var p=$("<div style=\"padding:2px\"><input></div>").insertAfter(_7.children("div.datebox-calendar-inner"));
 _3.spinner=p.children("input");
 }
-_3.spinner.timespinner({width:_4.spinnerWidth,showSeconds:_4.showSeconds,separator:_4.timeSeparator});
+_3.spinner.timespinner({width:_4.spinnerWidth,showSeconds:_4.showSeconds,separator:_4.timeSeparator,hour12:_4.hour12});
 $(_2).datetimebox("initValue",_4.value);
 };
 function _8(_9){
@@ -123,7 +123,8 @@ $.fn.datetimebox.parseOptions=function(_26){
 var t=$(_26);
 return $.extend({},$.fn.datebox.parseOptions(_26),$.parser.parseOptions(_26,["timeSeparator","spinnerWidth",{showSeconds:"boolean"}]));
 };
-$.fn.datetimebox.defaults=$.extend({},$.fn.datebox.defaults,{spinnerWidth:"100%",showSeconds:true,timeSeparator:":",keyHandler:{up:function(e){
+$.fn.datetimebox.defaults=$.extend({},$.fn.datebox.defaults,{spinnerWidth:"100%",showSeconds:true,timeSeparator:":",hour12:false,panelEvents:{mousedown:function(e){
+}},keyHandler:{up:function(e){
 },down:function(e){
 },left:function(e){
 },right:function(e){
@@ -146,33 +147,22 @@ return $(_2c).datetimebox("options").closeText;
 },handler:function(_2d){
 $(_2d).datetimebox("hidePanel");
 }}],formatter:function(_2e){
-var h=_2e.getHours();
-var M=_2e.getMinutes();
-var s=_2e.getSeconds();
-function _2f(_30){
-return (_30<10?"0":"")+_30;
-};
-var _31=$(this).datetimebox("spinner").timespinner("options").separator;
-var r=$.fn.datebox.defaults.formatter(_2e)+" "+_2f(h)+_31+_2f(M);
-if($(this).datetimebox("options").showSeconds){
-r+=_31+_2f(s);
+if(!_2e){
+return "";
 }
-return r;
+return $.fn.datebox.defaults.formatter.call(this,_2e)+" "+$.fn.timespinner.defaults.formatter.call($(this).datetimebox("spinner")[0],_2e);
 },parser:function(s){
-if($.trim(s)==""){
+s=$.trim(s);
+if(!s){
 return new Date();
 }
 var dt=s.split(" ");
-var d=$.fn.datebox.defaults.parser(dt[0]);
+var _2f=$.fn.datebox.defaults.parser.call(this,dt[0]);
 if(dt.length<2){
-return d;
+return _2f;
 }
-var _32=$(this).datetimebox("spinner").timespinner("options").separator;
-var tt=dt[1].split(_32);
-var _33=parseInt(tt[0],10)||0;
-var _34=parseInt(tt[1],10)||0;
-var _35=parseInt(tt[2],10)||0;
-return new Date(d.getFullYear(),d.getMonth(),d.getDate(),_33,_34,_35);
+var _30=$.fn.timespinner.defaults.parser.call($(this).datetimebox("spinner")[0],dt[1]+(dt[2]?" "+dt[2]:""));
+return new Date(_2f.getFullYear(),_2f.getMonth(),_2f.getDate(),_30.getHours(),_30.getMinutes(),_30.getSeconds());
 }});
 })(jQuery);
 

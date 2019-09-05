@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -62,8 +62,9 @@ _9.unshift(_a.children[i]);
 }
 }
 }};
-$.parser={auto:true,onComplete:function(_b){
-},plugins:["draggable","droppable","resizable","pagination","tooltip","linkbutton","menu","menubutton","splitbutton","switchbutton","progressbar","tree","textbox","passwordbox","filebox","combo","combobox","combotree","combogrid","combotreegrid","tagbox","numberbox","validatebox","searchbox","spinner","numberspinner","timespinner","datetimespinner","calendar","datebox","datetimebox","slider","layout","panel","datagrid","propertygrid","treegrid","datalist","tabs","accordion","window","dialog","form"],parse:function(_c){
+$.parser={auto:true,emptyFn:function(){
+},onComplete:function(_b){
+},plugins:["draggable","droppable","resizable","pagination","tooltip","linkbutton","menu","sidemenu","menubutton","splitbutton","switchbutton","progressbar","radiobutton","checkbox","tree","textbox","passwordbox","maskedbox","filebox","combo","combobox","combotree","combogrid","combotreegrid","tagbox","numberbox","validatebox","searchbox","spinner","numberspinner","timespinner","datetimespinner","calendar","datebox","datetimebox","slider","layout","panel","datagrid","propertygrid","treegrid","datalist","tabs","accordion","window","dialog","form"],parse:function(_c){
 var aa=[];
 for(var i=0;i<$.parser.plugins.length;i++){
 var _d=$.parser.plugins[i];
@@ -103,8 +104,10 @@ var _14=v.substr(v.length-1,1);
 if(_14=="%"){
 v=parseFloat(v.substr(0,v.length-1));
 if(_10.toLowerCase().indexOf("width")>=0){
+_13+=_12[0].offsetWidth-_12[0].clientWidth;
 v=Math.floor((_12.width()-_13)*v/100);
 }else{
+_13+=_12[0].offsetHeight-_12[0].clientHeight;
 v=Math.floor((_12.height()-_13)*v/100);
 }
 }else{

@@ -1,14 +1,14 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
- * slider - jQuery EasyUI
+ * slider - EasyUI for jQuery
  * 
  * Dependencies:
  *  draggable
@@ -169,6 +169,12 @@
 			setPos(opts.mode=='h'?(e.pageX-pos.left):(e.pageY-pos.top));
 			opts.onComplete.call(target, opts.value);
 		});
+
+		function fixVal(value){
+			var dd = String(opts.step).split('.');
+			var dlen = dd.length>1 ? dd[1].length : 0;
+			return parseFloat(value.toFixed(dlen));
+		}
 		
 		function setPos(pos, handle){
 			var value = pos2value(target, pos);
@@ -178,6 +184,7 @@
 			} else {
 				value = value - s + opts.step;
 			}
+			value = fixVal(value);
 			if (opts.range){
 				var v1 = opts.value[0];
 				var v2 = opts.value[1];
@@ -284,7 +291,8 @@
 		if (opts.reversed){
 			pos = size - pos;
 		}
-		return pos.toFixed(0);
+		return pos;
+		// return pos.toFixed(0);
 	}
 	
 	/**
@@ -297,7 +305,8 @@
 		var size = opts.mode == 'h' ? slider.width() : slider.height();
 		var pos = opts.mode=='h' ? (opts.reversed?(size-pos):pos) : (opts.reversed?pos:(size-pos));
 		var value = opts.converter.toValue.call(target, pos, size);
-		return value.toFixed(0);
+		return value;
+		// return value.toFixed(0);
 	}
 	
 	$.fn.slider = function(options, param){
@@ -315,7 +324,8 @@
 					options: $.extend({}, $.fn.slider.defaults, $.fn.slider.parseOptions(this), options),
 					slider: init(this)
 				});
-				$(this).removeAttr('disabled');
+				// $(this).removeAttr('disabled');
+				$(this)._propAttr('disabled', false);
 			}
 			
 			var opts = state.options;
@@ -428,11 +438,13 @@
 		converter:{
 			toPosition:function(value, size){
 				var opts = $(this).slider('options');
-				return (value-opts.min)/(opts.max-opts.min)*size;
+				var p = (value-opts.min)/(opts.max-opts.min)*size;
+				return p;
 			},
 			toValue:function(pos, size){
 				var opts = $(this).slider('options');
-				return opts.min + (opts.max-opts.min)*(pos/size);
+				var v = opts.min + (opts.max-opts.min)*(pos/size);
+				return v;
 			}
 		},
 		onChange: function(value, oldValue){},

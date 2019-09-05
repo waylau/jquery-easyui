@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -139,6 +139,7 @@ _12(e);
 var _18=$.data(e.data.target,"draggable");
 var _19=_18.proxy;
 var _1a=_18.options;
+_1a.onEndDrag.call(e.data.target,e);
 if(_1a.revert){
 if(_1b()==true){
 $(e.data.target).css({position:e.data.startPosition,left:e.data.startLeft,top:e.data.startTop});
@@ -185,7 +186,7 @@ if(e.pageX>p2.left&&e.pageX<p2.left+_1f.outerWidth()&&e.pageY>p2.top&&e.pageY<p2
 if(_1a.revert){
 $(e.data.target).css({position:e.data.startPosition,left:e.data.startLeft,top:e.data.startTop});
 }
-$(this).trigger("_drop",[e.data.target]);
+$(this).triggerHandler("_drop",[e.data.target]);
 _1d();
 _1e=true;
 this.entered=false;
@@ -297,6 +298,7 @@ return $.extend({},$.parser.parseOptions(_30,["cursor","handle","axis",{"revert"
 $.fn.draggable.defaults={proxy:null,revert:false,cursor:"move",deltaX:null,deltaY:null,handle:null,disabled:false,edge:0,axis:null,delay:100,onBeforeDrag:function(e){
 },onStartDrag:function(e){
 },onDrag:function(e){
+},onEndDrag:function(e){
 },onStopDrag:function(e){
 }};
 $.fn.draggable.isDragging=false;

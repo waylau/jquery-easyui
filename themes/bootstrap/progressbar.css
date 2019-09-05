@@ -26,6 +26,7 @@
   color: #333;
   font-size: 12px;
 }
+.progressbar-value,
 .progressbar-value .progressbar-text {
   background-color: #0081c2;
   color: #fff;

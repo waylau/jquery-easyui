@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -33,7 +33,7 @@ ff.push(f);
 _7=$(_2).find("input[name]:enabled,textarea[name]:enabled,select[name]:enabled").filter(function(){
 return $.inArray(this,ff)==-1;
 });
-_7.attr("disabled","disabled");
+_7._propAttr("disabled",true);
 }
 if(_4.ajax){
 if(_4.iframe){
@@ -49,7 +49,7 @@ _8(_2,_5);
 $(_2).submit();
 }
 if(_4.dirty){
-_7.removeAttr("disabled");
+_7._propAttr("disabled",false);
 }
 };
 function _8(_a,_b){
@@ -187,21 +187,25 @@ _23.onLoadSuccess.call(_21,_27);
 _28.form("validate");
 };
 function _2a(_2c,val){
-var cc=$(_21).find("[switchbuttonName=\""+_2c+"\"]");
+var _2d=["switchbutton","radiobutton","checkbox"];
+for(var i=0;i<_2d.length;i++){
+var _2e=_2d[i];
+var cc=$(_21).find("["+_2e+"Name=\""+_2c+"\"]");
 if(cc.length){
-cc.switchbutton("uncheck");
+cc[_2e]("uncheck");
 cc.each(function(){
-if(_2d($(this).switchbutton("options").value,val)){
-$(this).switchbutton("check");
+if(_2f($(this)[_2e]("options").value,val)){
+$(this)[_2e]("check");
 }
 });
 return true;
 }
-cc=$(_21).find("input[name=\""+_2c+"\"][type=radio], input[name=\""+_2c+"\"][type=checkbox]");
+}
+var cc=$(_21).find("input[name=\""+_2c+"\"][type=radio], input[name=\""+_2c+"\"][type=checkbox]");
 if(cc.length){
 cc._propAttr("checked",false);
 cc.each(function(){
-if(_2d($(this).val(),val)){
+if(_2f($(this).val(),val)){
 $(this)._propAttr("checked",true);
 }
 });
@@ -209,24 +213,24 @@ return true;
 }
 return false;
 };
-function _2d(v,val){
+function _2f(v,val){
 if(v==String(val)||$.inArray(v,$.isArray(val)?val:[val])>=0){
 return true;
 }else{
 return false;
 }
 };
-function _2b(_2e,val){
-var _2f=$(_21).find("[textboxName=\""+_2e+"\"],[sliderName=\""+_2e+"\"]");
-if(_2f.length){
+function _2b(_30,val){
+var _31=$(_21).find("[textboxName=\""+_30+"\"],[sliderName=\""+_30+"\"]");
+if(_31.length){
 for(var i=0;i<_23.fieldTypes.length;i++){
-var _30=_23.fieldTypes[i];
-var _31=_2f.data(_30);
-if(_31){
-if(_31.options.multiple||_31.options.range){
-_2f[_30]("setValues",val);
+var _32=_23.fieldTypes[i];
+var _33=_31.data(_32);
+if(_33){
+if(_33.options.multiple||_33.options.range){
+_31[_32]("setValues",val);
 }else{
-_2f[_30]("setValue",val);
+_31[_32]("setValue",val);
 }
 return true;
 }
@@ -235,8 +239,8 @@ return true;
 return false;
 };
 };
-function _32(_33){
-$("input,select,textarea",_33).each(function(){
+function _34(_35){
+$("input,select,textarea",_35).each(function(){
 if($(this).hasClass("textbox-value")){
 return;
 }
@@ -245,15 +249,15 @@ if(t=="text"||t=="hidden"||t=="password"||tag=="textarea"){
 this.value="";
 }else{
 if(t=="file"){
-var _34=$(this);
-if(!_34.hasClass("textbox-value")){
-var _35=_34.clone().val("");
-_35.insertAfter(_34);
-if(_34.data("validatebox")){
-_34.validatebox("destroy");
-_35.validatebox();
+var _36=$(this);
+if(!_36.hasClass("textbox-value")){
+var _37=_36.clone().val("");
+_37.insertAfter(_36);
+if(_36.data("validatebox")){
+_36.validatebox("destroy");
+_37.validatebox();
 }else{
-_34.remove();
+_36.remove();
 }
 }
 }else{
@@ -268,121 +272,121 @@ this.selectedIndex=-1;
 }
 });
 var tmp=$();
-var _36=$(_33);
-var _37=$.data(_33,"form").options;
-for(var i=0;i<_37.fieldTypes.length;i++){
-var _38=_37.fieldTypes[i];
-var _39=_36.find("."+_38+"-f").not(tmp);
-if(_39.length&&_39[_38]){
-_39[_38]("clear");
-tmp=tmp.add(_39);
+var _38=$(_35);
+var _39=$.data(_35,"form").options;
+for(var i=0;i<_39.fieldTypes.length;i++){
+var _3a=_39.fieldTypes[i];
+var _3b=_38.find("."+_3a+"-f").not(tmp);
+if(_3b.length&&_3b[_3a]){
+_3b[_3a]("clear");
+tmp=tmp.add(_3b);
 }
 }
-_36.form("validate");
+_38.form("validate");
 };
-function _3a(_3b){
-_3b.reset();
-var _3c=$(_3b);
-var _3d=$.data(_3b,"form").options;
-for(var i=_3d.fieldTypes.length-1;i>=0;i--){
-var _3e=_3d.fieldTypes[i];
-var _3f=_3c.find("."+_3e+"-f");
-if(_3f.length&&_3f[_3e]){
-_3f[_3e]("reset");
+function _3c(_3d){
+_3d.reset();
+var _3e=$(_3d);
+var _3f=$.data(_3d,"form").options;
+for(var i=_3f.fieldTypes.length-1;i>=0;i--){
+var _40=_3f.fieldTypes[i];
+var _41=_3e.find("."+_40+"-f");
+if(_41.length&&_41[_40]){
+_41[_40]("reset");
 }
 }
-_3c.form("validate");
+_3e.form("validate");
 };
-function _40(_41){
-var _42=$.data(_41,"form").options;
-$(_41).unbind(".form");
-if(_42.ajax){
-$(_41).bind("submit.form",function(){
+function _42(_43){
+var _44=$.data(_43,"form").options;
+$(_43).unbind(".form");
+if(_44.ajax){
+$(_43).bind("submit.form",function(){
 setTimeout(function(){
-_1(_41,_42);
+_1(_43,_44);
 },0);
 return false;
 });
 }
-$(_41).bind("_change.form",function(e,t){
-if($.inArray(t,_42.dirtyFields)==-1){
-_42.dirtyFields.push(t);
+$(_43).bind("_change.form",function(e,t){
+if($.inArray(t,_44.dirtyFields)==-1){
+_44.dirtyFields.push(t);
 }
-_42.onChange.call(this,t);
+_44.onChange.call(this,t);
 }).bind("change.form",function(e){
 var t=e.target;
 if(!$(t).hasClass("textbox-text")){
-if($.inArray(t,_42.dirtyFields)==-1){
-_42.dirtyFields.push(t);
+if($.inArray(t,_44.dirtyFields)==-1){
+_44.dirtyFields.push(t);
 }
-_42.onChange.call(this,t);
+_44.onChange.call(this,t);
 }
 });
-_43(_41,_42.novalidate);
+_45(_43,_44.novalidate);
 };
-function _44(_45,_46){
-_46=_46||{};
-var _47=$.data(_45,"form");
-if(_47){
-$.extend(_47.options,_46);
+function _46(_47,_48){
+_48=_48||{};
+var _49=$.data(_47,"form");
+if(_49){
+$.extend(_49.options,_48);
 }else{
-$.data(_45,"form",{options:$.extend({},$.fn.form.defaults,$.fn.form.parseOptions(_45),_46)});
+$.data(_47,"form",{options:$.extend({},$.fn.form.defaults,$.fn.form.parseOptions(_47),_48)});
 }
 };
-function _48(_49){
+function _4a(_4b){
 if($.fn.validatebox){
-var t=$(_49);
+var t=$(_4b);
 t.find(".validatebox-text:not(:disabled)").validatebox("validate");
-var _4a=t.find(".validatebox-invalid");
-_4a.filter(":not(:disabled):first").focus();
-return _4a.length==0;
+var _4c=t.find(".validatebox-invalid");
+_4c.filter(":not(:disabled):first").focus();
+return _4c.length==0;
 }
 return true;
 };
-function _43(_4b,_4c){
-var _4d=$.data(_4b,"form").options;
-_4d.novalidate=_4c;
-$(_4b).find(".validatebox-text:not(:disabled)").validatebox(_4c?"disableValidation":"enableValidation");
+function _45(_4d,_4e){
+var _4f=$.data(_4d,"form").options;
+_4f.novalidate=_4e;
+$(_4d).find(".validatebox-text:not(:disabled)").validatebox(_4e?"disableValidation":"enableValidation");
 };
-$.fn.form=function(_4e,_4f){
-if(typeof _4e=="string"){
+$.fn.form=function(_50,_51){
+if(typeof _50=="string"){
 this.each(function(){
-_44(this);
+_46(this);
 });
-return $.fn.form.methods[_4e](this,_4f);
+return $.fn.form.methods[_50](this,_51);
 }
 return this.each(function(){
-_44(this,_4e);
-_40(this);
+_46(this,_50);
+_42(this);
 });
 };
 $.fn.form.methods={options:function(jq){
 return $.data(jq[0],"form").options;
-},submit:function(jq,_50){
+},submit:function(jq,_52){
 return jq.each(function(){
-_1(this,_50);
+_1(this,_52);
 });
-},load:function(jq,_51){
+},load:function(jq,_53){
 return jq.each(function(){
-_20(this,_51);
+_20(this,_53);
 });
 },clear:function(jq){
 return jq.each(function(){
-_32(this);
+_34(this);
 });
 },reset:function(jq){
 return jq.each(function(){
-_3a(this);
+_3c(this);
 });
 },validate:function(jq){
-return _48(jq[0]);
+return _4a(jq[0]);
 },disableValidation:function(jq){
 return jq.each(function(){
-_43(this,true);
+_45(this,true);
 });
 },enableValidation:function(jq){
 return jq.each(function(){
-_43(this,false);
+_45(this,false);
 });
 },resetValidation:function(jq){
 return jq.each(function(){
@@ -393,18 +397,18 @@ return jq.each(function(){
 $(this).form("options").dirtyFields=[];
 });
 }};
-$.fn.form.parseOptions=function(_52){
-var t=$(_52);
-return $.extend({},$.parser.parseOptions(_52,[{ajax:"boolean",dirty:"boolean"}]),{url:(t.attr("action")?t.attr("action"):undefined)});
+$.fn.form.parseOptions=function(_54){
+var t=$(_54);
+return $.extend({},$.parser.parseOptions(_54,[{ajax:"boolean",dirty:"boolean"}]),{url:(t.attr("action")?t.attr("action"):undefined)});
 };
-$.fn.form.defaults={fieldTypes:["combobox","combotree","combogrid","combotreegrid","datetimebox","datebox","combo","datetimespinner","timespinner","numberspinner","spinner","slider","searchbox","numberbox","passwordbox","filebox","textbox","switchbutton"],novalidate:false,ajax:true,iframe:true,dirty:false,dirtyFields:[],url:null,queryParams:{},onSubmit:function(_53){
+$.fn.form.defaults={fieldTypes:["tagbox","combobox","combotree","combogrid","combotreegrid","datetimebox","datebox","combo","datetimespinner","timespinner","numberspinner","spinner","slider","searchbox","numberbox","passwordbox","filebox","textbox","switchbutton","radiobutton","checkbox"],novalidate:false,ajax:true,iframe:true,dirty:false,dirtyFields:[],url:null,queryParams:{},onSubmit:function(_55){
 return $(this).form("validate");
-},onProgress:function(_54){
-},success:function(_55){
-},onBeforeLoad:function(_56){
-},onLoadSuccess:function(_57){
+},onProgress:function(_56){
+},success:function(_57){
+},onBeforeLoad:function(_58){
+},onLoadSuccess:function(_59){
 },onLoadError:function(){
-},onChange:function(_58){
+},onChange:function(_5a){
 }};
 })(jQuery);
 

@@ -26,10 +26,10 @@
   display: inline-block;
   vertical-align: top;
   width: auto;
-  line-height: 24px;
+  line-height: 28px;
   font-size: 12px;
   padding: 0;
-  margin: 0 4px;
+  margin: 0 6px;
 }
 .l-btn-icon {
   display: inline-block;
@@ -58,16 +58,16 @@
   background-position: right center;
 }
 .l-btn-icon-left .l-btn-text {
-  margin: 0 4px 0 24px;
+  margin: 0 6px 0 26px;
 }
 .l-btn-icon-left .l-btn-icon {
-  left: 4px;
+  left: 6px;
 }
 .l-btn-icon-right .l-btn-text {
-  margin: 0 24px 0 4px;
+  margin: 0 26px 0 6px;
 }
 .l-btn-icon-right .l-btn-icon {
-  right: 4px;
+  right: 6px;
 }
 .l-btn-icon-top .l-btn-text {
   margin: 20px 4px 0 4px;
@@ -87,7 +87,7 @@
   margin: 0 0 0 -8px;
 }
 .l-btn-left .l-btn-empty {
-  margin: 0 4px;
+  margin: 0 6px;
   width: 16px;
 }
 .l-btn-plain:hover {
@@ -97,7 +97,7 @@
   outline: #0000FF dotted thin;
 }
 .l-btn-large .l-btn-text {
-  line-height: 40px;
+  line-height: 44px;
 }
 .l-btn-large .l-btn-icon {
   width: 32px;
@@ -128,7 +128,7 @@
   margin: 0 0 0 -16px;
 }
 .l-btn-large .l-btn-left .l-btn-empty {
-  margin: 0 4px;
+  margin: 0 6px;
   width: 32px;
 }
 .l-btn {

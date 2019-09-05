@@ -1,3 +1,106 @@
+Version 1.8.x
+-------------
+* Bug
+ * datagrid: Slow scrolling with mousewheel on frozen columns. fixed.
+ * linkbutton: Calling 'disable' method still can submit the form. fixed.
+ * combotree: The 'onBeforeSelect' event fires twice while selecting a node. fixed.
+ * combotreegrid: The 'onSelect' event fires twice while selecting a row. fixed.
+* Improvement
+ * checkbox: Add 'readonly' property.
+ * radiobutton: Add 'readonly' property.
+
+Version 1.8.0
+-------------
+* Bug
+ * treegrid: The 'pageNumber' can't be initialized with the specified value. fixed.
+ * checkbox: The disabled checkbox has no disabled label. fixed.
+* Improvement
+ * switchbutton: Add the 'label','labelAlign','labelPosition','labelWidth' properties.
+ * switchbutton: Accept 'tabindex' attribute to get focus when the user press TAB key.
+ * form: The 'onChange' event is available for all the form component.
+ * calendar: The 'Date' property is available to support the hijri date.
+ * textbox: The floating label is available.
+
+Version 1.7.0
+-------------
+* Bug
+ * sidemenu: The tooltip has a wrong position when the 'floatMenuPosition' is set to 'left'. fixed.
+ * datagrid: The horizontal scrollbar has a wrong state when the 'showHeader' is set to true. fixed.
+ * combo: The initialized value will trigger the form's 'onChange' event when the 'multiple' is set to true. fixed.
+ * panel: The horizontal panel doesn't work normally when 'noheader' property is set to true. fixed.
+ * pagination: The extended buttons may lose in IE when rebuild the component. fixed.
+* Improvement
+ * tree: Add 'findBy' method to find a node by any fields.
+ * tree: The 'find' method is enhanced to find a node easily.
+ * combo: Add 'panelValign' property.
+ * datagrid: The sorting parameters will be ignored when the 'remoteSort' is set to false.
+ * timespinner: Add 'hour12' property to display in 12 hour format.
+
+Version 1.6.0
+-------------
+* Bug
+ * maskedbox: The component does not accept numeric keypad. fixed.
+ * combogrid: When selecting multiple records, the datagrid will scroll to the last checked record. fixed.
+* Improvement
+ * Compatible with jQuery 3.x.
+ * tabs: The 'toolPosition' property can accept 'top' and 'bottom' values.
+ * textbox: The textbox label has the animating feature when focus or blur on it.
+ * tooltip: Add 'valign' property.
+ * tree: The node class can be initialized by setting the 'nodeCls' in the data.
+* New Plugins
+ * sidemenu: The sidemenu is created from accordion and tree plugins. It builds a collapsible menu with some categories.
+ * radiobutton: This plugin provides a round interface to select one option from a number of options.
+ * checkbox: This plugin allows a user to select a value from a small set of options.
+
+Version 1.5.5
+-------------
+* Bug
+ * tabs: The selecting history has wrong order when the title contains complex elements. fixed.
+ * combo: The drop-down panel may not be hidden if a bigger 'delay' value is set. fixed.
+ * layout: The expanding panel does not collapse when move mouse quickly away from it. fixed.
+ * tagbox: The tagbox and the label don't stay in the same line. fixed.
+* Improvement
+ * combo: The 'blur' event handler is attached to the 'inputEvents' property.
+ * numberbox: The 'cloneFrom' method is available.
+ * slider: The 'step' property can be set with a floating number.
+ * menu: The 'findItem' method allows the user to find menu item by any parameters.
+ * menubutton: Add 'showEvent' and 'hideEvent' properties.
+* New Plugins
+ * maskedbox: The maskedbox enforces its structure as the user types.
+
+Version 1.5.4
+-------------
+* Bug
+ * combotreegrid: The 'onChange' event does not fire when entering values on the inputing box. fixed.
+ * combobox: Clicking on the drop-down panel will jump to the bottom of body on win10 IE11. fixed.
+ * datebox: Clicking on the 'Today' button doesn't trigger the 'onSelect' event. fixed.
+ * propertygrid: The 'getChanges' method doesn't work after editing the only one row. fixed.
+* Improvement
+ * combo: Add the 'panelEvents' property.
+ * combo: Attach the default 'mousedown' event handler.
+ * combobox: The 'setValues' method can be called to initialize the displaying text.
+ * combotreegrid: Press ENTER key to select the highlighted rows.
+ * panel: Improve the resizing performance.
+ * filebox: The 'files' method allows the user to get the selected file list.
+ * searchbox: Improvent the 'selectName' method.
+
+Version 1.5.3
+-------------
+* Bug
+ * combobox: The 'iconCls' property can not be parsed from the <option> markup. fixed.
+ * combobox: Clicking scrollbar will cause the drop-down panel to be hidden in IE. fixed.
+ * pagination: The pagination height will shrink when the 'displayMsg' property is set to false. fixed.
+ * tabs: The tab panel takes a wrong 'data' parameter in the 'onLoad' event. fixed.
+* Improvement
+ * draggable: Add 'onEndDrag' event.
+ * resizable: Retrieve more than one resizing directions with different edges.
+ * datagrid: Add 'resizeEdge' property.
+ * datagrid: Avoid the memory leaks.
+ * combo: The 'originalValue' property value is corrected in multiple mode.
+ * form: Add the tagbox to the form fields.
+ * tagbox: Add the 'reset' method.
+ * progress: Increase the response time to open and close the progress message window.
+ 
 Version 1.5.2
 -------------
 * Bug

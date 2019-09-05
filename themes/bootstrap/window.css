@@ -101,6 +101,11 @@
 .window-thinborder .window-body {
   border-width: 0px;
 }
+.window-thinborder .window-footer {
+  border-left: transparent;
+  border-right: transparent;
+  border-bottom: transparent;
+}
 .window-thinborder .window-header .panel-icon,
 .window-thinborder .window-header .panel-tool {
   margin-top: -9px;

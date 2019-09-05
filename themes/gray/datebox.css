@@ -1,13 +1,13 @@
 .datebox-calendar-inner {
-  height: 180px;
+  height: 250px;
 }
 .datebox-button {
-  padding: 0 5px;
+  padding: 4px 0;
   text-align: center;
 }
 .datebox-button a {
   line-height: 22px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   text-decoration: none;
   opacity: 0.6;

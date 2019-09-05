@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -84,7 +84,7 @@ var _12=t.attr("abbr").split(",");
 var y=parseInt(_12[0]);
 var m=parseInt(_12[1]);
 var d=parseInt(_12[2]);
-_b.current=new Date(y,m-1,d);
+_b.current=new _b.Date(y,m-1,d);
 _b.onSelect.call(_a,_b.current);
 if(!_11||_11.getTime()!=_b.current.getTime()){
 _b.onChange.call(_a,_b.current,_11);
@@ -172,7 +172,7 @@ _1f._outerHeight(_1d.height()-_1e._outerHeight());
 function _20(_21,_22,_23){
 var _24=$.data(_21,"calendar").options;
 var _25=[];
-var _26=new Date(_22,_23,0).getDate();
+var _26=new _24.Date(_22,_23,0).getDate();
 for(var i=1;i<=_26;i++){
 _25.push([_22,_23,i]);
 }
@@ -181,7 +181,7 @@ var _29=-1;
 while(_25.length>0){
 var _2a=_25.shift();
 _28.push(_2a);
-var day=new Date(_2a[0],_2a[1]-1,_2a[2]).getDay();
+var day=new _24.Date(_2a[0],_2a[1]-1,_2a[2]).getDay();
 if(_29==day){
 day=0;
 }else{
@@ -199,14 +199,14 @@ var _2b=_27[0];
 if(_2b.length<7){
 while(_2b.length<7){
 var _2c=_2b[0];
-var _2a=new Date(_2c[0],_2c[1]-1,_2c[2]-1);
+var _2a=new _24.Date(_2c[0],_2c[1]-1,_2c[2]-1);
 _2b.unshift([_2a.getFullYear(),_2a.getMonth()+1,_2a.getDate()]);
 }
 }else{
 var _2c=_2b[0];
 var _28=[];
 for(var i=1;i<=7;i++){
-var _2a=new Date(_2c[0],_2c[1]-1,_2c[2]-i);
+var _2a=new _24.Date(_2c[0],_2c[1]-1,_2c[2]-i);
 _28.unshift([_2a.getFullYear(),_2a.getMonth()+1,_2a.getDate()]);
 }
 _27.unshift(_28);
@@ -214,14 +214,14 @@ _27.unshift(_28);
 var _2d=_27[_27.length-1];
 while(_2d.length<7){
 var _2e=_2d[_2d.length-1];
-var _2a=new Date(_2e[0],_2e[1]-1,_2e[2]+1);
+var _2a=new _24.Date(_2e[0],_2e[1]-1,_2e[2]+1);
 _2d.push([_2a.getFullYear(),_2a.getMonth()+1,_2a.getDate()]);
 }
 if(_27.length<6){
 var _2e=_2d[_2d.length-1];
 var _28=[];
 for(var i=1;i<=7;i++){
-var _2a=new Date(_2e[0],_2e[1]-1,_2e[2]+i);
+var _2a=new _24.Date(_2e[0],_2e[1]-1,_2e[2]+i);
 _28.push([_2a.getFullYear(),_2a.getMonth()+1,_2a.getDate()]);
 }
 _27.push(_28);
@@ -233,7 +233,7 @@ var _30=$.data(_2f,"calendar").options;
 if(_30.current&&!_30.validator.call(_2f,_30.current)){
 _30.current=null;
 }
-var now=new Date();
+var now=new _30.Date();
 var _31=now.getFullYear()+","+(now.getMonth()+1)+","+now.getDate();
 var _32=_30.current?(_30.current.getFullYear()+","+(_30.current.getMonth()+1)+","+_30.current.getDate()):"";
 var _33=6-_30.firstDay;
@@ -273,13 +273,13 @@ cls="calendar-last";
 }
 _36.push("<tr class=\""+cls+"\">");
 if(_30.showWeek){
-var _39=_30.getWeekNumber(new Date(_38[0][0],parseInt(_38[0][1])-1,_38[0][2]));
+var _39=_30.getWeekNumber(new _30.Date(_38[0][0],parseInt(_38[0][1])-1,_38[0][2]));
 _36.push("<td class=\"calendar-week\">"+_39+"</td>");
 }
 for(var j=0;j<_38.length;j++){
 var day=_38[j];
 var s=day[0]+","+day[1]+","+day[2];
-var _3a=new Date(day[0],parseInt(day[1])-1,day[2]);
+var _3a=new _30.Date(day[0],parseInt(day[1])-1,day[2]);
 var d=_30.formatter.call(_2f,_3a);
 var css=_30.styler.call(_2f,_3a);
 var _3b="";
@@ -361,7 +361,7 @@ _1(this,_40);
 },moveTo:function(jq,_41){
 return jq.each(function(){
 if(!_41){
-var now=new Date();
+var now=new _42.Date();
 $(this).calendar({year:now.getFullYear(),month:now.getMonth()+1,current:_41});
 return;
 }
@@ -379,7 +379,7 @@ $.fn.calendar.parseOptions=function(_44){
 var t=$(_44);
 return $.extend({},$.parser.parseOptions(_44,["weekNumberHeader",{firstDay:"number",fit:"boolean",border:"boolean",showWeek:"boolean"}]));
 };
-$.fn.calendar.defaults={width:180,height:180,fit:false,border:true,showWeek:false,firstDay:0,weeks:["S","M","T","W","T","F","S"],months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],year:new Date().getFullYear(),month:new Date().getMonth()+1,current:(function(){
+$.fn.calendar.defaults={Date:Date,width:180,height:180,fit:false,border:true,showWeek:false,firstDay:0,weeks:["S","M","T","W","T","F","S"],months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],year:new Date().getFullYear(),month:new Date().getMonth()+1,current:(function(){
 var d=new Date();
 return new Date(d.getFullYear(),d.getMonth(),d.getDate());
 })(),weekNumberHeader:"",getWeekNumber:function(_45){
