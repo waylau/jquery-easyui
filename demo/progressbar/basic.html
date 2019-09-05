@@ -22,7 +22,7 @@
 			if (value < 100){
 				value += Math.floor(Math.random() * 10);
 				$('#p').progressbar('setValue', value);
-				setTimeout(start, 200);
+				setTimeout(arguments.callee, 200);
 			}
 		};
 	</script>

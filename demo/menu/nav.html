@@ -15,7 +15,7 @@
 	<div style="margin:20px 0;"></div>
 	
 	<div class="easyui-panel" title="Menu" style="width:150px;">
-		<div id="mm" data-options="inline:true" style="width:100%">
+		<div id="mm-nav" data-options="inline:true" style="width:100%">
 			<div onclick="javascript:alert('new')">New</div>
 			<div>
 				<span>Open</span>
@@ -134,10 +134,10 @@
 		})(jQuery);
 
 		$(function(){
-			$('#mm').menu().menu('enableNav');
+			$('#mm-nav').menu().menu('enableNav');
 			$(document).keydown(function(e){
 				if (e.altKey && e.keyCode == 87){
-					$('#mm').focus();
+					$('#mm-nav').focus();
 				}
 			})
 		})

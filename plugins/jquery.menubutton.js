@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -49,19 +49,14 @@ t=btn;
 }
 t.unbind(".menubutton");
 var _12=null;
-t.bind("click.menubutton",function(){
-if(!_13()){
-_14(_10);
-return false;
-}
-}).bind("mouseenter.menubutton",function(){
+t.bind(_11.showEvent+".menubutton",function(){
 if(!_13()){
 _12=setTimeout(function(){
 _14(_10);
 },_11.duration);
 return false;
 }
-}).bind("mouseleave.menubutton",function(){
+}).bind(_11.hideEvent+".menubutton",function(){
 if(_12){
 clearTimeout(_12);
 }
@@ -101,7 +96,7 @@ if(_1a){
 $.extend(_1a.options,_17);
 }else{
 $.data(this,"menubutton",{options:$.extend({},$.fn.menubutton.defaults,$.fn.menubutton.parseOptions(this),_17)});
-$(this).removeAttr("disabled");
+$(this)._propAttr("disabled",false);
 }
 _1(this);
 _f(this);
@@ -123,6 +118,6 @@ $.fn.menubutton.parseOptions=function(_1d){
 var t=$(_1d);
 return $.extend({},$.fn.linkbutton.parseOptions(_1d),$.parser.parseOptions(_1d,["menu",{plain:"boolean",hasDownArrow:"boolean",duration:"number"}]));
 };
-$.fn.menubutton.defaults=$.extend({},$.fn.linkbutton.defaults,{plain:true,hasDownArrow:true,menu:null,menuAlign:"left",duration:100,cls:{btn1:"m-btn-active",btn2:"m-btn-plain-active",arrow:"m-btn-downarrow",trigger:"m-btn"}});
+$.fn.menubutton.defaults=$.extend({},$.fn.linkbutton.defaults,{plain:true,hasDownArrow:true,menu:null,menuAlign:"left",duration:100,showEvent:"mouseenter",hideEvent:"mouseleave",cls:{btn1:"m-btn-active",btn2:"m-btn-plain-active",arrow:"m-btn-downarrow",trigger:"m-btn"}});
 })(jQuery);
 

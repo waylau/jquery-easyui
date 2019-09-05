@@ -26,7 +26,7 @@
   text-align: center;
   height: 100%;
   float: left;
-  font-size: 12px;
+  font-size: 14px;
   -moz-border-radius: 4px 4px 4px 4px;
   -webkit-border-radius: 4px 4px 4px 4px;
   border-radius: 4px 4px 4px 4px;
@@ -74,4 +74,10 @@
 .switchbutton-disabled,
 .switchbutton-readonly {
   cursor: default;
+}
+.switchbutton:focus {
+  -moz-box-shadow: 0 0 3px 0 #d9d9d9;
+  -webkit-box-shadow: 0 0 3px 0 #d9d9d9;
+  box-shadow: 0 0 3px 0 #d9d9d9;
+  outline: none;
 }

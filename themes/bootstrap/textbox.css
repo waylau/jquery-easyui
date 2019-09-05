@@ -16,7 +16,7 @@
   font-size: 12px;
   border: 0;
   margin: 0;
-  padding: 4px;
+  padding: 0 4px;
   white-space: normal;
   vertical-align: top;
   outline-style: none;
@@ -24,6 +24,11 @@
   -moz-border-radius: 5px 5px 5px 5px;
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
+  height: 28px;
+  line-height: 28px;
+}
+.textbox textarea.textbox-text {
+  line-height: normal;
 }
 .textbox .textbox-text::-ms-clear,
 .textbox .textbox-text::-ms-reveal {
@@ -79,8 +84,8 @@
 .textbox-label {
   display: inline-block;
   width: 80px;
-  height: 22px;
-  line-height: 22px;
+  height: 30px;
+  line-height: 30px;
   vertical-align: middle;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -136,4 +141,25 @@
 .textbox-invalid {
   border-color: #ffa8a8;
   background-color: #fff3f3;
+}
+.form-floating-label.form-field .textbox-text {
+  padding: 0;
+}
+.form-floating-label.form-field .textbox-label {
+  position: relative;
+  height: 20px;
+  line-height: 20px;
+  transition: all .3s;
+  font-size: 10px;
+  z-index: 9;
+}
+.form-floating-label.form-field-empty .textbox-label {
+  cursor: text;
+  font-size: 12px;
+  transform: translate(0,25px);
+}
+.form-floating-label.form-field-empty.form-field-focused .textbox-label {
+  cursor: default;
+  font-size: 10px;
+  transform: translate(0,0);
 }

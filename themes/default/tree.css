@@ -12,7 +12,7 @@
   padding: 0;
 }
 .tree-node {
-  height: 18px;
+  height: 26px;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -28,7 +28,8 @@
   display: inline-block;
   width: 16px;
   height: 18px;
-  vertical-align: top;
+  margin: 4px 0;
+  vertical-align: middle;
   overflow: hidden;
 }
 .tree-expanded {
@@ -90,17 +91,18 @@
   background: url('images/tree_icons.png') no-repeat -240px -18px;
 }
 .tree-title {
-  font-size: 12px;
+  font-size: 14px;
   display: inline-block;
   text-decoration: none;
-  vertical-align: top;
+  vertical-align: middle;
   white-space: nowrap;
   padding: 0 2px;
+  margin: 4px 0;
   height: 18px;
   line-height: 18px;
 }
 .tree-node-proxy {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 20px;
   padding: 0 2px 0 20px;
   border-width: 1px;
@@ -133,13 +135,14 @@
 }
 .tree-editor {
   border: 1px solid #95B8E7;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  height: 26px;
+  line-height: 26px;
   padding: 0 4px;
   margin: 0;
   width: 80px;
   outline-style: none;
-  vertical-align: top;
+  vertical-align: middle;
   position: absolute;
   top: 0;
 }
@@ -155,6 +158,10 @@
 .tree-node-selected {
   background: #ffe48d;
   color: #000000;
+}
+.tree-node-disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 .tree-node-hidden {
   display: none;

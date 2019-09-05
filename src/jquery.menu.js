@@ -1,14 +1,14 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
- * menu - jQuery EasyUI
+ * menu - EasyUI for jQuery
  * 
  */
 (function($){
@@ -381,22 +381,27 @@
 		}
 	}
 	
-	function findItem(target, text){
+	function findItem(target, param){
 		var result = null;
-		var tmp = $('<div></div>');
+		var fn = $.isFunction(param) ? param : function(item){
+			for(var p in param){
+				if (item[p] != param[p]){
+					return false;;
+				}
+			}
+			return true;
+		}
 		function find(menu){
 			menu.children('div.menu-item').each(function(){
-				var item = $(target).menu('getItem', this);
-				var s = tmp.empty().html(item.text).text();
-				if (text == $.trim(s)) {
-					result = item;
+				var opts = $(this).data('menuitem').options;
+				if (fn.call(target, opts) == true){
+					result = $(target).menu('getItem', this);
 				} else if (this.submenu && !result){
 					find(this.submenu);
 				}
 			});
 		}
 		find($(target));
-		tmp.remove();
 		return result;
 	}
 	
@@ -555,7 +560,13 @@
 			});
 		},
 		findItem: function(jq, text){
-			return findItem(jq[0], text);
+			if (typeof text == 'string'){
+				return findItem(jq[0], function(item){
+					return $('<div>'+item.text+'</div>').text() == text;
+				});
+			} else {
+				return findItem(jq[0], text);
+			}
 		},
 		/**
 		 * append menu item, the param contains following properties:
@@ -612,8 +623,9 @@
 		top: 0,
 		alignTo: null,
 		align: 'left',
-		minWidth: 120,
-		itemHeight: 22,
+		minWidth: 150,
+		// itemHeight: 22,
+		itemHeight: 32,
 		duration: 100,	// Defines duration time in milliseconds to hide when the mouse leaves the menu.
 		hideOnUnhover: true,	// Automatically hides the menu when mouse exits it
 		inline: false,	// true to stay inside its parent, false to go on top of all elements

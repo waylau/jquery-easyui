@@ -1,14 +1,14 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
- * tabs - jQuery EasyUI
+ * tabs - EasyUI for jQuery
  * 
  * Dependencies:
  * 	 panel
@@ -29,13 +29,30 @@
 	 */
 	function setScrollers(container) {
 		var opts = $.data(container, 'tabs').options;
-		if (opts.tabPosition == 'left' || opts.tabPosition == 'right' || !opts.showHeader){return}
+		if (!opts.showHeader){return}
 		
 		var header = $(container).children('div.tabs-header');
 		var tool = header.children('div.tabs-tool:not(.tabs-tool-hidden)');
 		var sLeft = header.children('div.tabs-scroller-left');
 		var sRight = header.children('div.tabs-scroller-right');
 		var wrap = header.children('div.tabs-wrap');
+
+		if (opts.tabPosition == 'left' || opts.tabPosition == 'right'){
+			if (!tool.length){return}
+			tool._outerWidth(header.width());
+			var toolCss = {
+				left: opts.tabPosition == 'left' ? 'auto':0,
+				right: opts.tabPosition == 'left' ? 0 : 'auto',
+				top: opts.toolPosition == 'top' ? 0 : 'auto',
+				bottom: opts.toolPosition == 'top' ? 'auto' : 0
+			};
+			var wrapCss = {
+				marginTop: opts.toolPosition == 'top' ? tool.outerHeight() : 0
+			};
+			tool.css(toolCss);
+			wrap.css(wrapCss);
+			return;
+		}
 		
 		// set the tool height
 		var tHeight = header.outerHeight();
@@ -380,7 +397,7 @@
 			iconCls: (options.icon ? options.icon : undefined),
 			onLoad: function(){
 				if (options.onLoad){
-					options.onLoad.call(this, arguments);
+					options.onLoad.apply(this, arguments);
 				}
 				state.options.onLoad.call(container, $(this));
 			},
@@ -425,8 +442,10 @@
 					options.onOpen.call(this);
 				}
 				var popts = $(this).panel('options');
-				state.selectHis.push(popts.title);
-				state.options.onSelect.call(container, popts.title, getTabIndex(container, this));
+				var index = getTabIndex(container, this);
+				// state.selectHis.push(popts.title);
+				state.selectHis.push(index);
+				state.options.onSelect.call(container, popts.title, index);
 			},
 			onBeforeClose: function(){
 				if (options.onBeforeClose){
@@ -540,13 +559,13 @@
 					s_title.css('padding-right', '');
 				}
 			}
-			if (oldTitle != opts.title){
-				for(var i=0; i<selectHis.length; i++){
-					if (selectHis[i] == oldTitle){
-						selectHis[i] = opts.title;
-					}
-				}
-			}
+			// if (oldTitle != opts.title){
+			// 	for(var i=0; i<selectHis.length; i++){
+			// 		if (selectHis[i] == oldTitle){
+			// 			selectHis[i] = opts.title;
+			// 		}
+			// 	}
+			// }
 		}
 		if (opts.disabled){
 			opts.tab.addClass('tabs-disabled');
@@ -563,9 +582,10 @@
 	 * close a tab with specified index or title
 	 */
 	function closeTab(container, which) {
-		var opts = $.data(container, 'tabs').options;
-		var tabs = $.data(container, 'tabs').tabs;
-		var selectHis = $.data(container, 'tabs').selectHis;
+		var state = $.data(container, 'tabs');
+		var opts = state.options;
+		var tabs = state.tabs;
+		var selectHis = state.selectHis;
 		
 		if (!exists(container, which)) return;
 		
@@ -585,20 +605,34 @@
 		setSize(container);
 		
 		// remove the select history item
+		var his = [];
 		for(var i=0; i<selectHis.length; i++){
-			if (selectHis[i] == title){
-				selectHis.splice(i, 1);
-				i --;
+			var tindex = selectHis[i];
+			if (tindex != index){
+				his.push(tindex > index ? tindex-1 : tindex);
 			}
 		}
-		
-		// select the nearest tab panel
-		var hisTitle = selectHis.pop();
-		if (hisTitle){
-			selectTab(container, hisTitle);
-		} else if (tabs.length){
-			selectTab(container, 0);
+		state.selectHis = his;
+		var selected = $(container).tabs('getSelected');
+		if (!selected && his.length){
+			index = state.selectHis.pop();
+			$(container).tabs('select', index);
 		}
+
+		// for(var i=0; i<selectHis.length; i++){
+		// 	if (selectHis[i] == title){
+		// 		selectHis.splice(i, 1);
+		// 		i --;
+		// 	}
+		// }
+		
+		// // select the nearest tab panel
+		// var hisTitle = selectHis.pop();
+		// if (hisTitle){
+		// 	selectTab(container, hisTitle);
+		// } else if (tabs.length){
+		// 	selectTab(container, 0);
+		// }
 	}
 	
 	/**
@@ -619,7 +653,10 @@
 			for(var i=0; i<tabs.length; i++){
 				var p = tabs[i];
 				tmp.html(p.panel('options').title);
-				if (tmp.text() == which){
+				var title = tmp.text();
+				tmp.html(which);
+				which = tmp.text();
+				if (title == which){
 					tab = p;
 					if (removeit){
 						tabs.splice(i, 1);
@@ -863,7 +900,8 @@
 		height: 'auto',
 		headerWidth: 150,	// the tab header width, it is valid only when tabPosition set to 'left' or 'right' 
 		tabWidth: 'auto',	// the tab width
-		tabHeight: 27,		// the tab height
+		// tabHeight: 27,		// the tab height
+		tabHeight: 32,		// the tab height
 		selected: 0,		// the initialized selected tab index
 		showHeader: true,
 		plain: false,
@@ -873,7 +911,7 @@
 		narrow: false,
 		pill: false,
 		tools: null,
-		toolPosition: 'right',	// left,right
+		toolPosition: 'right',	// left,right,top,bottom
 		tabPosition: 'top',		// possible values: top,bottom
 		scrollIncrement: 100,
 		scrollDuration: 400,

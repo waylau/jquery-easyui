@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -247,8 +247,8 @@ _4f(_3a,_3b);
 p.panel("expand",false).panel("open");
 var _41=_42();
 p.panel("resize",_41.collapse);
-p.panel("panel").animate(_41.expand,function(){
-$(this).unbind(".layout").bind("mouseleave.layout",{region:_3b},function(e){
+p.panel("panel").unbind(".layout").bind("mouseleave.layout",{region:_3b},function(e){
+$(this).stop(true,true);
 if(_1==true){
 return;
 }
@@ -257,6 +257,7 @@ return;
 }
 _39(_3a,e.data.region);
 });
+p.panel("panel").animate(_41.expand,function(){
 $(_3a).layout("options").onExpand.call(_3a,_3b);
 });
 }
@@ -496,7 +497,7 @@ $.fn.layout.parsePanelOptions=function(_76){
 var t=$(_76);
 return $.extend({},$.fn.panel.parseOptions(_76),$.parser.parseOptions(_76,["region",{split:"boolean",collpasedSize:"number",minWidth:"number",minHeight:"number",maxWidth:"number",maxHeight:"number"}]));
 };
-$.fn.layout.paneldefaults=$.extend({},$.fn.panel.defaults,{region:null,split:false,collapsedSize:28,expandMode:"float",hideExpandTool:false,hideCollapsedContent:true,collapsedContent:function(_77){
+$.fn.layout.paneldefaults=$.extend({},$.fn.panel.defaults,{region:null,split:false,collapsedSize:32,expandMode:"float",hideExpandTool:false,hideCollapsedContent:true,collapsedContent:function(_77){
 var p=$(this);
 var _78=p.panel("options");
 if(_78.region=="north"||_78.region=="south"){

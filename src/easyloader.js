@@ -1,14 +1,14 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
- * easyloader - jQuery EasyUI
+ * easyloader - EasyUI for jQuery
  * 
  */
 (function(){
@@ -132,6 +132,19 @@
 			js:'jquery.filebox.js',
 			css:'filebox.css',
 			dependencies:['textbox']
+		},
+		radiobutton:{
+			js:'jquery.radiobutton.js',
+			css:'radiobutton.css'
+		},
+		checkbox:{
+			js:'jquery.checkbox.js',
+			css:'checkbox.css'
+		},
+		sidemenu:{
+			js:'jquery.sidemenu.js',
+			css:'sidemenu.css',
+			dependencies:['accordion','tree','tooltip']
 		},
 		combo:{
 			js:'jquery.combo.js',
@@ -366,7 +379,7 @@
 				} else {
 					if (time < easyloader.timeout){
 						time += 10;
-						setTimeout(loadMm, 10);
+						setTimeout(arguments.callee, 10);
 					}
 				}
 			} else {

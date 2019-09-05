@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -54,16 +54,22 @@ _1(this);
 $.fn.numberbox.methods={options:function(jq){
 var _11=jq.data("textbox")?jq.textbox("options"):{};
 return $.extend($.data(jq[0],"numberbox").options,{width:_11.width,originalValue:_11.originalValue,disabled:_11.disabled,readonly:_11.readonly});
+},cloneFrom:function(jq,_12){
+return jq.each(function(){
+$(this).textbox("cloneFrom",_12);
+$.data(this,"numberbox",{options:$.extend(true,{},$(_12).numberbox("options"))});
+$(this).addClass("numberbox-f");
+});
 },fix:function(jq){
 return jq.each(function(){
-var _12=$(this).numberbox("options");
-_12.value=null;
-var _13=_12.parser.call(this,$(this).numberbox("getText"));
-$(this).numberbox("setValue",_13);
+var _13=$(this).numberbox("options");
+_13.value=null;
+var _14=_13.parser.call(this,$(this).numberbox("getText"));
+$(this).numberbox("setValue",_14);
 });
-},setValue:function(jq,_14){
+},setValue:function(jq,_15){
 return jq.each(function(){
-_7(this,_14);
+_7(this,_15);
 });
 },clear:function(jq){
 return jq.each(function(){
@@ -76,14 +82,14 @@ $(this).textbox("reset");
 $(this).numberbox("setValue",$(this).numberbox("getValue"));
 });
 }};
-$.fn.numberbox.parseOptions=function(_15){
-var t=$(_15);
-return $.extend({},$.fn.textbox.parseOptions(_15),$.parser.parseOptions(_15,["decimalSeparator","groupSeparator","suffix",{min:"number",max:"number",precision:"number"}]),{prefix:(t.attr("prefix")?t.attr("prefix"):undefined)});
+$.fn.numberbox.parseOptions=function(_16){
+var t=$(_16);
+return $.extend({},$.fn.textbox.parseOptions(_16),$.parser.parseOptions(_16,["decimalSeparator","groupSeparator","suffix",{min:"number",max:"number",precision:"number"}]),{prefix:(t.attr("prefix")?t.attr("prefix"):undefined)});
 };
 $.fn.numberbox.defaults=$.extend({},$.fn.textbox.defaults,{inputEvents:{keypress:function(e){
-var _16=e.data.target;
-var _17=$(_16).numberbox("options");
-return _17.filter.call(_16,e);
+var _17=e.data.target;
+var _18=$(_17).numberbox("options");
+return _18.filter.call(_17,e);
 },blur:function(e){
 $(e.data.target).numberbox("fix");
 },keydown:function(e){
@@ -91,7 +97,7 @@ if(e.keyCode==13){
 $(e.data.target).numberbox("fix");
 }
 }},min:null,max:null,precision:0,decimalSeparator:".",groupSeparator:"",prefix:"",suffix:"",filter:function(e){
-var _18=$(this).numberbox("options");
+var _19=$(this).numberbox("options");
 var s=$(this).numberbox("getText");
 if(e.metaKey||e.ctrlKey){
 return true;
@@ -106,10 +112,10 @@ tmp.remove();
 if(!c){
 return true;
 }
-if(c=="-"||c==_18.decimalSeparator){
+if(c=="-"||c==_19.decimalSeparator){
 return (s.indexOf(c)==-1)?true:false;
 }else{
-if(c==_18.groupSeparator){
+if(c==_19.groupSeparator){
 return true;
 }else{
 if("0123456789".indexOf(c)>=0){
@@ -119,56 +125,56 @@ return false;
 }
 }
 }
-},formatter:function(_19){
-if(!_19){
-return _19;
+},formatter:function(_1a){
+if(!_1a){
+return _1a;
 }
-_19=_19+"";
-var _1a=$(this).numberbox("options");
-var s1=_19,s2="";
-var _1b=_19.indexOf(".");
-if(_1b>=0){
-s1=_19.substring(0,_1b);
-s2=_19.substring(_1b+1,_19.length);
+_1a=_1a+"";
+var _1b=$(this).numberbox("options");
+var s1=_1a,s2="";
+var _1c=_1a.indexOf(".");
+if(_1c>=0){
+s1=_1a.substring(0,_1c);
+s2=_1a.substring(_1c+1,_1a.length);
 }
-if(_1a.groupSeparator){
+if(_1b.groupSeparator){
 var p=/(\d+)(\d{3})/;
 while(p.test(s1)){
-s1=s1.replace(p,"$1"+_1a.groupSeparator+"$2");
+s1=s1.replace(p,"$1"+_1b.groupSeparator+"$2");
 }
 }
 if(s2){
-return _1a.prefix+s1+_1a.decimalSeparator+s2+_1a.suffix;
+return _1b.prefix+s1+_1b.decimalSeparator+s2+_1b.suffix;
 }else{
-return _1a.prefix+s1+_1a.suffix;
+return _1b.prefix+s1+_1b.suffix;
 }
 },parser:function(s){
 s=s+"";
-var _1c=$(this).numberbox("options");
-if(_1c.prefix){
-s=$.trim(s.replace(new RegExp("\\"+$.trim(_1c.prefix),"g"),""));
+var _1d=$(this).numberbox("options");
+if(_1d.prefix){
+s=$.trim(s.replace(new RegExp("\\"+$.trim(_1d.prefix),"g"),""));
 }
-if(_1c.suffix){
-s=$.trim(s.replace(new RegExp("\\"+$.trim(_1c.suffix),"g"),""));
+if(_1d.suffix){
+s=$.trim(s.replace(new RegExp("\\"+$.trim(_1d.suffix),"g"),""));
 }
-if(parseFloat(s)!=_1c.value){
-if(_1c.groupSeparator){
-s=$.trim(s.replace(new RegExp("\\"+_1c.groupSeparator,"g"),""));
+if(parseFloat(s)!=_1d.value){
+if(_1d.groupSeparator){
+s=$.trim(s.replace(new RegExp("\\"+_1d.groupSeparator,"g"),""));
 }
-if(_1c.decimalSeparator){
-s=$.trim(s.replace(new RegExp("\\"+_1c.decimalSeparator,"g"),"."));
+if(_1d.decimalSeparator){
+s=$.trim(s.replace(new RegExp("\\"+_1d.decimalSeparator,"g"),"."));
 }
 s=s.replace(/\s/g,"");
 }
-var val=parseFloat(s).toFixed(_1c.precision);
+var val=parseFloat(s).toFixed(_1d.precision);
 if(isNaN(val)){
 val="";
 }else{
-if(typeof (_1c.min)=="number"&&val<_1c.min){
-val=_1c.min.toFixed(_1c.precision);
+if(typeof (_1d.min)=="number"&&val<_1d.min){
+val=_1d.min.toFixed(_1d.precision);
 }else{
-if(typeof (_1c.max)=="number"&&val>_1c.max){
-val=_1c.max.toFixed(_1c.precision);
+if(typeof (_1d.max)=="number"&&val>_1d.max){
+val=_1d.max.toFixed(_1d.precision);
 }
 }
 }

@@ -1,7 +1,7 @@
 /**
- * jQuery EasyUI 1.5.2
+ * EasyUI for jQuery 1.8.5
  * 
- * Copyright (c) 2009-2017 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2019 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
  * To use it on other terms please contact us: info@jeasyui.com
@@ -21,9 +21,9 @@ var _8=$(_3).filebox("button");
 if(_8.length){
 $("<label class=\"filebox-label\" for=\""+_5.fileboxId+"\"></label>").appendTo(_8);
 if(_8.linkbutton("options").disabled){
-_6.attr("disabled","disabled");
+_6._propAttr("disabled",true);
 }else{
-_6.removeAttr("disabled");
+_6._propAttr("disabled",false);
 }
 }
 };
@@ -88,6 +88,8 @@ $(this).filebox("clear");
 return jq;
 },setValues:function(jq){
 return jq;
+},files:function(jq){
+return jq.next().find(".textbox-value")[0].files;
 }};
 $.fn.filebox.parseOptions=function(_14){
 var t=$(_14);
